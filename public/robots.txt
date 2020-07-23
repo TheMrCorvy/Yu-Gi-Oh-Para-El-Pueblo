@@ -1,0 +1,13 @@
+User-agent: *
+Disallow: /admin*
+Disallow: /admin/
+Disallow: /payments/pay
+Disallow: /pago-en-la-entrega
+Disallow: /editar-perfil
+Disallow: /home/
+Disallow: /home/
+Disallow: /add-to-cart/
+Disallow: /remove-from-cart/
+Disallow: /aplicar-cupon
+Disallow: /aplicar-cupon
+Disallow: /mostrar-cupon
