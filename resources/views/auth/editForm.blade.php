@@ -238,7 +238,7 @@
           
                     <div class="form-group col-lg-12">
                       <label class="form-control-label">Descripción (opcional)</label>
-                      <textarea id="descripcionProducto" name="descripcionProducto" class="form-control form-control-alternative @error('descripcionProducto') is-invalid @enderror" rows="3" value="">{{ $producto->descripcion }}</textarea>
+                      <textarea id="descripcionProducto" name="descripcionProducto" class="form-control form-control-alternative @error('descripcionProducto') is-invalid @enderror" rows="7" value="">{{ $producto->descripcion }}</textarea>
                       @error('descripcionProducto')
                           <span class="invalid-feedback" role="alert">
                               <strong>{{ $message }}</strong>

@@ -10,7 +10,7 @@
             <div class="container">
               <div class="row">
                 <div class="col-lg-9 col-md-7 mr-auto text-left">
-                  <h1 class="title text-white" style="margin-top: -30px !important;">{{ $producto->nombre }}</h1>
+                  <h1 class="title text-white text-capitalize" style="margin-top: -30px !important;">{{ $producto->nombre }}</h1>
                 </div>
               </div>
             </div>
@@ -45,7 +45,7 @@
                 </div>
 
                 <div class="col-lg-6 col-md-12 mx-auto">
-                  <h2 class="title pt-5">{{ $producto->nombre }}</h2>
+                  <h2 class="title pt-5 text-capitalize">{{ $producto->nombre }}</h2>
                   <hr class="line-success mb-3">
                   <br />
                   @if ($producto->stock <= 0)
@@ -90,11 +90,7 @@
                   <p class="description" id="tipoProducto">{{ $producto->producto }}</p>
 
                   <h5 class="category">Estado:</h5>
-                  @if ($producto->estado == 'Nuevo')
-                    <h6 >{{ $producto->estado }}</h6>
-                  @else
-                    <h6 >{{ $producto->estado }}</h6>
-                  @endif
+                  <h6 class="text-capitalize text-success">{{ $producto->estado }}</h6>
 
                   <div class="row pick-size mt-3">
                     <div class="col-lg-4 col-md-4">
@@ -116,39 +112,39 @@
                   @endif
                   @if (!empty($producto->cantidad_incluida))
                     <h6 class="category">Cantidad de unidades incluidas por producto:</h6>
-                    <p class="description">{{ $producto->cantidad_incluida }} unidad/es</p>
+                    <p class="description text-capitalize">{{ $producto->cantidad_incluida }} unidad/es</p>
                   @endif
                   @if (!empty($producto->tipo))
                     <h6 class="category">Tipo de la carta:</h6>
-                    <p class="description">{{ $producto->tipo }}</p>
+                    <p class="description text-capitalize">{{ $producto->tipo }}</p>
                   @endif
                   @if (!empty($producto->idioma))
                     <h6 class="category">Idioma:</h6>
-                    <p class="description">{{ $producto->idioma }}</p>
+                    <p class="description text-capitalize">{{ $producto->idioma }}</p>
                   @endif
                   @if (!empty($producto->rareza))
                     <h6 class="category">Rareza de la carta:</h6>
-                    <p class="description">{{ $producto->rareza }}</p>
+                    <p class="description text-capitalize">{{ $producto->rareza }}</p>
                   @endif
                   @if (!empty($producto->expansion))
                     <h6 class="category">Expansión:</h6>
-                    <p class="description">{{ $producto->expansion }}</p>
+                    <p class="description text-capitalize">{{ $producto->expansion }}</p>
                   @endif
                   @if (!empty($producto->marca))
                     <h6 class="category">Marca:</h6>
-                    <p class="description">{{ $producto->marca }}</p>
+                    <p class="description text-capitalize">{{ $producto->marca }}</p>
                   @endif
                   @if (!empty($producto->capacidad))
                     <h6 class="category">Capacidad de almacenamiento del deckbox:</h6>
-                    <p class="description">{{ $producto->capacidad }}</p>
+                    <p class="description text-capitalize">{{ $producto->capacidad }}</p>
                   @endif
                   @if (!empty($producto->color))
                     <h6 class="category">Color:</h6>
-                    <p class="description">{{ $producto->color }}</p>
+                    <p class="description text-capitalize">{{ $producto->color }}</p>
                   @endif
                   @if (!empty($producto->size))
                     <h6 class="category">Tamaño:</h6>
-                    <p class="description">{{ $producto->size }}</p>
+                    <p class="description text-capitalize">{{ $producto->size }}</p>
                   @endif
 
                   @if (!empty($producto->descripcion))

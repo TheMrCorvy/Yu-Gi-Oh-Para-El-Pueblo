@@ -366,7 +366,7 @@ class ProductController extends Controller
 
             $path = Storage::disk('google')->url($imagen); //de esta forma se obtiene una url de google drive usable en la etiqueta <img>
         }else {
-            $path = '';
+            $path = null;
         }
 
 

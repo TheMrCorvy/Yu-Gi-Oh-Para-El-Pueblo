@@ -69,10 +69,16 @@
                                 
                                 <div class="form-group mt-4">
                                     <div class="form-group">
-                                        <label class="form-control-label" for="rutaCategoryCrear">URL Para La Categoría <br><small>(No incluyas espacios, ni " / " )</small></label>
+                                        <label class="form-control-label" for="rutaCategoryCrear">
+                                            URL Para La Categoría 
+                                            <br>
+                                            <small>
+                                                (No Incluyas Espacios, Ni " / ", Ni Acentos, Ni "Ñ")
+                                            </small>
+                                        </label>
                                         <div class="input-group">
                                           <div class="input-group-prepend">
-                                            <span class="input-group-text">https://yugiohparaelpueblo.com/</span>
+                                            <span class="input-group-text">yugiohparaelpueblo.com/</span>
                                           </div>
                                           <input type="text" id="rutaCategoryCrear" name="rutaCategoryCrear" class="form-control @error('rutaCategoryCrear') is-invalid @enderror" value="{{ old('rutaCategoryCrear') }}">
                                         </div>
@@ -188,7 +194,7 @@
                                     <h5 class="h5 title text-capitalize text-primary">Número para el Excel: {{ $category->id }}</h5>
                                     <div class="form-group mt-4">
                                         <label class="form-control-label">Nombre Completo Categoría:</label>
-                                        <input id="nombreCategoryEditar" name="nombreCategoryEditar" class="form-control @error('nombreCategoryEditar') is-invalid @enderror" type="text" value="{{ $category->categoria }}">
+                                        <input name="nombreCategoryEditar" class="form-control @error('nombreCategoryEditar') is-invalid @enderror" type="text" value="{{ $category->categoria }}">
                                         @error('nombreCategoryEditar')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -201,9 +207,9 @@
                                             <label class="form-control-label text-capitalize" for="rutaCategoryCrear">URL para la Categoría <br><small>(No incluyas espacios, ni " / ", ni acentos, ni "Ñ")</small></label>
                                             <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text">https://yugiohparaelpueblo.com/</span>
+                                                <span class="input-group-text">yugiohparaelpueblo.com/</span>
                                             </div>
-                                            <input type="text" id="rutaCategoryEditar" name="rutaCategoryEditar" class="form-control @error('rutaCategoryEditar') is-invalid @enderror" value="{{ $category->ruta }}">
+                                            <input type="text" name="rutaCategoryEditar" class="form-control @error('rutaCategoryEditar') is-invalid @enderror" value="{{ $category->ruta }}">
                                             </div>
                                             @error('rutaCategoryEditar')
                                                 <span class="invalid-feedback" role="alert">
