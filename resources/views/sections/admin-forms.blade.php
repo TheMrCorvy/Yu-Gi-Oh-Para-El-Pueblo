@@ -268,9 +268,17 @@
             })
             .then(jsonResponse => jsonResponse.json())
             .then(response => {
+
+                let yugioh = document.createElement('option')
+            
+                yugioh.innerText = 'Yu-Gi-Oh!'
+        
+                yugioh.setAttribute('value', "0")
+        
+                document.getElementById('categoriaProducto').appendChild(yugioh)
             
                 response.categorias.forEach(categoria => {
-            
+
                     let option = document.createElement('option')
             
                     option.innerText = categoria.categoria

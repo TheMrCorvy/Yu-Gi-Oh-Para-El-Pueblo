@@ -51,7 +51,7 @@
 
             <div class="card-footer bg-secondary" id="detalle{{ $compra->id }}">
               <a href="#" id="{{ $compra->id }}" class="btn btn-link float-right addAjax detalles">
-                Ver Detalle {{ $compra->id }}
+                Ver Detalle
                 <i class="fas fa-chevron-right"></i>
               </a>
             </div>

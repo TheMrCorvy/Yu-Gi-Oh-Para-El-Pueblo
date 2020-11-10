@@ -24,12 +24,6 @@ trait ConsumesExternalServices
             'query' => $queryParams,
         ]);
 
-        // if ($isJsonRequest ) {  es lo de arriba, pero explicado para que no me olvide
-        //     'json' => $formParams
-        // }else {
-        //     'form_params' => $formParams,
-        // }
-
         $response = $response->getBody()->getContents();
 
         if (method_exists($this, 'decodeResponse')) {

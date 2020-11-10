@@ -195,7 +195,7 @@
                   Cargando...
                 </button>
               </li>
-              <li class="mb-3">(El default va a ser siempre "Yu-Gi-Oh!", en caso de no cargar un número válido)</li>
+              <li class="mb-3">0) Yu-Gi-Oh!</li>
             </ul>
           </div>
         </div>

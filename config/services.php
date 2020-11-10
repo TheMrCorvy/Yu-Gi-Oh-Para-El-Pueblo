@@ -30,7 +30,6 @@ return [
         'key' => 'TEST-031d301c-1fa7-43d2-bfc6-459d6b12c5d7',
         'secret' => 'TEST-7120844547621159-041414-93e238c345230480239bef250d78f2b5-143014265',
         'base_currency' => 'ars',
-        // 'class' => App\Services\MercadoPagoService::class,
     ],
 
     'postmark' => [

@@ -64,7 +64,8 @@ class ComprasController extends Controller
 
                 Cart::session(auth()->id())->clearCartConditions(); //hay que quitar el descuento en efectivo
                 
-                Mail::to('info@yugiohparaelpueblo.com')->send(new MailVendedor);
+                // Mail::to('info@yugiohparaelpueblo.com')->send(new MailVendedor);
+                Mail::to('mr.corvy@gmail.com')->send(new MailVendedor);
     
                 return redirect()->route('home', Auth::user()->username);
             }
@@ -85,7 +86,7 @@ class ComprasController extends Controller
             'card_network' => 'required',
             'card_token' => 'required',
             'email' => 'required|min:3|max:40|email',
-            'installments' => 'required|min:1|max:12|integer',
+            'installments' => 'required|min:1|integer',
             'ordenCompra' => 'required|min:1|max:5|string',
             'cupon' => 'nullable|string|min:10|max:30',
         ], $messages);
@@ -119,7 +120,8 @@ class ComprasController extends Controller
                     Cart::session(auth()->id())->clear();
                     Cart::session(auth()->id())->clearCartConditions(); //hay que quitar el cupon de descuento
 
-                    Mail::to('info@yugiohparaelpueblo.com')->send(new MailVendedor);
+                    // Mail::to('info@yugiohparaelpueblo.com')->send(new MailVendedor);
+                    Mail::to('mr.corvy@gmail.com')->send(new MailVendedor);
 
                     return redirect()->route('home', Auth::user()->username);
                 }else {
@@ -180,7 +182,7 @@ class ComprasController extends Controller
 
     public function CrearPeticionPagoMP($cardNetwork, $cardToken, $email, $installments)
     {
-        return $this->makeRequest(
+        $requestStatus = $this->makeRequest(
             'POST',
             '/v1/payments',
             [],
@@ -198,6 +200,33 @@ class ComprasController extends Controller
             [],
             $isJsonRequest = true
         );
+
+        // hay que actualizra las key y secret para q sean las mias
+        // $this->key = config('APP_USR-9f9a624d-6aee-42c0-b186-0b66eaac5e2f');
+        // $this->secret = config('APP_USR-7120844547621159-041414-3c4dbca63f186bbe109dc39cf1def901-143014265');
+
+        // $this->makeRequest(
+        //     'POST',
+        //     '/v1/payments',
+        //     [],
+        //     [
+        //         'payer' => [
+        //             'email' => $email,
+        //         ],
+        //         'binary_mode' => true, //binary_mode es para pedir que la transaccion tenga solo 2 estados, aprobada o rechazada
+        //         'transaction_amount' => 10,
+        //         'payment_method_id' => $cardNetwork,
+        //         'token' => $cardToken,
+        //         'installments' => 1,//la cantidad de cuotas en el pago
+        //         'statement_descriptor' => 'Transacciones MercadoPago',
+        //     ],
+        //     [],
+        //     $isJsonRequest = true
+        // );
+
+        // despues se manda el dinero a mi cuenta, y despues se paga realmente
+
+        return $requestStatus;
     }
 
     public function resolveAuthorization(&$queryParams, &$formParams, &$headers)
