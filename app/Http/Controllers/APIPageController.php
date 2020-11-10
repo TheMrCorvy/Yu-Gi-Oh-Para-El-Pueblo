@@ -134,9 +134,7 @@ class APIPageController extends Controller
     public function ObtainCategories()
     {
         $categories = Category::select('ruta', 'categoria')->where('id', '>', 1)->get();
-
-        $general = Product::select('id')->where('categoria', 1)->get();
-
-        return view('sections.ajax.categorias-navbar', compact('categories', 'general'));
+        
+        return view('sections.ajax.categorias-navbar', compact('categories'));
     }
 }

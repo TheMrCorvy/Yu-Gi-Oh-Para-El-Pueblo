@@ -36,9 +36,9 @@
               </li>
 
               <div id="categorias">
-                <div class="spinner-grow mt-2" role="status">
-                    <span class="sr-only">Loading...</span>
-                  </div>
+                    <div class="spinner-grow mt-2" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
               </div>
 
 

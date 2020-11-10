@@ -37,20 +37,24 @@
                 }
             })
 
-
-            fetch('/api/v1/APIPage/ObtainCategories', {
-              headers: {
-                      'Content-Type': 'application/json',
-                  },
-              method: 'get',
-          })
-          .then(jsonResponse => jsonResponse.text())
-          .then(response => {
-            document.getElementById('categorias').innerHTML = ''
-            document.getElementById('categorias').innerHTML = response
-          })
+            getCategories()
         });
         
+        async function getCategories()
+        {
+            await fetch('/api/v1/APIPage/ObtainCategories', {
+                headers: {
+                        'Content-Type': 'application/json',
+                    },
+                method: 'get',
+            })
+            .then(jsonResponse => jsonResponse.text())
+            .then(response => {
+                // console.log(response)
+                document.getElementById('categorias').innerHTML = ''
+                document.getElementById('categorias').innerHTML = response
+            })
+        }
     </script>
 
 <script>
