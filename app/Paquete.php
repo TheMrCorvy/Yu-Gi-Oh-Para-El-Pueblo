@@ -13,5 +13,6 @@ class Paquete extends Model
         'fecha_caducidad_precio',
         'pago_inicial',
         'comentario_al_paquete',
+        'id_usuario',
     ];
 }

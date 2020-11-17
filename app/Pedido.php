@@ -14,5 +14,6 @@ class Pedido extends Model
         'comentario',
         'cantidad',
         'precio',
+        'id_usuario'
     ];
 }

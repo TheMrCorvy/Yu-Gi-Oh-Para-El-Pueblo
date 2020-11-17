@@ -42,7 +42,7 @@
               @else
                 <p>Forma de Entrega: Retiro en el local.</p>
               @endif
-              <p class="mt-3">Monto Total de la Venta: <strong>$ {{ $compra->monto_total }}</strong>.</p>
+              <p class="mt-3">Monto Total de la Compra: <strong>$ {{ $compra->monto_total }}</strong>.</p>
 
               @if (isset($compra->agregar_dinero_envio))
                   <a href="{{ $compra->agregar_dinero_envio }}" class="btn btn-primary mt-3">Agregar Dinero</a>
