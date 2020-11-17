@@ -9,7 +9,25 @@
             Nombre Completo
             <span class="text-danger">*</span>
           </label>
-          <input type="text" class="form-control @error('nombre') is-invalid @enderror" name="nombre" placeholder="Obligatorio" required="">
+          @if (old('nombre'))
+            <input 
+                  type="text" 
+                  class="form-control @error('nombre') is-invalid @enderror" 
+                  name="nombre" 
+                  placeholder="Obligatorio" 
+                  required=""
+                  value="{{old('nombre')}}"
+            >
+          @else
+            <input 
+                  type="text" 
+                  class="form-control @error('nombre') is-invalid @enderror" 
+                  name="nombre" 
+                  placeholder="Obligatorio" 
+                  required=""
+                  value="{{Auth::user()->name}}"
+            >
+          @endif
           @error('nombre')
               <span class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>

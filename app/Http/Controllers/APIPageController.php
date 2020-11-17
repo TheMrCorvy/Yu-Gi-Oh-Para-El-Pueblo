@@ -118,7 +118,18 @@ class APIPageController extends Controller
 //usuario compras y detalles
     public function MisCompras($username) 
     {
-        $compras = OrdenCompra::select('id', 'fecha', 'forma_de_pago', 'monto_total', 'envio', 'agregar_dinero_envio')->where('username', $username)->orderBy('id', 'DESC')->get();
+        $compras = OrdenCompra::select(
+                                        'id', 
+                                        'fecha', 
+                                        'forma_de_pago', 
+                                        'monto_total', 
+                                        'envio', 
+                                        'agregar_dinero_envio'
+                                )
+                                ->where('username', $username)
+                                ->where('finalizada', true)
+                                ->orderBy('id', 'DESC')
+                                ->get();
                             
         return view('sections.ajax.orden-de-compra', compact('compras'));
     }

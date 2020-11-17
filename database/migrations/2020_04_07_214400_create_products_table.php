@@ -34,7 +34,7 @@ class CreateProductsTable extends Migration
             $table->text('descripcion')->nullable();
             $table->integer('oferta')->nullable();
             $table->date('fecha_oferta')->nullable();
-            $table->string('link_img');
+            $table->string('link_img', 255);
             $table->string('ubicacion_archivo_imagen')->nullable();
             $table->timestamps();
         });

@@ -30,6 +30,7 @@ class CreateOrdenComprasTable extends Migration
             $table->string('provincia');
             $table->string('ciudad');
             $table->string('codigo_postal');
+            $table->boolean('finalizada');
 
             $table->boolean('envio');
             $table->timestamps();

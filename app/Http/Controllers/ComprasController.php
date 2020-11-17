@@ -53,9 +53,10 @@ class ComprasController extends Controller
         {
             $finalizarOrden = OrdenCompra::where('id', $ordenCompra)->where('username', Auth::user()->username)->first();
     
-            $finalizarOrden->forma_de_pago = 'Pago en Efectivo en la Entrega';
+            $finalizarOrden->forma_de_pago = '';
             $finalizarOrden->fecha = date('Y-m-d');
             $finalizarOrden->monto_total = floor(Cart::session(auth()->id())->getTotal());
+            $finalizarOrden->finalizada = true;
 
             $finalizarOrden->save();
 
@@ -112,6 +113,7 @@ class ComprasController extends Controller
                 $finalizarOrden->forma_de_pago = 'Pago Online vía MercadoPago';
                 $finalizarOrden->fecha = date('Y-m-d');
                 $finalizarOrden->monto_total = floor(Cart::session(auth()->id())->getTotal());
+                $finalizarOrden->finalizada = true;
     
                 $finalizarOrden->save();
 

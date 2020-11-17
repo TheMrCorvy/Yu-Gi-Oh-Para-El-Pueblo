@@ -36,7 +36,17 @@ class AdminController extends Controller
 
     public function VisualizarCompras()
     {
-        $ordenes = OrdenCompra::select('id', 'username', 'fecha', 'forma_de_pago', 'monto_total', 'envio')->orderBy('id', 'DESC')->paginate(50);
+        $ordenes = OrdenCompra::select(
+                                        'id', 
+                                        'username', 
+                                        'fecha', 
+                                        'forma_de_pago', 
+                                        'monto_total', 
+                                        'envio'
+                                    )
+                                    ->where('finalizada', true)
+                                    ->orderBy('id', 'DESC')
+                                    ->paginate(50);
         
         return view('auth.ordenes-compra', compact('ordenes'));
     }

@@ -21,5 +21,6 @@ class OrdenCompra extends Model
         'ciudad', 
         'envio',
         'codigo_postal',
+        'finalizada'
     ];
 }

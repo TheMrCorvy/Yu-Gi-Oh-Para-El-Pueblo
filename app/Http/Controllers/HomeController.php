@@ -136,7 +136,8 @@ class HomeController extends Controller
             'provincia' => $primerPaso['provincia'],
             'ciudad' => $primerPaso['ciudad'],
             'codigo_postal' => $primerPaso['codigoPostal'],
-            'envio' => $primerPaso['envio']
+            'envio' => $primerPaso['envio'],
+            'finalizada' => false,
         ]);
 
         if ($primerPaso['envio']) {

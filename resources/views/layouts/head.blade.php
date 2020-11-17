@@ -24,7 +24,6 @@
   <link href="{{ asset('assets') }}/css/argon-design-system.css?v=1.0.2" rel="stylesheet" />
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
-  <link rel="stylesheet" href="{{ asset('assets') }}/assets/demo/docs.min.css">
 
   <meta name="theme-color" content="#000000" />
   <link rel="apple-touch-icon" href="{{ asset('assets') }}/icono.png" />

@@ -1,7 +1,7 @@
-<div class="row" style="min-height: 100vh !important">
+<div class="row">
 
     @if ($compras->count() < 1)
-    <div class="col-lg-12 col-md-12 mb-8">
+    <div class="col-lg-12 mb-8">
       <div class="col-lg-6 mx-auto">
         <div class="card card-plain">
             <div class="progress-wrapper">

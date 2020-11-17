@@ -302,7 +302,7 @@
       document.getElementById('installments').onchange = function(){
         var cur_i = this.options[this.selectedIndex].getAttribute('data-tax');
         if(cur_i != null){
-          document.getElementById('total-financed').innerHTML = this.options[this.selectedIndex].text;
+          // document.getElementById('total-financed').innerHTML = this.options[this.selectedIndex].text;
           showTaxes(cur_i);
         }
       };

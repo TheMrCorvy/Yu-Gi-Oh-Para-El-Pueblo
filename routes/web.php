@@ -43,7 +43,7 @@ Route::middleware('auth')->group(function () {
     Route::post('editar-perfil', 'UserController@EditarMiUsuario')->name('Editar Mi Usuario');
     
     Route::get('home/{username}', function(){
-        return view('auth.compras');
+        return view('auth.home-mis-compras');
     })->name('home');
 
 
