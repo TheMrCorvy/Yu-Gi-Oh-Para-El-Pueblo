@@ -47,6 +47,9 @@ Route::middleware('auth')->group(function () {
     })->name('home');
 
 
+    Route::get('importaciones-a-pedido', 'HomeController@viewImportarCartas')->name('Importar Cartas');
+
+
     //carrito
     Route::get('add-to-cart/{id}', 'UserController@AddToCart')->name('Añadir Al Carrito');
     

@@ -37,6 +37,11 @@ class HomeController extends Controller
         return view('welcome', compact('ofertas', 'multiplicador'));
     }
 
+    public function viewImportarCartas()
+    {
+        return view('auth.mis-paquetes');
+    }
+
     public function Checkout()
     {
         if (null !== auth()->id()) {

@@ -57,32 +57,33 @@
                       </div>
                   </li>
               @else
-                  <li class="nav-item dropdown">
-                      <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown" v-pre>
-                          {{ Auth::user()->username }} <span class="caret"></span>
-                      </a>
+                    <li class="nav-item dropdown">
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown" v-pre>
+                            {{ Auth::user()->username }} <span class="caret"></span>
+                        </a>
 
-                      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                          @can('admin.index')
-                          <a class="dropdown-item text-capitalize" href="{{ route('admin.index') }}">administrar sitio web</a>
-                          @endcan
-                          <a class="dropdown-item text-capitalize" href="{{ route('Editar Perfil') }}">editar mi perfil</a>
-                          
-                          {{-- <a class="dropdown-item text-capitalize" href="{{ route('Pedidos') }}">armar un pedido</a> --}}
-                          
-                          <a class="dropdown-item text-capitalize" href="{{ route('home', Auth::user()->username) }}">mis compras</a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            @can('admin.index')
+                            <a class="dropdown-item text-capitalize" href="{{ route('admin.index') }}">administrar sitio web</a>
+                            @endcan
+                            <a class="dropdown-item text-capitalize" href="{{ route('Importar Cartas') }}">importar cartas</a>
+                            <a class="dropdown-item text-capitalize" href="{{ route('Editar Perfil') }}">editar mi perfil</a>
+                            
+                            {{-- <a class="dropdown-item text-capitalize" href="{{ route('Pedidos') }}">armar un pedido</a> --}}
+                            
+                            <a class="dropdown-item text-capitalize" href="{{ route('home', Auth::user()->username) }}">mis compras</a>
 
-                          <a class="dropdown-item" href="{{ route('logout') }}"
-                             onclick="event.preventDefault();
-                                           document.getElementById('logout-form').submit();">
-                              Cerrar Sesión
-                          </a>
+                            <a class="dropdown-item" href="{{ route('logout') }}"
+                                onclick="event.preventDefault();
+                                            document.getElementById('logout-form').submit();">
+                                Cerrar Sesión
+                            </a>
 
-                          <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                              @csrf
-                          </form>
-                      </div>
-                  </li>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                        </div>
+                    </li>
               @endguest
 
               
