@@ -10,16 +10,21 @@
         <div class="col-md-6 mb-3">
           <div class="column">
             <h4 class="mb-4">MercadoLibre</h4>
-            <ul class="links-vertical">
-              <p>También tenemos una tienda online en MercadoLibre, clickea en el ícono debajo para visitarla.</p>
+            <ul class="links-vertical row justify-content-start">
+              <p class="col-lg-12">Recuerda visitarnos en MercadoLibre e Instagram haciendo click en cualquiera de los botones debajo. </p>
               {{-- <li>
                 <a href="https://eshops.mercadolibre.com.ar/yugiohparaelpueblo" target="_blank" type="button" class="text-white btn bg-primary">
                   <span class="btn-inner--icon">Visitar MercadoLibre</span>
                 </a>
               </li> --}}
-              <li>
+              <li class="col-lg-3 pl-3">
                 <a href="https://eshops.mercadolibre.com.ar/yugiohparaelpueblo" target="_blank" class="btn-icon-only btn bg-warning text-white">
                   <span class="btn-inner--icon"><i class="ni ni-shop"></i></span>
+                </a>
+              </li>
+              <li class="col-lg-9 pl-3">
+                <a href="https://www.instagram.com/yugiohparaelpueblo/?hl=es-la" target="_blank" class="btn btn bg-warning text-white">
+                  <i class="fab fa-instagram"></i> INSTAGRAM 
                 </a>
               </li>
             </ul>
