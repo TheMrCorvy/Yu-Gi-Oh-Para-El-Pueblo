@@ -17,6 +17,8 @@ use App\User;
 
 use Auth;
 
+use Validator;
+
 use Cart;
 
 class APIPageController extends Controller
@@ -147,5 +149,37 @@ class APIPageController extends Controller
         $categories = Category::select('ruta', 'categoria')->where('id', '>', 1)->get();
         
         return view('sections.ajax.categorias-navbar', compact('categories'));
+    }
+    
+// añadir pedido al paquete
+    public function addToPakage(Request $request)
+    {
+        $pakageData = $request->only('nombre', 'username', 'expansion', 'cantidad');
+
+        $validator = Validator::make($pakageData, [
+            'username' => 'required|string|exists:users,username',
+            'nombre' => 'required|string|min:4|max:190',
+            'expansion' => 'nullable|string|min:4|max:190',
+            'cantidad' => 'required|integer|min:1|max:190'
+        ], [
+            'required' => 'Este campo no puede estar vacío',
+            'string' => 'Este campo debe ser una cadena de caracteres',
+            'integer' => 'Este campo debe ser un número entero',
+            'min' => 'No se ha alcanzado el mínimo de este campo',
+            'max' => 'El máximo posible para este campo son 190 caracteres',
+            'exists' => 'El usuario no existe',
+        ]);
+
+        if($validator->fails())
+        {
+            return response()->json([
+                'errors' => $validator->errors()
+            ], 200);
+        }
+
+        return response()->json([
+            'message' => 'datos recibidos',
+            'datos' => request()->all()
+        ], 200);
     }
 }

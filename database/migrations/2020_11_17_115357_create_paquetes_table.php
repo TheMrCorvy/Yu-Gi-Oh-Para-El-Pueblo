@@ -17,7 +17,7 @@ class CreatePaquetesTable extends Migration
             $table->increments('id');
 
             $table->unsignedInteger('id_usuario');
-            $table->foreign('id_usuario')->references('id')->on('users');
+            // $table->foreign('id_usuario')->references('id')->on('users');
 
             $table->string('estado');
             $table->string('comentario_al_paquete')->nullable();

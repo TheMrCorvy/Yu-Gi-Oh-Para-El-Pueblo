@@ -189,6 +189,7 @@
                                             placeholder="Obligatorio"
                                             id="nombre"
                                         >
+                                        <label class="text-danger error-message d-none"></label>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -200,6 +201,7 @@
                                             placeholder="Opcional"
                                             id="expansion"
                                         >
+                                        <label class="text-danger error-message d-none"></label>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -211,6 +213,7 @@
                                             placeholder="Obligatorio"
                                             id="cantidad"
                                         >
+                                        <label class="text-danger error-message d-none"></label>
                                     </div>
                                 </div>
                                 <div class="col-lg-3 text-center">
@@ -240,7 +243,9 @@
     </div>
 
 <script>
-    const username = '{{ Auth::user()->username }}'
+    let nombre = document.getElementById('nombre')
+    let expansion = document.getElementById('expansion')
+    let cantidad = document.getElementById('cantidad')
 
     async function GetRecomendaciones() {
         await fetch('/api/v1/APIPage/GetRecomendaciones', {
@@ -251,7 +256,6 @@
         })
         .then(jsonResponse => jsonResponse.text())
         .then(response => {
-            document.getElementById('getRecomendaciones').innerHTML = ''
             document.getElementById('getRecomendaciones').innerHTML = response
         })
     }
@@ -261,9 +265,6 @@
         await Promise.all([
             GetRecomendaciones(),
         ])
-        .then(
-            
-        )//.then
     })//window
 
     function comenzarPedido()
@@ -272,35 +273,85 @@
         $("#modal-pedido").modal("show")
     }
 
-    function sumarAlPaquete(e)
+    async function sumarAlPaquete(e)
     {
         e.target.setAttribute('disabled', '')
 
         document.getElementById('spinner').classList.remove('d-none')
 
-        let nombre = document.getElementById('nombre')
-        let expansion = document.getElementById('expansion')
-        let cantidad = document.getElementById('cantidad')
+        let pedido = {
+            username: '{{Auth::user()->username}}',
+            nombre: nombre.value,
+            expansion: expansion.value,
+            cantidad: cantidad.value
+        }
 
-        document.getElementById('lista-paquete').innerHTML += 
-        `
-            <li class="container">
-                <p class="description">
-                    <strong>
-                        <span class="text-capitalize text-primary">${nombre.value}</span>, 
-                        <span class="text-capitalize text-success">${expansion.value}</span>, 
-                        <span class="text-warning">x${cantidad.value}</span>.
-                    </strong>
-                </p>
-                <button class="btn btn-outline-danger btn-small">
-                    eliminar
-                </button>
-            </li>
-        `
-        
+        eliminarMensajesDeError()
+
         nombre.value = ''
         expansion.value = ''
         cantidad.value = ''
+
+        await fetch("/api/v1/ApiPage/addToPakage", {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            method: "post",
+            body: JSON.stringify(pedido)
+        })
+        .then((jsonResponse) => jsonResponse.json())
+        .then((response) => {
+
+            e.target.removeAttribute('disabled', '')
+
+            document.getElementById('spinner').classList.add('d-none')
+
+            if (response.errors) 
+            {
+                console.log(response.errors)
+
+                if (response.errors.nombre) 
+                {
+                    nombre.parentNode.lastElementChild.innerText = response.errors.nombre[0]
+
+                    nombre.parentNode.lastElementChild.classList.remove('d-none')
+                }
+                if (response.errors.expansion) 
+                {
+                    expansion.parentNode.lastElementChild.innerText = response.errors.expansion[0]
+
+                    expansion.parentNode.lastElementChild.classList.remove('d-none')
+                }
+                if (response.errors.cantidad) 
+                {
+                    cantidad.parentNode.lastElementChild.innerText = response.errors.cantidad[0]
+
+                    cantidad.parentNode.lastElementChild.classList.remove('d-none')
+                }
+            }else
+            {
+                document.getElementById('lista-paquete').innerHTML += 
+                `
+                <li class="container">
+                    <p class="description">
+                        <strong>
+                            <span class="text-capitalize text-primary">${pedido.nombre}</span>,
+                            ${pedido.expansion ? `<span class="text-capitalize text-success">${pedido.expansion}</span>, ` : ``}
+                            <span class="text-warning">x${pedido.cantidad}</span>.
+                        </strong>
+                    </p>
+                </li>
+                `
+            }
+        })
+        .catch((error) => console.log(error));
+    }
+
+    function eliminarMensajesDeError()
+    {
+        document.querySelectorAll('.error-message').forEach(errorMessage => {
+            errorMessage.classList.add('d-none')
+        });
     }
 </script>
 
