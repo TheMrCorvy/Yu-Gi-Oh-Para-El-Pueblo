@@ -49,6 +49,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('importaciones-a-pedido', 'HomeController@viewImportarCartas')->name('Importar Cartas');
 
+    Route::get('importaciones-a-pedido/detalle/{idPaquete}', 'HomeController@detallePaquete')->name('Administrar Paquete');
+
 
     //carrito
     Route::get('add-to-cart/{id}', 'UserController@AddToCart')->name('Añadir Al Carrito');

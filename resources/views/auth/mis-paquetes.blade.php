@@ -18,91 +18,96 @@
         <div class="section section-item" style="z-index: 12 !important;">
             <div class="container" id="misCompras">
                 <div class="row">
-                    
-                    {{-- <div class="col-lg-12 mb-8">
-                        <div class="col-lg-6 mx-auto">
-                            <div class="card card-plain">
-                                <div class="progress-wrapper">
-                                    <div class="progress-info">
-                                        <div class="progress-label">
-                                            <p class="">Aún no pediste ningún paquete.</p>
+
+                    @if ($paquetes->count() < 1)
+                        <div class="col-lg-12 mb-8">
+                            <div class="col-lg-6 mx-auto">
+                                <div class="card card-plain">
+                                    <div class="progress-wrapper">
+                                        <div class="progress-info">
+                                            <div class="progress-label">
+                                                <p class="">Aún no pediste ningún paquete.</p>
+                                            </div>
+                                        </div>
+                                        <div class="progress">
+                                            <div 
+                                                class="progress-bar bg-info" 
+                                                role="progressbar" 
+                                                aria-valuenow="60" 
+                                                aria-valuemin="0" 
+                                                aria-valuemax="0" 
+                                                style="width: 100%;"
+                                            ></div>
                                         </div>
                                     </div>
-                                    <div class="progress">
-                                        <div 
-                                            class="progress-bar bg-info" 
-                                            role="progressbar" 
-                                            aria-valuenow="60" 
-                                            aria-valuemin="0" 
-                                            aria-valuemax="0" 
-                                            style="width: 100%;"
-                                        ></div>
+                                    <button class="btn btn-outline-success"  data-toggle="modal" data-target="#bd-example-modal-xl">armar un pedido</button>
+                                </div>
+                            </div>
+                        </div>
+                    @else
+                        <div class="col-lg-12">
+                            <div class="col-lg-6 mx-auto mt-5">
+                                <button class="btn btn-outline-success btn-block"  data-toggle="modal" data-target="#bd-example-modal-xl">agregar cartas a un pedido abierto</button>
+                            </div>
+                        </div>
+
+                        @foreach ($paquetes as $paquete)
+                            <div class="col-lg-6 mx-auto mt-5">
+                                <div class="card bg-secondary container">
+                                    <div class="card-header bg-white row d-flex justify-content-between">
+                                        <h6 class="card-title text-primary mt-3 col-lg-6">Número de Paquete: {{$paquete->id}}</h6>
+                                        <h6 class="card-title text-primary mt-3 text-right col-lg-6">
+                                            Fecha: {{$paquete->created_at->format('d/m/y')}}
+                                            <br><small class="text-muted">(Día/Mes/Año)</small>
+                                        </h6>
+                                    </div>
+
+                                    <div class="card-body">
+                                        <p class="">
+                                            Mandános un <strong class="text-success">WhatsApp a 011 3771-9677</strong> para coordinar la entrega/envío, o también podés contactarnos por <span class="text-primary">email a <u>info@yugiohparaelpueblo.com</u></span>
+                                        </p>
+                                        <div class="progress">
+                                            <div 
+                                                class="progress-bar bg-success" 
+                                                role="progressbar" 
+                                                aria-valuenow="60" 
+                                                aria-valuemin="0" 
+                                                aria-valuemax="100" 
+                                                style="width: 100%;"
+                                            ></div>
+                                        </div>
+                                        <td>Estado: <span class="text-success">{{$paquete->estado}}</span></td>
+                                        <br>
+                                        <td><small>Todavía puedes añadir o quitar cartas, o modificar sus cantidades</small></td>
+                                        <br>
+                                        <br>
+                                        <p>Forma de Entrega: Coordinar con el Vendedor.</p>
+                                        <p class="mt-3">Monto Total del Paquete: 
+                                            <a href="{{route('Administrar Paquete', $paquete->id)}}" class="btn btn-link float-right">
+                                                Ver Detalles 
+                                                <i class="fas fa-chevron-right"></i>
+                                            </a>
+                                        </p>
+                                        <p class="mt-3">Seña a pagar: 
+                                            <a href="{{route('Administrar Paquete', $paquete->id)}}" class="btn btn-link float-right">
+                                                Ver Detalles
+                                                <i class="fas fa-chevron-right"></i>
+                                            </a>
+                                        </p>
+                                    </div>
+
+                                    <div class="card-footer bg-secondary">
+                                        <a href="{{route('Administrar Paquete', $paquete->id)}}" class="btn btn-link float-right addAjax detalles">
+                                            Administrar Paquete
+                                            <i class="fas fa-chevron-right"></i>
+                                        </a>
                                     </div>
                                 </div>
-                                <button class="btn btn-outline-success"  data-toggle="modal" data-target="#bd-example-modal-xl">armar un pedido</button>
                             </div>
-                        </div>
-                    </div> --}}
+                        @endforeach
 
-                    <div class="col-lg-12">
-                        <div class="col-lg-6 mx-auto mt-5">
-                            <button class="btn btn-outline-success btn-block"  data-toggle="modal" data-target="#bd-example-modal-xl">armar un pedido</button>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6 mx-auto mt-5">
-                        <div class="card bg-secondary container">
-                            <div class="card-header bg-white row d-flex justify-content-between">
-                                <h6 class="card-title text-primary mt-3 col-lg-6">Número de Paquete: id compra</h6>
-                                <h6 class="card-title text-primary mt-3 text-right col-lg-6">
-                                    Fecha: yy-mm-dd
-                                    <br><small class="text-muted">(Año-Mes-Día)</small>
-                                </h6>
-                            </div>
-                
-                            <div class="card-body">
-                                <p class="">
-                                    Mandános un <strong class="text-success">WhatsApp a 011 3771-9677</strong> para coordinar la entrega/envío, o también podés contactarnos por <span class="text-primary">email a <u>info@yugiohparaelpueblo.com</u></span>
-                                </p>
-                                <div class="progress">
-                                    <div 
-                                        class="progress-bar bg-success" 
-                                        role="progressbar" 
-                                        aria-valuenow="60" 
-                                        aria-valuemin="0" 
-                                        aria-valuemax="100" 
-                                        style="width: 100%;"
-                                    ></div>
-                                </div>
-                                <td>Estado: <span class="text-success">Revisado y Abierto</span></td>
-                                <br>
-                                <td><small>Todavía puedes añadir o quitar cartas, o modificar sus cantidades</small></td>
-                                <br>
-                                <br>
-                                {{-- @if ($compra->envio)
-                                    <p>Forma de Entrega: Envío (Coordinar con el vendedor).</p>
-                                @else --}}
-                                <p>Forma de Entrega: Retiro en el local.</p>
-                                {{-- @endif --}}
-                                <p class="mt-3">Monto Total del Paquete: <strong>$ Moto Total</strong>.</p>
-                                <p class="mt-3">Seña a pagar: <strong>$ 10%</strong>.</p>
+                    @endif
                     
-                                {{-- @if (isset($compra->agregar_dinero_envio))
-                                    <a href="{{ $compra->agregar_dinero_envio }}" class="btn btn-primary mt-3">Agregar Dinero</a>
-                                @endif --}}
-                            </div>
-                
-                            <div class="card-footer bg-secondary" id="detalle1">
-                                <a href="#" id="1" class="btn btn-outline-info float-left addAjax detalles">
-                                    pagar seña
-                                </a>
-                                <a href="#" id="1" class="btn btn-link float-right addAjax detalles">
-                                    Ver Detalle
-                                    <i class="fas fa-chevron-right"></i>
-                                </a>
-                            </div>
-                        </div>
-                      </div>
                 </div>
             </div>
         </div>
@@ -148,7 +153,7 @@
                         </li>
                         <li>
                             <p>
-                                Expansión (opcional, si no se especifica se usará el precio más barato)
+                                Expansión/Rareza (opcional, si no se especifica se usará el precio más barato)
                             </p>
                         </li>
                     </ol>
@@ -194,7 +199,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="expansion">Expansión Buscada</label>
+                                        <label for="expansion">Expansión/Rareza Buscada</label>
                                         <input 
                                             type="text" 
                                             class="form-control form-control-alternative text-capitalize" 
@@ -223,6 +228,11 @@
                                         <span class="sr-only">Loading...</span>
                                     </div>
                                 </div>
+                                <div class="col-lg-12 error-message mt-3 d-none">
+                                    <div class="alert alert-danger" role="alert" id="alerta-error">
+                                        
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -235,7 +245,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">cancelar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">regresar</button>
                     <button type="button" class="btn btn-primary" onclick="comenzarPedido()">crear pedido</button>
                 </div>
             </div>
@@ -243,9 +253,10 @@
     </div>
 
 <script>
-    let nombre = document.getElementById('nombre')
-    let expansion = document.getElementById('expansion')
-    let cantidad = document.getElementById('cantidad')
+    const nombre = document.getElementById('nombre')
+    const expansion = document.getElementById('expansion')
+    const cantidad = document.getElementById('cantidad')
+    const username = '{{Auth::user()->username}}'
 
     async function GetRecomendaciones() {
         await fetch('/api/v1/APIPage/GetRecomendaciones', {
@@ -259,11 +270,26 @@
             document.getElementById('getRecomendaciones').innerHTML = response
         })
     }
+    
+    async function GetDetallesPaquetes() {
+        await fetch('/api/v1/APIPage/getDetallesPaquetes', {
+            headers: {
+                    'Content-Type': 'application/json',
+                },
+            method: 'post',
+            body: JSON.stringify({username})
+        })
+        .then(jsonResponse => jsonResponse.json())
+        .then(response => {
+            console.log(response)
+        })
+    }
 
     window.addEventListener('load', async () => {
 
         await Promise.all([
             GetRecomendaciones(),
+            GetDetallesPaquetes(),
         ])
     })//window
 
@@ -280,7 +306,7 @@
         document.getElementById('spinner').classList.remove('d-none')
 
         let pedido = {
-            username: '{{Auth::user()->username}}',
+            username,
             nombre: nombre.value,
             expansion: expansion.value,
             cantidad: cantidad.value
@@ -308,8 +334,6 @@
 
             if (response.errors) 
             {
-                console.log(response.errors)
-
                 if (response.errors.nombre) 
                 {
                     nombre.parentNode.lastElementChild.innerText = response.errors.nombre[0]
@@ -328,6 +352,11 @@
 
                     cantidad.parentNode.lastElementChild.classList.remove('d-none')
                 }
+            }else if (response.err) 
+            {
+                document.getElementById('alerta-error').innerText = response.err
+
+                document.getElementById('alerta-error').parentNode.classList.remove('d-none')
             }else
             {
                 document.getElementById('lista-paquete').innerHTML += 

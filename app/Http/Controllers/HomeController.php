@@ -15,6 +15,8 @@ use App\Compra;
 use App\Product;
 use App\Multiplicador;
 use App\User;
+use App\Paquete;
+use App\Pedido;
 
 use Cart;
 
@@ -39,7 +41,36 @@ class HomeController extends Controller
 
     public function viewImportarCartas()
     {
-        return view('auth.mis-paquetes');
+        $paquetes = Paquete::where('username', Auth::user()->username)->get();
+
+        return view('auth.mis-paquetes', compact('paquetes'));
+    }
+
+    public function detallePaquete($idPaquete)
+    {
+        $paquete = Paquete::find($idPaquete);
+
+
+        if (is_null($paquete) || $paquete->username !== Auth::user()->username) 
+        {
+            return view('errors.404');
+        }
+
+        $pedidos = Pedido::where('paquete', $idPaquete)->get();
+
+        $montoTotal = 0;
+
+        foreach ($pedidos as $pedido) 
+        {
+            if ($pedido->precio) 
+            {
+                $montoTotal = $montoTotal + ($pedido->precio * $pedido->cantidad);
+            }
+        }
+
+        $pagoInicial = $montoTotal / 10;
+
+        return view('auth.admin-paquete', compact('pedidos', 'paquete', 'montoTotal', 'pagoInicial'));
     }
 
     public function Checkout()

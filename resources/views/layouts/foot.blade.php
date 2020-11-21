@@ -28,6 +28,12 @@
   {{-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYmRu9j9hs8ggoTQsw95csCq-uf9qYdh0"></script> --}}
   <script src="{{ asset('assets') }}/js/argon-design-system.min.js?v=1.0.2" type="text/javascript"></script>
   {{-- <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script> --}}
+
+  <script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+  </script>
 </body>
 
 </html>

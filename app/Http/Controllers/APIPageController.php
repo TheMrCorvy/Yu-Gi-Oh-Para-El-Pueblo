@@ -163,7 +163,6 @@ class APIPageController extends Controller
             'nombre' => 'required|string|min:4|max:190',
             'expansion' => 'nullable|string|min:4|max:190',
             'cantidad' => 'required|integer|min:1|max:190',
-            'paquete' => 'nullable|integer|exists:cartas_pedidas,paquete'
         ], [
             'required' => 'Este campo no puede estar vacío',
             'string' => 'Este campo debe ser una cadena de caracteres',
@@ -180,9 +179,61 @@ class APIPageController extends Controller
             ], 200);
         }
 
-        return response()->json([
-            'message' => 'datos recibidos',
-            'datos' => request()->all()
-        ], 200);
+        try 
+        {
+            $paquete = Paquete::where('username', $pakageData['username'])->where('estado', 'Abierto')->first();
+
+            if (is_null($paquete)) 
+            {
+                $paquete = Paquete::create([
+                    'username' => $pakageData['username'],
+                    'estado' => 'Abierto',
+                    'fecha_caducidad_precio' => now()
+                ]);
+            }
+
+            $pedido = Pedido::create([
+                'paquete' => $paquete->id,
+                'username' => $pakageData['username'],
+                'nombre_carta' => $pakageData['nombre'],
+                'expansion' => $pakageData['expansion'],
+                'cantidad' => $pakageData['cantidad'],
+            ]);
+
+            return response()->json([
+                'message' => 'datos recibidos',
+                'paquete' => $paquete,
+                'carta' => $pedido,
+                'datos' => request()->all()
+            ], 200);
+
+        } catch (\Throwable $err) 
+        {
+            return response()->json([
+                'err' => $err->getMessage()
+            ], 500);
+        }
+    }
+
+    public function getDetallesPaquetes(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'username' => 'required|string|exists:users,username',
+        ], [
+            'required' => 'Este campo no puede estar vacío',
+            'string' => 'Este campo debe ser una cadena de caracteres',
+            'exists' => 'El usuario/paquete no existe',
+        ]);
+
+        if($validator->fails())
+        {
+            return response()->json([
+                'errors' => $validator->errors()
+            ], 400);
+        }
+
+        $pedidos = Pedido::where('username', $request->only('username'))->get()->groupBy('paquete');
+
+        return response()->json($pedidos->toArray(), 200);
     }
 }
