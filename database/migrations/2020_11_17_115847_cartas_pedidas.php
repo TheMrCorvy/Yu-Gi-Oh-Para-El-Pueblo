@@ -19,6 +19,7 @@ class CartasPedidas extends Migration
             $table->unsignedInteger('paquete');
             $table->foreign('paquete')->references('id')->on('paquetes');
 
+            $table->string('username');
             $table->string('nombre_carta');
             $table->string('expansion')->nullable();
             $table->string('comentario')->nullable();

@@ -16,7 +16,7 @@ class CreatePaquetesTable extends Migration
         Schema::create('paquetes', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->unsignedInteger('id_usuario');
+            $table->string('username');
             // $table->foreign('id_usuario')->references('id')->on('users');
 
             $table->string('estado');
