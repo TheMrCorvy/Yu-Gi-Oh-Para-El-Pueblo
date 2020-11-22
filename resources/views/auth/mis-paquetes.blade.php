@@ -57,8 +57,15 @@
                                     <div class="card-header bg-white row d-flex justify-content-between">
                                         <h6 class="card-title text-primary mt-3 col-lg-6">Número de Paquete: {{$paquete->id}}</h6>
                                         <h6 class="card-title text-primary mt-3 text-right col-lg-6">
-                                            Fecha: {{$paquete->created_at->format('d/m/y')}}
-                                            <br><small class="text-muted">(Día/Mes/Año)</small>
+                                            @if ($paquete->fecha_caducidad_precio)
+                                                Fecha: {{$paquete->fecha_caducidad_precio->format('d/m/y')}}
+                                                <br><small class="text-muted">(Día/Mes/Año)</small>
+                                            @else
+                                                Fecha: 
+                                                <small class="text-warning">
+                                                    Aún no disponible
+                                                </small>
+                                            @endif
                                         </h6>
                                     </div>
 
@@ -81,24 +88,12 @@
                                         <td><small>Todavía puedes añadir o quitar cartas, o modificar sus cantidades</small></td>
                                         <br>
                                         <br>
-                                        <p>Forma de Entrega: Coordinar con el Vendedor.</p>
-                                        <p class="mt-3">Monto Total del Paquete: 
-                                            <a href="{{route('Administrar Paquete', $paquete->id)}}" class="btn btn-link float-right">
-                                                Ver Detalles 
-                                                <i class="fas fa-chevron-right"></i>
-                                            </a>
-                                        </p>
-                                        <p class="mt-3">Seña a pagar: 
-                                            <a href="{{route('Administrar Paquete', $paquete->id)}}" class="btn btn-link float-right">
-                                                Ver Detalles
-                                                <i class="fas fa-chevron-right"></i>
-                                            </a>
-                                        </p>
+                                        <p>Forma de Entrega: <span class="text-danger">Elegir después de pagar la seña</span>.</p>
                                     </div>
 
                                     <div class="card-footer bg-secondary">
                                         <a href="{{route('Administrar Paquete', $paquete->id)}}" class="btn btn-link float-right addAjax detalles">
-                                            Administrar Paquete
+                                            ver detalles y Administrar Paquete
                                             <i class="fas fa-chevron-right"></i>
                                         </a>
                                     </div>
@@ -176,7 +171,7 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalScrollableTitle">Armar un Pedido</h5>
+                    <h5 class="modal-title" id="exampleModalScrollableTitle">Sumar Cartas a un Pedido Abierto</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -233,20 +228,24 @@
                                         
                                     </div>
                                 </div>
+                                <div class="col-lg-12">
+                                    <ol id="lista-paquete">
+                                
+                                    </ol>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="card card-plain">
-                        <div class="card-body">
-                            <ol id="lista-paquete">
-                                
-                            </ol>
-                        </div>
-                    </div>
+                    <p class="description mt-5">
+                        Las cartas que añadas se sumarán a un paquete que tengas con estado "Abierto". En caso de no haber ninguno, se creará uno nuevo.
+                    </p>
+                    <p class="description">
+                        Cada vez que sumes alguna carta tu paquete con estado "Abierto", tendrás que volver a enviarlo a revisión para que se actualice el precio.
+                    </p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">regresar</button>
-                    <button type="button" class="btn btn-primary" onclick="comenzarPedido()">crear pedido</button>
+                    <button type="button" class="btn btn-primary" onclick="location.reload()">sumar al pedido</button>
                 </div>
             </div>
         </div>
@@ -270,26 +269,11 @@
             document.getElementById('getRecomendaciones').innerHTML = response
         })
     }
-    
-    async function GetDetallesPaquetes() {
-        await fetch('/api/v1/APIPage/getDetallesPaquetes', {
-            headers: {
-                    'Content-Type': 'application/json',
-                },
-            method: 'post',
-            body: JSON.stringify({username})
-        })
-        .then(jsonResponse => jsonResponse.json())
-        .then(response => {
-            console.log(response)
-        })
-    }
 
     window.addEventListener('load', async () => {
 
         await Promise.all([
             GetRecomendaciones(),
-            GetDetallesPaquetes(),
         ])
     })//window
 

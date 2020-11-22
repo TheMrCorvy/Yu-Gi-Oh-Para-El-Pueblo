@@ -64,14 +64,13 @@
         <button id="volverArriba" type="button" class="btn btn-warning scrollTop hideScroll">
             <span class="btn-inner--icon"><i class="fas fa-2x fa-angle-double-up"></i></span>
         </button>
-            <div class="alert alert-dismissible bg-gradient-danger col-lg-5 fade" role="alert" id="alert" style="position: fixed; left: 2%; top: 10%; z-index: 40; width: 30rem; max-width: 96vw !important;" id="alert">
+            <div class="alert alert-dismissible bg-gradient-danger col-lg-5 fade" role="alert" id="alert" style="position: fixed; left: 2%; top: 10%; z-index: 40; width: 10rem; max-width: 96vw !important;" id="alert">
                 <span class="alert-inner--text">
                     <div class="spinner-grow" role="status">
                         <span class="sr-only">Loading...</span>
                     </div>
-                    Cargando, por favor espere...
                 </span>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <button type="button" class="close" onclick="document.getElementById('alert').classList.toggle('show')">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>

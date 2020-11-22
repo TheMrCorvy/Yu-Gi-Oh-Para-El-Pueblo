@@ -187,8 +187,7 @@ class APIPageController extends Controller
             {
                 $paquete = Paquete::create([
                     'username' => $pakageData['username'],
-                    'estado' => 'Abierto',
-                    'fecha_caducidad_precio' => now()
+                    'estado' => 'Abierto'
                 ]);
             }
 
@@ -213,27 +212,5 @@ class APIPageController extends Controller
                 'err' => $err->getMessage()
             ], 500);
         }
-    }
-
-    public function getDetallesPaquetes(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'username' => 'required|string|exists:users,username',
-        ], [
-            'required' => 'Este campo no puede estar vacío',
-            'string' => 'Este campo debe ser una cadena de caracteres',
-            'exists' => 'El usuario/paquete no existe',
-        ]);
-
-        if($validator->fails())
-        {
-            return response()->json([
-                'errors' => $validator->errors()
-            ], 400);
-        }
-
-        $pedidos = Pedido::where('username', $request->only('username'))->get()->groupBy('paquete');
-
-        return response()->json($pedidos->toArray(), 200);
     }
 }

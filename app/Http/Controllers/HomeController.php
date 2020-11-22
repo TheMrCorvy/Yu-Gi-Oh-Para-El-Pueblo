@@ -70,7 +70,7 @@ class HomeController extends Controller
 
         $pagoInicial = $montoTotal / 10;
 
-        return view('auth.admin-paquete', compact('pedidos', 'paquete', 'montoTotal', 'pagoInicial'));
+        return view('auth.detalle-paquete', compact('pedidos', 'paquete', 'montoTotal', 'pagoInicial'));
     }
 
     public function Checkout()
