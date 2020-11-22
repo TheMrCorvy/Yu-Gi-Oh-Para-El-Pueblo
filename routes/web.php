@@ -167,4 +167,9 @@ Route::middleware(['auth',])->group(function () {
     //borrar
     Route::post('type-carta/destroy/{id}', 'TypeCartaController@destroy')->name('admin.destroy-type-carta')->middleware('can:admin.destroy-type-carta');
 
+
+    //importaciones del exterior
+    Route::get('admin/pedidos-de-importacion', 'AdminController@listaPaquetesPedidos')->name('admin.list-pakages')->middleware('can:admin.list-pakages');
+    
+    Route::get('admin/pedidos-de-importacion/detalle/{idPaquete}', 'AdminController@detallePaquetePedido')->name('admin.list-pakage-details')->middleware('can:admin.list-pakages');
 });

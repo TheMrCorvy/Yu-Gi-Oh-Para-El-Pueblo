@@ -125,6 +125,10 @@
                 <hr class="col-lg-12 my-8">
 
                 <h1 class="h1 title text-center col-lg-12 text-capitalize"><a href="{{ route('admin.compras') }}"><u>ventas del último mes</u></a></h1>
+                
+                <hr class="col-lg-12 my-8">
+
+                <h1 class="h1 title text-center col-lg-12 text-capitalize"><a href="{{ route('admin.list-pakages') }}"><u>pedidos de importación</u></a></h1>
 
                 @include('sections.admin-cpc', [
                     'typeProducts' => $typeProducts,

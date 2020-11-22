@@ -148,4 +148,16 @@ class AdminController extends Controller
             return view('errors.404');
         }
     }
+
+    public function listaPaquetesPedidos()
+    {
+        $paquetes = Paquete::where('estado', '!=', 'Abierto')->get();
+
+        return view('auth.admin-paquetes', compact('paquetes'));
+    }
+
+    public function detallePaquetePedido($idPaquete)
+    {
+
+    }
 }
