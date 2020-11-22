@@ -26,7 +26,7 @@
                                     <div class="progress-wrapper">
                                         <div class="progress-info">
                                             <div class="progress-label">
-                                                <p class="">Aún no pediste ningún paquete.</p>
+                                                <p>Aún no pediste ningún paquete.</p>
                                             </div>
                                         </div>
                                         <div class="progress">
@@ -70,7 +70,7 @@
                                     </div>
 
                                     <div class="card-body">
-                                        <p class="">
+                                        <p>
                                             Mandános un <strong class="text-success">WhatsApp a 011 3771-9677</strong> para coordinar la entrega/envío, o también podés contactarnos por <span class="text-primary">email a <u>info@yugiohparaelpueblo.com</u></span>
                                         </p>
                                         <div class="progress">
@@ -84,11 +84,21 @@
                                             ></div>
                                         </div>
                                         <td>Estado: <span class="text-success">{{$paquete->estado}}</span></td>
-                                        <br>
-                                        <td><small>Todavía puedes añadir o quitar cartas, o modificar sus cantidades</small></td>
+                                        @if ($paquete->estado === "Abierto" || $paquete->estado === "Abierto y Revisando" || $paquete->estado === "Abierto y Revisado")
+                                            <br>
+                                            <td><small>Todavía puedes añadir o quitar cartas, o modificar sus cantidades</small></td>
+                                        @endif
                                         <br>
                                         <br>
                                         <p>Forma de Entrega: <span class="text-danger">Elegir después de pagar la seña</span>.</p>
+                                        @if ($paquete->estado === "Abierto")
+                                            <form method="post" action="{{route('Pedir Presupuesto')}}" class="col-lg-12 text-center mt-4">
+                                                @csrf
+                                                <button class="btn btn-outline-success btn-sm">
+                                                    Pedir presupuesto
+                                                </button>
+                                            </form>
+                                        @endif
                                     </div>
 
                                     <div class="card-footer bg-secondary">
@@ -245,7 +255,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">regresar</button>
-                    <button type="button" class="btn btn-primary" onclick="location.reload()">sumar al pedido</button>
+                    <button type="button" class="btn btn-primary" onclick="location.reload()">sumar todo al pedido</button>
                 </div>
             </div>
         </div>

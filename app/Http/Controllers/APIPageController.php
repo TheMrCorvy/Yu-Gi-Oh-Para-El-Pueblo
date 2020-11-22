@@ -181,7 +181,7 @@ class APIPageController extends Controller
 
         try 
         {
-            $paquete = Paquete::where('username', $pakageData['username'])->where('estado', 'Abierto')->first();
+            $paquete = Paquete::where('username', $pakageData['username'])->where('estado', 'LIKE', '%Abierto%')->first();
 
             if (is_null($paquete)) 
             {
@@ -189,6 +189,13 @@ class APIPageController extends Controller
                     'username' => $pakageData['username'],
                     'estado' => 'Abierto'
                 ]);
+            }
+
+            if ($paquete->estado !== "Abierto")
+            {
+                $paquete->estado = "Abierto";
+
+                $paquete->save();
             }
 
             $pedido = Pedido::create([
@@ -212,5 +219,87 @@ class APIPageController extends Controller
                 'err' => $err->getMessage()
             ], 500);
         }
+    }
+
+    public function modificarCantidades(Request $request)
+    {
+        $dataPedido = $request->only('idCarta', 'username', 'accion');
+
+        $validator = Validator::make($dataPedido, [
+            'username' => 'required|string|exists:users,username',
+            'idCarta' => 'required|integer|exists:cartas_pedidas,id',
+            'accion' => 'required|string|min:5|max:6'
+        ], [
+            'required' => 'Este campo no puede estar vacío',
+            'string' => 'Este campo debe ser una cadena de caracteres',
+            'integer' => 'Este campo debe ser un número entero',
+            'min' => 'No se ha alcanzado el mínimo de este campo',
+            'max' => 'El máximo posible para este campo son 190 caracteres',
+            'exists' => 'La carta no existe',
+        ]);
+
+        if($validator->fails())
+        {
+            return response()->json([
+                'errors' => $validator->errors()
+            ], 200);
+        }
+
+        $pedidoCarta = Pedido::where('username', $dataPedido['username'])->where('id', $dataPedido['idCarta'])->first();
+
+        if (is_null($pedidoCarta)) 
+        {
+            return response()->json([
+                'errors' => 'Carta no encontrada'
+            ], 404);
+        }
+
+        if ($dataPedido['accion'] === "sumar") 
+        {
+            $pedidoCarta->cantidad = $pedidoCarta->cantidad +1;
+
+            $pedidoCarta->save();
+
+            $paquete = Paquete::find($pedidoCarta->paquete);
+
+            if ($paquete->estado !== "Abierto")
+            {
+                $paquete->estado = "Abierto";
+
+                $paquete->save();
+            }
+
+            return response()->json([
+                'nueva_cantidad_carta' => $pedidoCarta->cantidad,
+                'id_carta_pedida' => $pedidoCarta->id,
+                'nuevo_estado_paquete' => "Abierto",
+            ], 200);
+
+        } elseif ($dataPedido['accion'] === "restar") 
+        {
+            $pedidoCarta->cantidad = $pedidoCarta->cantidad -1;
+
+            if ($pedidoCarta->cantidad <= 0) 
+            {
+                $pedidoCarta->delete();
+
+                return response()->json([
+                    'carta_removida' => $dataPedido['idCarta'],
+                ], 200);
+            }else 
+            {
+                $pedidoCarta->save();
+            }
+
+        }else {
+            return response()->json([
+                'errors' => 'Carta no encontrada'
+            ], 404);
+        }
+
+        return response()->json([
+            'nueva_cantidad_carta' => $pedidoCarta->cantidad,
+            'id_carta_pedida' => $pedidoCarta->id,
+        ], 200);
     }
 }

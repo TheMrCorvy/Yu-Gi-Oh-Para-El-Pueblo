@@ -15,7 +15,7 @@
                 <div class="row">
                     <div class="col-lg-8 mx-auto text-center my-5">
                         <h3 class="display-3 pt-4">Detalles del Paquete</h3>
-                        <small class="description">Estado actual del Paquete: <span class="text-success">{{$paquete->estado}}</span></small>
+                        <small class="description">Estado actual del Paquete: <span class="text-success" id="estado-paquete">{{$paquete->estado}}</span></small>
                         <br>
                         @if ($paquete->comentario_al_paquete)
                             <small class="description">{{$paquete->comentario_al_paquete}}</small>
@@ -36,7 +36,7 @@
                             <tbody>
 
                                 @foreach ($pedidos as $cartaPedida)    
-                                    <tr>
+                                    <tr id="fila-carta-{{$cartaPedida->id}}">
                                         <td class="text-left text-capitalize">{{$cartaPedida->nombre_carta}}</td>
                                         
                                         @if ($cartaPedida->expansion)
@@ -67,14 +67,16 @@
                                                     card-id="{{$cartaPedida->id}}"
                                                 ></i>
                                             </button>
-                                            {{$cartaPedida->cantidad}} 
+                                            <span id="carta-id-{{$cartaPedida->id}}">
+                                                {{$cartaPedida->cantidad}}
+                                            </span> 
                                             <button 
                                                 class="btn btn-icon-only btn-action-pedido btn-outline-success ml-2"
                                                 data-toggle="tooltip" 
                                                 data-placement="right" 
                                                 title="Sumar Una"
                                                 action="sumar"
-                                                id="{{$cartaPedida->id}}"
+                                                card-id="{{$cartaPedida->id}}"
                                                 onclick="modificarCantidad(event)"
                                             >
                                                 <i 
@@ -167,24 +169,75 @@
             window.history.go(-1)
         })
 
-        function modificarCantidad(e)
-        {
-            console.log(e.target.getAttribute('action'))
-            document.getElementById('alert').classList.add('show')
+        let botones
 
-            const botones = document.querySelectorAll('.btn-action-pedido')
+        window.addEventListener('load', () => {
+            botones = document.querySelectorAll('.btn-action-pedido')
+        })
+
+        function evaluarRespuesta(respuesta)
+        {
+            if (respuesta.nueva_cantidad_carta) 
+            {
+                botones.forEach(boton => {
+                    boton.removeAttribute('disabled', '')
+                });
+
+                document.getElementById('alert').classList.remove('show')
+
+                document.getElementById('carta-id-' + respuesta.id_carta_pedida).innerText = respuesta.nueva_cantidad_carta
+            }
+
+            if (respuesta.nuevo_estado_paquete) 
+            {
+                document.getElementById('estado-paquete').innerText = respuesta.nuevo_estado_paquete
+            }
+            
+            if (respuesta.carta_removida) 
+            {
+                document.getElementById('fila-carta-' + respuesta.carta_removida).classList.add('d-none')
+
+                botones.forEach(boton => {
+                    boton.removeAttribute('disabled', '')
+                });
+
+                document.getElementById('alert').classList.remove('show')
+
+                console.log(respuesta)
+            }
+
+            if (respuesta.errors) 
+            {
+                console.log(respuesta.errors)
+            }
+        }
+
+        async function modificarCantidad(e)
+        {
+            const body = {
+                idCarta: e.target.getAttribute('card-id'),
+                accion: e.target.getAttribute('action'),
+                username: "{{Auth::user()->username}}"
+            }
+
+            document.getElementById('alert').classList.add('show')
 
             botones.forEach(boton => {
                 boton.setAttribute('disabled', '')
             });
 
-            setTimeout(() => {
-                botones.forEach(boton => {
-                    boton.removeAttribute('disabled', '')
-
-                    document.getElementById('alert').classList.remove('show')
-                });
-            }, 3000);
+            await fetch('/api/v1/APIPage/modificarCantidades', {
+                headers: {
+                        'Content-Type': 'application/json',
+                    },
+                method: 'post',
+                body: JSON.stringify(body)
+            })
+            .then(jsonResponse => jsonResponse.json())
+            .then(response => {
+                evaluarRespuesta(response)
+            })
+            .catch(error => console.log(error))
         }
     </script>
 @endsection

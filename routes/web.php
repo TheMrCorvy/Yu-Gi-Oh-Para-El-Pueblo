@@ -47,9 +47,12 @@ Route::middleware('auth')->group(function () {
     })->name('home');
 
 
+    //pedidos del exterior
     Route::get('importaciones-a-pedido', 'HomeController@viewImportarCartas')->name('Importar Cartas');
 
     Route::get('importaciones-a-pedido/detalle/{idPaquete}', 'HomeController@detallePaquete')->name('Administrar Paquete');
+
+    Route::post('importaciones-a-pedido/pedir-presupuesto', 'AdminController@NotificarPedidoDeCartas')->name('Pedir Presupuesto');
 
 
     //carrito

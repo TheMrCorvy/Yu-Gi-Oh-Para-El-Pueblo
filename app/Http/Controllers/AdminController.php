@@ -19,6 +19,8 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\VentasAllExport;
 use App\Exports\VentasMesExport;
 
+use Auth;
+
 class AdminController extends Controller
 {
     public function index() 
@@ -114,5 +116,10 @@ class AdminController extends Controller
         $orden->save();
 
         return redirect()->back();
+    }
+
+    public function NotificarPedidoDeCartas(Request $request)
+    {
+        return redirect()->route('home', Auth::user()->username);
     }
 }
