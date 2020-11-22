@@ -41,7 +41,7 @@ class HomeController extends Controller
 
     public function viewImportarCartas()
     {
-        $paquetes = Paquete::where('username', Auth::user()->username)->get();
+        $paquetes = Paquete::where('username', Auth::user()->username)->orderBy('id', 'DESC')->get();
 
         return view('auth.mis-paquetes', compact('paquetes'));
     }

@@ -55,18 +55,7 @@
                             <div class="col-lg-6 mx-auto mt-5">
                                 <div class="card bg-secondary container">
                                     <div class="card-header bg-white row d-flex justify-content-between">
-                                        <h6 class="card-title text-primary mt-3 col-lg-6">Número de Paquete: {{$paquete->id}}</h6>
-                                        <h6 class="card-title text-primary mt-3 text-right col-lg-6">
-                                            @if ($paquete->fecha_caducidad_precio)
-                                                Fecha: {{$paquete->fecha_caducidad_precio->format('d/m/y')}}
-                                                <br><small class="text-muted">(Día/Mes/Año)</small>
-                                            @else
-                                                Fecha: 
-                                                <small class="text-warning">
-                                                    Aún no disponible
-                                                </small>
-                                            @endif
-                                        </h6>
+                                        <h6 class="card-title text-primary mt-3 col-lg-6">Número de Paquete: # {{$paquete->id}}</h6>
                                     </div>
 
                                     <div class="card-body">

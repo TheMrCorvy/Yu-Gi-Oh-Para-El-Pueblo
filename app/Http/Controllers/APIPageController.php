@@ -254,13 +254,26 @@ class APIPageController extends Controller
             ], 404);
         }
 
+        $paquete = Paquete::find($pedidoCarta->paquete);
+
+        if ($paquete->estado === "Revisando") 
+        {
+            return response()->json([
+                'errors' => 'No se puede alterar el contenido de un paquete mientras se revisa.'
+            ], 200);
+        }
+
         if ($dataPedido['accion'] === "sumar") 
         {
+            if ($pedidoCarta->cantidad <= 0) 
+            {
+                return response()->json([
+                    'errors' => 'No hay stock'
+                ], 400);
+            }
             $pedidoCarta->cantidad = $pedidoCarta->cantidad +1;
 
             $pedidoCarta->save();
-
-            $paquete = Paquete::find($pedidoCarta->paquete);
 
             if ($paquete->estado !== "Abierto")
             {

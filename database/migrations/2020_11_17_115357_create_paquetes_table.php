@@ -22,6 +22,7 @@ class CreatePaquetesTable extends Migration
             $table->string('estado');
             $table->string('comentario_al_paquete')->nullable();
             $table->date('fecha_caducidad_precio')->nullable();
+            $table->string('envio')->nullable();
             $table->timestamps();
         });
     }

@@ -8,10 +8,9 @@
             text-decoration: underline;
         }
     </style>
-
     <div class="main">
         <div class="my-5">
-            <div class="container">
+            <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-8 mx-auto text-center my-5">
                         <h3 class="display-3 pt-4">Detalles del Paquete</h3>
@@ -19,6 +18,15 @@
                         <br>
                         @if ($paquete->comentario_al_paquete)
                             <small class="description">{{$paquete->comentario_al_paquete}}</small>
+                        @endif
+                        @if ($paquete->estado === "Abierto")
+                            <form method="post" action="{{route('Pedir Presupuesto')}}" class="col-lg-12 text-center mt-4">
+                                @csrf
+                                <input type="hidden" name="id-paquete" value="{{$paquete->id}}">
+                                <button class="btn btn-outline-success btn-action-pedido">
+                                    Pedir presupuesto
+                                </button>
+                            </form>
                         @endif
                     </div>
                     
@@ -46,7 +54,7 @@
                                         @endif
                                         
                                         @if ($cartaPedida->precio)
-                                            <td class="text-center">{{$cartaPedida->precio}}</td>
+                                            <td class="text-center">$ {{$cartaPedida->precio}}</td>
                                         @else
                                             <td class="text-center text-warning">Aún no disponible.</td>
                                         @endif
@@ -70,21 +78,40 @@
                                             <span id="carta-id-{{$cartaPedida->id}}">
                                                 {{$cartaPedida->cantidad}}
                                             </span> 
-                                            <button 
-                                                class="btn btn-icon-only btn-action-pedido btn-outline-success ml-2"
-                                                data-toggle="tooltip" 
-                                                data-placement="right" 
-                                                title="Sumar Una"
-                                                action="sumar"
-                                                card-id="{{$cartaPedida->id}}"
-                                                onclick="modificarCantidad(event)"
-                                            >
-                                                <i 
-                                                    class="fas fa-plus"
+                                            @if ($cartaPedida->cantidad === 0)
+                                                <button 
+                                                    class="btn btn-icon-only btn-action-pedido ml-2"
+                                                    data-toggle="tooltip" 
+                                                    data-placement="right" 
+                                                    title="Sumar Una"
                                                     action="sumar"
                                                     card-id="{{$cartaPedida->id}}"
-                                                ></i>
-                                            </button>
+                                                    onclick="modificarCantidad(event)"
+                                                    disabled
+                                                >
+                                                    <i 
+                                                        class="fas fa-plus"
+                                                        action="sumar"
+                                                        card-id="{{$cartaPedida->id}}"
+                                                    ></i>
+                                                </button>
+                                            @else
+                                                <button 
+                                                    class="btn btn-icon-only btn-action-pedido btn-outline-success ml-2"
+                                                    data-toggle="tooltip" 
+                                                    data-placement="right" 
+                                                    title="Sumar Una"
+                                                    action="sumar"
+                                                    card-id="{{$cartaPedida->id}}"
+                                                    onclick="modificarCantidad(event)"
+                                                >
+                                                    <i 
+                                                        class="fas fa-plus"
+                                                        action="sumar"
+                                                        card-id="{{$cartaPedida->id}}"
+                                                    ></i>
+                                                </button>
+                                            @endif
                                         </td>
                                         
                                         @if ($cartaPedida->comentario)
@@ -124,7 +151,7 @@
                             <p>
                                 @if ($montoTotal > 0)
                                     <strong>
-                                        Monto Total: $ {{$montoTotal}}.
+                                        Monto Total: $ {{$montoTotal}}
                                     </strong>
                                 @else
                                     <strong>
@@ -137,7 +164,7 @@
                             <p>
                                 @if ($pagoInicial > 0)
                                     <strong>
-                                        Seña a Pagar: $ {{$pagoInicial}}.
+                                        Seña a Pagar: $ {{$pagoInicial}}
                                     </strong>
                                 @else
                                     <strong>
@@ -177,14 +204,14 @@
 
         function evaluarRespuesta(respuesta)
         {
+            document.getElementById('alert').classList.remove('show')
+
+            botones.forEach(boton => {
+                boton.removeAttribute('disabled', '')
+            });
+
             if (respuesta.nueva_cantidad_carta) 
             {
-                botones.forEach(boton => {
-                    boton.removeAttribute('disabled', '')
-                });
-
-                document.getElementById('alert').classList.remove('show')
-
                 document.getElementById('carta-id-' + respuesta.id_carta_pedida).innerText = respuesta.nueva_cantidad_carta
             }
 
@@ -196,14 +223,6 @@
             if (respuesta.carta_removida) 
             {
                 document.getElementById('fila-carta-' + respuesta.carta_removida).classList.add('d-none')
-
-                botones.forEach(boton => {
-                    boton.removeAttribute('disabled', '')
-                });
-
-                document.getElementById('alert').classList.remove('show')
-
-                console.log(respuesta)
             }
 
             if (respuesta.errors) 
@@ -214,12 +233,6 @@
 
         async function modificarCantidad(e)
         {
-            const body = {
-                idCarta: e.target.getAttribute('card-id'),
-                accion: e.target.getAttribute('action'),
-                username: "{{Auth::user()->username}}"
-            }
-
             document.getElementById('alert').classList.add('show')
 
             botones.forEach(boton => {
@@ -231,13 +244,22 @@
                         'Content-Type': 'application/json',
                     },
                 method: 'post',
-                body: JSON.stringify(body)
+                body: JSON.stringify({
+                    idCarta: e.target.getAttribute('card-id'),
+                    accion: e.target.getAttribute('action'),
+                    username: "{{Auth::user()->username}}"
+                })
             })
             .then(jsonResponse => jsonResponse.json())
             .then(response => {
                 evaluarRespuesta(response)
             })
-            .catch(error => console.log(error))
+            .catch(error => {
+
+                document.getElementById('alert').classList.remove('show')
+
+                console.log(error)
+            })
         }
     </script>
 @endsection

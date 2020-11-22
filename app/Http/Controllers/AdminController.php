@@ -12,6 +12,7 @@ use App\User;
 use App\TypeProduct;
 use App\TypeCarta;
 use App\Category;
+use App\Paquete;
 
 use App\Exports\UsersExport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -20,6 +21,9 @@ use App\Exports\VentasAllExport;
 use App\Exports\VentasMesExport;
 
 use Auth;
+
+use App\Mail\MailPedidoImportacion;
+use Illuminate\Support\Facades\Mail;
 
 class AdminController extends Controller
 {
@@ -80,8 +84,6 @@ class AdminController extends Controller
 
         $couponCode = "YGOPEP-" . $generarCupon['descuentoCupon']. "-" . strtotime($generarCupon['fechaCupon']);
 
-        // dd($generarCupon['fechaCupon']);
-
         Cupon::create([
             'codigo' => $couponCode,
             'porcentaje' => '-' . $generarCupon['descuentoCupon'] . '%',
@@ -118,8 +120,32 @@ class AdminController extends Controller
         return redirect()->back();
     }
 
-    public function NotificarPedidoDeCartas(Request $request)
+    public function NotificarPedidoDeCartas()
     {
-        return redirect()->route('home', Auth::user()->username);
+        $request = request()->validate([
+            'id-paquete' => 'required|integer|exists:paquetes,id',
+        ]);
+
+        $paquete = Paquete::find($request['id-paquete']);
+
+        if ($paquete->username !== Auth::user()->username) 
+        {
+            return view('errors.404');
+        }
+
+        if ($paquete->estado !== "Abierto" || $paquete->estado !== "Abierto y Revisado") 
+        {
+            $paquete->estado = "Revisando";
+
+            $paquete->save();
+
+            Mail::to('mr.corvy@gmail.com')->send(new MailPedidoImportacion($paquete->id));
+
+            return redirect()->to(route('Importar Cartas'));
+
+        }else 
+        {
+            return view('errors.404');
+        }
     }
 }

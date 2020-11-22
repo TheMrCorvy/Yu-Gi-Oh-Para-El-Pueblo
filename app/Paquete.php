@@ -14,5 +14,6 @@ class Paquete extends Model
         'pago_inicial',
         'comentario_al_paquete',
         'username',
+        'envio',
     ];
 }

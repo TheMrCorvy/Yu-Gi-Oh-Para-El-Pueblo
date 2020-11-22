@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class MailVendedor extends Mailable implements ShouldQueue
+class MailPedidoImportacion extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -16,12 +16,11 @@ class MailVendedor extends Mailable implements ShouldQueue
      *
      * @return void
      */
+    protected $idPaquete;
 
-    public $subject = 'Alguien compró uno o más productos desde la página web';
-
-    public function __construct()
+    public function __construct($id)
     {
-        //
+        $this->idPaquete = $id;
     }
 
     /**
@@ -31,6 +30,8 @@ class MailVendedor extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->view('mail.compra-vendedor')->subject('Alguien compró uno o más productos desde la página web');
+        $paquete = $this->idPaquete;
+
+        return $this->view('mail.notif-pedido-importacion', compact('paquete'))->subject('Recibiste un pedido de importación de cartas');
     }
 }
