@@ -74,7 +74,12 @@
                                                     <span class="input-group-text">$</span>
                                                 </div>
                                                 <input type="text" class="form-control" placeholder="Precio unitario en Pesos">
-                                                <div class="input-group-append">
+                                                <div 
+                                                    class="input-group-append"
+                                                    data-toggle="tooltip" 
+                                                    data-placement="top" 
+                                                    title="Guardar Precio"
+                                                >
                                                     <button class="btn btn-outline-success btn-sm" type="button" id="button-addon2">
                                                         <i class="fas fa-check"></i>
                                                     </button>
@@ -107,7 +112,14 @@
                                             <div class="input-group">
                                                 <input type="text" class="form-control" placeholder="Comentario" value="{{$cartaPedida->comentario}}">
                                                 <div class="input-group-append">
-                                                    <button class="btn btn-outline-success btn-sm" type="button" id="button-addon2">
+                                                    <button 
+                                                        class="btn btn-outline-success btn-sm" 
+                                                        type="button" 
+                                                        id="button-addon2"
+                                                        data-toggle="tooltip" 
+                                                        data-placement="top" 
+                                                        title="Guardar Comentario"
+                                                    >
                                                         <i class="fas fa-check"></i>
                                                     </button>
                                                 </div>
@@ -155,6 +167,9 @@
                             </p>
                             <input class="form-control" type="date" value="{{$paquete->fecha_caducidad_precio}}" id="fecha-caducidad-precio">
                             <button class="btn btn-sm btn-outline-success mt-2 float-right">guardar</button>
+                        </div>
+                        <div class="col-lg-3 text-right ">
+                            <button class="btn btn-warning">marcar como revisado</button>
                         </div>
                     </div>
               
