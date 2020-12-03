@@ -29,7 +29,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if (!$paquetes->count() < 1)
+                                    @if ($paquetes->count() < 1)
                                         <tr>
                                             <td></td>
                                             <td></td>

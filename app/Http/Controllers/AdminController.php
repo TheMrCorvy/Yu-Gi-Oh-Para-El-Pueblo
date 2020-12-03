@@ -13,6 +13,7 @@ use App\TypeProduct;
 use App\TypeCarta;
 use App\Category;
 use App\Paquete;
+use App\Pedido;
 
 use App\Exports\UsersExport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -153,11 +154,34 @@ class AdminController extends Controller
     {
         $paquetes = Paquete::where('estado', '!=', 'Abierto')->paginate(20);
 
-        return view('auth.admin-paquetes', compact('paquetes'));
+        return view('auth.paquetes.admin-paquetes', compact('paquetes'));
     }
 
     public function detallePaquetePedido($idPaquete)
     {
+        $paquete = Paquete::find($idPaquete);
 
+        $usuario = User::where('username', $paquete->username)->first();
+
+        if (is_null($paquete) || $paquete->username !== Auth::user()->username) 
+        {
+            return view('errors.404');
+        }
+
+        $pedidos = Pedido::where('paquete', $idPaquete)->get();
+
+        $montoTotal = 0;
+
+        foreach ($pedidos as $pedido) 
+        {
+            if ($pedido->precio) 
+            {
+                $montoTotal = $montoTotal + ($pedido->precio * $pedido->cantidad);
+            }
+        }
+
+        $pagoInicial = $montoTotal / 10;
+
+        return view('auth.paquetes.admin-detalle-paquete', compact('pedidos', 'paquete', 'montoTotal', 'pagoInicial', 'usuario'));
     }
 }

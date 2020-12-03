@@ -43,13 +43,12 @@ class HomeController extends Controller
     {
         $paquetes = Paquete::where('username', Auth::user()->username)->orderBy('id', 'DESC')->get();
 
-        return view('auth.mis-paquetes', compact('paquetes'));
+        return view('auth.paquetes.mis-paquetes', compact('paquetes'));
     }
 
     public function detallePaquete($idPaquete)
     {
         $paquete = Paquete::find($idPaquete);
-
 
         if (is_null($paquete) || $paquete->username !== Auth::user()->username) 
         {
@@ -70,7 +69,7 @@ class HomeController extends Controller
 
         $pagoInicial = $montoTotal / 10;
 
-        return view('auth.detalle-paquete', compact('pedidos', 'paquete', 'montoTotal', 'pagoInicial'));
+        return view('auth.paquetes.detalle-paquete', compact('pedidos', 'paquete', 'montoTotal', 'pagoInicial'));
     }
 
     public function Checkout()
