@@ -1,4 +1,4 @@
-@extends('layouts.app', ['class' => 'pricing-page'])
+@extends('layouts.app', ['class' => 'pricing-page bg-secondary'])
 
 @section('content')
 
@@ -11,18 +11,21 @@
     <div class="main">
         <div class="my-5">
             <div class="container-fluid">
-                <div class="row">
+                <form class="row">
                     <div class="col-lg-8 mx-auto text-center my-5">
                         <h3 class="display-3 pt-4">Detalles del Paquete</h3>
                         <small class="description">Estado actual del Paquete: <span class="text-success" id="estado-paquete">{{$paquete->estado}}</span></small>
                         <br>
 
-                        <form class="form-group mt-3">
+                        <div class="form-group mt-3">
                             <label for="comentar-paquete">Dejar un comentario al paquete:</label>
-                            <textarea class="form-control" id="comentar-paquete" rows="3">{{$paquete->comentario_al_paquete}}</textarea>
-
-                            <input type="submit" value="Guardar Comentario" class="btn btn-outline-primary mt-2 btn-sm">
-                        </form>
+                            <textarea 
+                                class="form-control form-control-alternative" 
+                                id="comentar-paquete" 
+                                rows="3"
+                                name="comentario-al-paquete"
+                            >{{$paquete->comentario_al_paquete}}</textarea>
+                        </div>
 
                         @if ($paquete->estado === "Abierto")
                             <form method="post" action="{{route('Pedir Presupuesto')}}" class="col-lg-12 text-center mt-4">
@@ -68,33 +71,33 @@
                                             <td class="text-left text-capitalize text-success">El precio más barato.</td>
                                         @endif
 
-                                        <td>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">$</span>
-                                                </div>
-                                                <input type="text" class="form-control" placeholder="Precio unitario en Pesos">
-                                                <div 
-                                                    class="input-group-append"
-                                                    data-toggle="tooltip" 
-                                                    data-placement="top" 
-                                                    title="Guardar Precio"
-                                                >
-                                                    <button class="btn btn-outline-success btn-sm" type="button" id="button-addon2">
-                                                        <i class="fas fa-check"></i>
-                                                    </button>
-                                                </div>
+                                        <td class="row justify-content-center">
+                                            <div class="col-lg-1 pt-3">
+                                                $
                                             </div>
+                                            <input 
+                                                type="number" 
+                                                class="form-control form-control-alternative col-lg-9" 
+                                                placeholder="Precio unitario en Pesos"
+                                                name="precio-{{$cartaPedida->id}}"
+                                                value="{{$cartaPedida->precio}}"
+                                            >
                                         </td>
 
                                         <td class="text-center">
-                                            <span id="carta-id-{{$cartaPedida->id}}" class="mr-3">
-                                                {{$cartaPedida->cantidad}}
-                                            </span>
+
+                                            <input 
+                                                type="number" 
+                                                name="cantidad-{{$cartaPedida->id}}"
+                                                id="cantidad-{{$cartaPedida->id}}"
+                                                value="{{$cartaPedida->cantidad}}"
+                                                class="d-none"
+                                            >
+
                                             <button 
                                                 class="btn btn-icon-only btn-action-pedido btn-outline-danger"
                                                 data-toggle="tooltip" 
-                                                data-placement="right" 
+                                                data-placement="left" 
                                                 title="Quitar Una"
                                                 action="restar"
                                                 card-id="{{$cartaPedida->id}}"
@@ -106,24 +109,36 @@
                                                     card-id="{{$cartaPedida->id}}"
                                                 ></i>
                                             </button>
+                                            
+                                            <span id="carta-id-{{$cartaPedida->id}}">
+                                                {{$cartaPedida->cantidad}}
+                                            </span>
+
+                                            <button 
+                                                class="btn btn-icon-only btn-action-pedido btn-outline-success ml-2"
+                                                data-toggle="tooltip" 
+                                                data-placement="right" 
+                                                title="Sumar Una"
+                                                action="sumar"
+                                                card-id="{{$cartaPedida->id}}"
+                                                onclick="modificarCantidad(event)"
+                                            >
+                                                <i 
+                                                    class="fas fa-plus"
+                                                    action="sumar"
+                                                    card-id="{{$cartaPedida->id}}"
+                                                ></i>
+                                            </button>
                                         </td>
 
                                         <td>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" placeholder="Comentario" value="{{$cartaPedida->comentario}}">
-                                                <div class="input-group-append">
-                                                    <button 
-                                                        class="btn btn-outline-success btn-sm" 
-                                                        type="button" 
-                                                        id="button-addon2"
-                                                        data-toggle="tooltip" 
-                                                        data-placement="top" 
-                                                        title="Guardar Comentario"
-                                                    >
-                                                        <i class="fas fa-check"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
+                                            <input 
+                                                type="text" 
+                                                class="form-control form-control-alternative" 
+                                                placeholder="Comentario" 
+                                                value="{{$cartaPedida->comentario}}"
+                                                name="comentario-{{$cartaPedida->id}}"
+                                            >
                                         </td>
                                     </tr>
                                 @endforeach
@@ -132,7 +147,7 @@
                         </table>
                     </div>
                 
-                    <div class="col-lg-12 row justify-content-center mt-5">
+                    <div class="col-lg-12 pr-0 row justify-content-end mt-5">
                         <div class="col-lg-2 pr-0 text-center">
                             <p>
                                 @if ($montoTotal > 0)
@@ -159,21 +174,33 @@
                                 @endif
                             </p>
                         </div>
-                        <div class="col-lg-2 ml-0 form-group">
+                        <div class="col-lg-2 pr-0 form-group">
                             <p>
                                 <strong class="text-capitalize">
                                     precio válido hasta:
                                 </strong>
                             </p>
-                            <input class="form-control" type="date" value="{{$paquete->fecha_caducidad_precio}}" id="fecha-caducidad-precio">
-                            <button class="btn btn-sm btn-outline-success mt-2 float-right">guardar</button>
+                            <input 
+                                class="form-control form-control-alternative" 
+                                type="date" 
+                                value="{{$paquete->fecha_caducidad_precio}}" 
+                                id="fecha-caducidad-precio"
+                                name="fecha-caducidad-precio"
+                            >
                         </div>
-                        <div class="col-lg-3 text-right ">
-                            <button class="btn btn-warning">marcar como revisado</button>
+                        <div class="col-lg-2 text-right pt-4 mt-3">
+                            <input 
+                                type="submit" 
+                                value="guardar cambios" 
+                                class="btn btn-warning"
+                                data-toggle="tooltip" 
+                                data-placement="top" 
+                                title="Este proceso puede demorar unos segundos"
+                            >
                         </div>
                     </div>
               
-                </div>
+                </form>
             </div>
         </div>
     </div>
@@ -190,69 +217,27 @@
             botones = document.querySelectorAll('.btn-action-pedido')
         })
 
-        function evaluarRespuesta(respuesta)
+        function modificarCantidad(e)
         {
-            document.getElementById('alert').classList.remove('show')
+            e.preventDefault()
 
-            botones.forEach(boton => {
-                boton.removeAttribute('disabled', '')
-            });
+            let cardId = e.target.getAttribute('card-id')
 
-            if (respuesta.nueva_cantidad_carta) 
+            let action = e.target.getAttribute('action')
+
+            let cantidad = document.getElementById('cantidad-' + cardId)
+
+            let show = document.getElementById('carta-id-' + cardId)
+
+            if (action === 'sumar') 
             {
-                document.getElementById('carta-id-' + respuesta.id_carta_pedida).innerText = respuesta.nueva_cantidad_carta
+                cantidad.value = Number(cantidad.value) + 1
+            } else if(cantidad.value > 0)
+            {
+                cantidad.value = Number(cantidad.value) - 1
             }
 
-            if (respuesta.nuevo_estado_paquete) 
-            {
-                document.getElementById('estado-paquete').innerText = respuesta.nuevo_estado_paquete
-            }
-            
-            if (respuesta.carta_removida) 
-            {
-                document.getElementById('fila-carta-' + respuesta.carta_removida).classList.add('d-none')
-            }
-
-            if (respuesta.errors) 
-            {
-                console.log(respuesta.errors)
-                const errorMessage = document.getElementById('errors')
-
-                errorMessage.innerText = respuesta.errors
-
-                errorMessage.classList.remove('d-none')
-            }
-        }
-
-        async function modificarCantidad(e)
-        {
-            document.getElementById('alert').classList.add('show')
-
-            botones.forEach(boton => {
-                boton.setAttribute('disabled', '')
-            });
-
-            await fetch('/api/v1/APIPage/modificarCantidades', {
-                headers: {
-                        'Content-Type': 'application/json',
-                    },
-                method: 'post',
-                body: JSON.stringify({
-                    idCarta: e.target.getAttribute('card-id'),
-                    accion: e.target.getAttribute('action'),
-                    username: "{{Auth::user()->username}}"
-                })
-            })
-            .then(jsonResponse => jsonResponse.json())
-            .then(response => {
-                evaluarRespuesta(response)
-            })
-            .catch(error => {
-
-                document.getElementById('alert').classList.remove('show')
-
-                console.log(error)
-            })
+            show.innerText = cantidad.value
         }
     </script>
 @endsection
