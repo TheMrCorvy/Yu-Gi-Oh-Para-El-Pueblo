@@ -19,7 +19,7 @@
                         @if ($paquete->comentario_al_paquete)
                             <small class="description">{{$paquete->comentario_al_paquete}}</small>
                         @endif
-                        @if ($paquete->estado === "Abierto")
+                        @if ($paquete->estado === "Abierto" || $paquete->estado === "Revisado y Abierto")
                             <form method="post" action="{{route('Pedir Presupuesto')}}" class="col-lg-12 text-center mt-4">
                                 @csrf
                                 <input type="hidden" name="id-paquete" value="{{$paquete->id}}">

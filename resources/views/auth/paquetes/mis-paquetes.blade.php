@@ -80,7 +80,7 @@
                                         <br>
                                         <br>
                                         <p>Forma de Entrega: <span class="text-danger">Elegir después de pagar la seña</span>.</p>
-                                        @if ($paquete->estado === "Abierto")
+                                        @if ($paquete->estado === "Abierto" || $paquete->estado === "Revisado y Abierto")
                                             <form method="post" action="{{route('Pedir Presupuesto')}}" class="col-lg-12 text-center mt-4">
                                                 @csrf
                                                 <button class="btn btn-outline-success btn-sm">
