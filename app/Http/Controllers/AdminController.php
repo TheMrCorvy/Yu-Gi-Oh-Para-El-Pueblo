@@ -151,7 +151,7 @@ class AdminController extends Controller
 
     public function listaPaquetesPedidos()
     {
-        $paquetes = Paquete::where('estado', '!=', 'Abierto')->get();
+        $paquetes = Paquete::where('estado', '!=', 'Abierto')->paginate(20);
 
         return view('auth.admin-paquetes', compact('paquetes'));
     }

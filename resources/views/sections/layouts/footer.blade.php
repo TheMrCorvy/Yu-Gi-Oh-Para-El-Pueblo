@@ -97,7 +97,7 @@
                 </a>
               </div>
               <div class="col-lg-4 mt-3 col-md-6">
-                <a href="https://www.facebook.com/sharer/sharer.php?u{{ route('Landing') }}" target="_blank" class="btn btn-gradient-facebook btn-footer">
+                <a href="https://www.facebook.com/sharer/sharer.php?{{ route('Landing') }}" target="_blank" class="btn btn-gradient-facebook btn-footer">
                   <i class="fab fa-facebook-square"></i>
                   <p class="title text-capitalize">facebook</p>
                   <p class="subtitle">compartir</p>

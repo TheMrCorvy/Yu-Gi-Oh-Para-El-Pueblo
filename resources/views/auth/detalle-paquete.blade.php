@@ -29,6 +29,12 @@
                             </form>
                         @endif
                     </div>
+
+                    <div class="col-lg-12 text-center">
+                        <p class="text-danger d-none" id="errors">
+                            
+                        </p>
+                    </div>
                     
                     <div class="col-lg-12 table-responsive mb-3">
                         <table class="table">
@@ -228,6 +234,11 @@
             if (respuesta.errors) 
             {
                 console.log(respuesta.errors)
+                const errorMessage = document.getElementById('errors')
+
+                errorMessage.innerText = respuesta.errors
+
+                errorMessage.classList.remove('d-none')
             }
         }
 
