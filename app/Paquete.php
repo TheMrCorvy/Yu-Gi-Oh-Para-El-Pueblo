@@ -16,4 +16,6 @@ class Paquete extends Model
         'username',
         'envio',
     ];
+
+    protected $dates = ['created_at', 'fecha_caducidad_precio'];
 }

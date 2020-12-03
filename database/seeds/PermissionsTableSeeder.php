@@ -167,30 +167,12 @@ class PermissionsTableSeeder extends Seeder
             'slug' => 'admin.list-pakages',
             'description' => 'permiso para ver la lista de pedidos del exterior',
         ]); 
+        
         DB::table('permissions')->insert([
-            'name' => 'comentar pedido',
-            'slug' => 'admin.comment-pakage',
-            'description' => 'permiso para poder dejar un comentario al pedido',
+            'name' => 'revisar pedido',
+            'slug' => 'admin.review-pakage',
+            'description' => 'permiso para modificar cantidades de cartas, precios, y comentarios',
         ]); 
-        DB::table('permissions')->insert([
-            'name' => 'comentar carta pedida',
-            'slug' => 'admin.comment-card',
-            'description' => 'permiso para poder dejar un comentario dentro de una carta pedida para importacion',
-        ]); 
-        DB::table('permissions')->insert([
-            'name' => 'asignar precio pedido',
-            'slug' => 'admin.pakage-assign-price-to-pakage',
-            'description' => 'permiso para asignarle un precio al paquete de importacion',
-        ]); 
-        DB::table('permissions')->insert([
-            'name' => 'asignar precio pedido',
-            'slug' => 'admin.pakage-assign-stock-to-card',
-            'description' => 'permiso para asignarle el stock disponible a una carta pedida para importacion',
-        ]); 
-        DB::table('permissions')->insert([
-            'name' => 'asignar precio pedido',
-            'slug' => 'admin.pakage-assign-date-to-price',
-            'description' => 'permiso para asignarle la fecha de caducidad al precio final',
-        ]); 
+        
     }
 }

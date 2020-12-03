@@ -22,6 +22,7 @@ use App\Exports\VentasAllExport;
 use App\Exports\VentasMesExport;
 
 use Auth;
+use Validator;
 
 use App\Mail\MailPedidoImportacion;
 use Illuminate\Support\Facades\Mail;
@@ -183,5 +184,55 @@ class AdminController extends Controller
         $pagoInicial = $montoTotal / 10;
 
         return view('auth.paquetes.admin-detalle-paquete', compact('pedidos', 'paquete', 'montoTotal', 'pagoInicial', 'usuario'));
+    }
+
+    public function revisarPaquete(Request $request, $idPaquete)
+    {
+        $campos = $request->all();
+
+        $validator = Validator::make($campos, [
+            'comentarioAlPaquete' => 'nullable|string|max:190',
+            'fechaCaducudadPrecio' => 'required|after:' . date('Y-m-d'),
+        ]);
+
+        if($validator->fails())
+        {
+            return back()->withMessage('Hubo un error, asegurate de que ningun comentario tenga más de 190 caractéres, y de que la fecha en la que caduca el presupuesto no haya pasado ya');
+        }
+
+        $array = array();
+
+        foreach ($campos as $campo) 
+        {
+            if (isset($campo[3])) 
+            {
+                array_push($array, $campo);
+            }
+        }
+
+        for ($i=2; $i < count($array) -1; $i++) 
+        { 
+            $pedido = Pedido::find($array[$i][0]);
+
+            $pedido->precio = $array[$i][1];
+
+            $pedido->cantidad = $array[$i][2];
+
+            $pedido->comentario = $array[$i][3];
+
+            $pedido->save();
+        }
+
+        $paquete = Paquete::find($idPaquete);
+
+        $paquete->comentario_al_paquete = $campos['comentarioAlPaquete'];
+
+        $paquete->fecha_caducidad_precio = $campos['fechaCaducudadPrecio'];
+
+        $paquete->estado = 'Revisado y Abierto';
+
+        $paquete->save();
+
+        return back();
     }
 }

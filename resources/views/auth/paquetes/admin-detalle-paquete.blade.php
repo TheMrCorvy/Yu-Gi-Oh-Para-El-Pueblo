@@ -11,7 +11,8 @@
     <div class="main">
         <div class="my-5">
             <div class="container-fluid">
-                <form class="row">
+                <form class="row" id="formulario" method="post" action="{{route('admin.review-pakage', $paquete->id)}}">
+                    @csrf
                     <div class="col-lg-8 mx-auto text-center my-5">
                         <h3 class="display-3 pt-4">Detalles del Paquete</h3>
                         <small class="description">Estado actual del Paquete: <span class="text-success" id="estado-paquete">{{$paquete->estado}}</span></small>
@@ -23,9 +24,21 @@
                                 class="form-control form-control-alternative" 
                                 id="comentar-paquete" 
                                 rows="3"
-                                name="comentario-al-paquete"
+                                name="comentarioAlPaquete"
                             >{{$paquete->comentario_al_paquete}}</textarea>
+                            <small class="description float-right" id="desc-comentario">0/190</small>
+                            @error('comentarioAlPaquete')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
                         </div>
+
+                        @if (Session::has('message'))    
+                        <div class="alert alert-danger mt-4" role="alert">
+                            <strong>{{Session::get('message')}}</strong>
+                        </div>
+                    @endif
 
                         @if ($paquete->estado === "Abierto")
                             <form method="post" action="{{route('Pedir Presupuesto')}}" class="col-lg-12 text-center mt-4">
@@ -61,7 +74,8 @@
                             </thead>
                             <tbody>
 
-                                @foreach ($pedidos as $cartaPedida)    
+                                @foreach ($pedidos as $cartaPedida) 
+                                    <input type="hidden" name="carta-{{$cartaPedida->id}}[]" value="{{$cartaPedida->id}}">   
                                     <tr id="fila-carta-{{$cartaPedida->id}}">
                                         <td class="text-left text-capitalize">{{$cartaPedida->nombre_carta}}</td>
                                         
@@ -79,7 +93,7 @@
                                                 type="number" 
                                                 class="form-control form-control-alternative col-lg-9" 
                                                 placeholder="Precio unitario en Pesos"
-                                                name="precio-{{$cartaPedida->id}}"
+                                                name="carta-{{$cartaPedida->id}}[]"
                                                 value="{{$cartaPedida->precio}}"
                                             >
                                         </td>
@@ -88,7 +102,7 @@
 
                                             <input 
                                                 type="number" 
-                                                name="cantidad-{{$cartaPedida->id}}"
+                                                name="carta-{{$cartaPedida->id}}[]"
                                                 id="cantidad-{{$cartaPedida->id}}"
                                                 value="{{$cartaPedida->cantidad}}"
                                                 class="d-none"
@@ -137,7 +151,7 @@
                                                 class="form-control form-control-alternative" 
                                                 placeholder="Comentario" 
                                                 value="{{$cartaPedida->comentario}}"
-                                                name="comentario-{{$cartaPedida->id}}"
+                                                name="carta-{{$cartaPedida->id}}[]"
                                             >
                                         </td>
                                     </tr>
@@ -183,10 +197,15 @@
                             <input 
                                 class="form-control form-control-alternative" 
                                 type="date" 
-                                value="{{$paquete->fecha_caducidad_precio}}" 
-                                id="fecha-caducidad-precio"
-                                name="fecha-caducidad-precio"
+                                value="{{$paquete->fecha_caducidad_precio->format('Y-m-d')}}" 
+                                id="fechaCaducudadPrecio"
+                                name="fechaCaducudadPrecio"
                             >
+                            @error('fechaCaducudadPrecio')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
                         </div>
                         <div class="col-lg-2 text-right pt-4 mt-3">
                             <input 
@@ -215,6 +234,33 @@
 
         window.addEventListener('load', () => {
             botones = document.querySelectorAll('.btn-action-pedido')
+        })
+
+        const textArea = document.getElementById('comentar-paquete')
+
+        let descComentario = document.getElementById('desc-comentario')
+
+        const formulario = document.getElementById('formulario')
+
+        textArea.addEventListener('keyup', e => 
+        {
+            if (e.target.value.length > 190) 
+            {
+                descComentario.classList.add('text-danger')
+            }else
+            {
+                descComentario.classList.remove('text-danger')
+            }
+
+            descComentario.innerText = e.target.value.length + '/190'
+        })
+
+        formulario.addEventListener('submit', e => {
+            e.preventDefault()
+
+            document.getElementById('alert').classList.add('show')
+
+            formulario.submit()
         })
 
         function modificarCantidad(e)

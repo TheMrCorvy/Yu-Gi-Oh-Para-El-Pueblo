@@ -39,6 +39,12 @@
                           </span>
                       @enderror
                     </div>
+
+                    @if (Session::has('errors'))    
+                        <div class="alert alert-danger" role="alert">
+                            <strong>Hubo un error, por favor revisá lo que estabas haciendo.</strong>
+                        </div>
+                    @endif
           
                     <div class="form-group col-lg-4 mt-4">
                       <label class="form-control-label">Categoría:</label>

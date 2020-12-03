@@ -172,4 +172,6 @@ Route::middleware(['auth',])->group(function () {
     Route::get('admin/pedidos-de-importacion', 'AdminController@listaPaquetesPedidos')->name('admin.list-pakages')->middleware('can:admin.list-pakages');
     
     Route::get('admin/pedidos-de-importacion/detalle/{idPaquete}', 'AdminController@detallePaquetePedido')->name('admin.list-pakage-details')->middleware('can:admin.list-pakages');
+    
+    Route::post('admin/pedidos-de-importacion/detalle/{idPaquete}', 'AdminController@revisarPaquete')->name('admin.review-pakage')->middleware('can:admin.review-pakage');
 });
