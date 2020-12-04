@@ -25,6 +25,7 @@ use Auth;
 use Validator;
 
 use App\Mail\MailPedidoImportacion;
+use App\Mail\MailPaqueteRevisado;
 use Illuminate\Support\Facades\Mail;
 
 class AdminController extends Controller
@@ -122,35 +123,6 @@ class AdminController extends Controller
         return redirect()->back();
     }
 
-    public function NotificarPedidoDeCartas()
-    {
-        $request = request()->validate([
-            'id-paquete' => 'required|integer|exists:paquetes,id',
-        ]);
-
-        $paquete = Paquete::find($request['id-paquete']);
-
-        if ($paquete->username !== Auth::user()->username) 
-        {
-            return view('errors.404');
-        }
-
-        if ($paquete->estado !== "Abierto" || $paquete->estado !== "Abierto y Revisado") 
-        {
-            $paquete->estado = "Revisando";
-
-            $paquete->save();
-
-            Mail::to('mr.corvy@gmail.com')->send(new MailPedidoImportacion($paquete->id));
-
-            return redirect()->to(route('Importar Cartas'));
-
-        }else 
-        {
-            return view('errors.404');
-        }
-    }
-
     public function listaPaquetesPedidos()
     {
         $paquetes = Paquete::where('estado', '!=', 'Abierto')->paginate(20);
@@ -214,6 +186,11 @@ class AdminController extends Controller
         { 
             $pedido = Pedido::find($array[$i][0]);
 
+            if (is_null($pedido)) 
+            {
+                return back()->withMessage('Hubo un error, uno de los pedidos en este paquete no existe en la base de datos.');
+            }
+
             $pedido->precio = $array[$i][1];
 
             $pedido->cantidad = $array[$i][2];
@@ -229,9 +206,11 @@ class AdminController extends Controller
 
         $paquete->fecha_caducidad_precio = $campos['fechaCaducudadPrecio'];
 
-        $paquete->estado = 'Revisado y Abierto';
+        $paquete->estado = 'Abierto y Confirmado';
 
         $paquete->save();
+
+        Mail::to('mr.corvy@gmail.com')->send(new MailPaqueteRevisado);
 
         return back();
     }

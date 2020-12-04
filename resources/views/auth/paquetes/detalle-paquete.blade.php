@@ -19,15 +19,19 @@
                         @if ($paquete->comentario_al_paquete)
                             <small class="description">{{$paquete->comentario_al_paquete}}</small>
                         @endif
-                        @if ($paquete->estado === "Abierto" || $paquete->estado === "Revisado y Abierto")
-                            <form method="post" action="{{route('Pedir Presupuesto')}}" class="col-lg-12 text-center mt-4">
-                                @csrf
-                                <input type="hidden" name="id-paquete" value="{{$paquete->id}}">
-                                <button class="btn btn-outline-success btn-action-pedido">
-                                    Pedir presupuesto
-                                </button>
-                            </form>
-                        @endif
+                        <form 
+                            method="post" 
+                            action="{{route('Pedir Presupuesto')}}" 
+                            class="col-lg-12 text-center mt-4 d-none" 
+                            id="pedir-presupuesto"
+                            estado="{{$paquete->estado}}"
+                        >
+                            @csrf
+                            <input type="hidden" name="id-paquete" value="{{$paquete->id}}">
+                            <button class="btn btn-outline-success btn-action-pedido">
+                                Pedir presupuesto
+                            </button>
+                        </form>
                     </div>
 
                     <div class="col-lg-12 text-center">
@@ -197,6 +201,13 @@
     </div>
 
     <script>
+        const pedirPresupuesto = document.getElementById('pedir-presupuesto')
+
+        if (pedirPresupuesto.getAttribute('estado') === "Abierto") 
+        {
+            pedirPresupuesto.classList.remove('d-none')
+        }
+
         document.getElementById('back').addEventListener('click', e => {
             e.preventDefault()
             window.history.go(-1)
@@ -224,6 +235,11 @@
             if (respuesta.nuevo_estado_paquete) 
             {
                 document.getElementById('estado-paquete').innerText = respuesta.nuevo_estado_paquete
+
+                if (respuesta.nuevo_estado_paquete === "Abierto") 
+                {
+                    pedirPresupuesto.classList.remove('d-none')
+                }
             }
             
             if (respuesta.carta_removida) 

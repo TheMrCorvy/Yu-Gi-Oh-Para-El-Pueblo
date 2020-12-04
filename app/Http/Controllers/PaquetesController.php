@@ -2,11 +2,42 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use App\Paquete;
 use Illuminate\Http\Request;
+use App\Mail\MailPedidoImportacion;
+use Illuminate\Support\Facades\Mail;
 
 class PaquetesController extends Controller
 {
+    public function NotificarPedidoDeCartas()
+    {
+        $request = request()->validate([
+            'id-paquete' => 'required|integer|exists:paquetes,id',
+        ]);
+
+        $paquete = Paquete::find($request['id-paquete']);
+
+        if ($paquete->username !== Auth::user()->username) 
+        {
+            return view('errors.404');
+        }
+
+        if ($paquete->estado !== "Abierto" || $paquete->estado !== "Abierto y Confirmado") 
+        {
+            $paquete->estado = "Revisando";
+
+            $paquete->save();
+
+            Mail::to('mr.corvy@gmail.com')->send(new MailPedidoImportacion($paquete->id));
+
+            return redirect()->to(route('Importar Cartas'));
+
+        }else 
+        {
+            return view('errors.404');
+        }
+    }
     /**
      * Display a listing of the resource.
      *
