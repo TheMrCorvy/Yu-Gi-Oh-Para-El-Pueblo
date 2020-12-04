@@ -194,13 +194,22 @@
                                     precio válido hasta:
                                 </strong>
                             </p>
-                            <input 
-                                class="form-control form-control-alternative" 
-                                type="date" 
-                                value="{{$paquete->fecha_caducidad_precio->format('Y-m-d')}}" 
-                                id="fechaCaducudadPrecio"
-                                name="fechaCaducudadPrecio"
-                            >
+                            @if (!is_null($paquete->fecha_caducidad_precio))
+                                <input 
+                                    class="form-control form-control-alternative" 
+                                    type="date" 
+                                    value="{{$paquete->fecha_caducidad_precio->format('Y-m-d')}}" 
+                                    id="fechaCaducudadPrecio"
+                                    name="fechaCaducudadPrecio"
+                                >
+                            @else
+                                <input 
+                                    class="form-control form-control-alternative" 
+                                    type="date" 
+                                    id="fechaCaducudadPrecio"
+                                    name="fechaCaducudadPrecio"
+                                >
+                            @endif
                             @error('fechaCaducudadPrecio')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>

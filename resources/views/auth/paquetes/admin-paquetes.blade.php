@@ -12,69 +12,74 @@
                     </div>
                 </div>
             </div>
-            <div class="section section-item" style="z-index: 12 !important;">
+            <div class="section section-item" style="z-index: 12 !important; min-height: 100vh !important;">
                 <div class="container-fluid">
-                    <div class="row justify-content-center" style="min-height: 100vh !important">
+                    <div class="row justify-content-center">
                         <div class="col-lg-12 col-md-12 mb-5 row d-flex justify-content-center">
-                            <table class="table table-responsive px-5">
-                                <thead>
-                                    <tr>
-                                        <th >Fecha (DD/MM/AAAA)</th>
-                                        <th>Número de Pedido</th>
-                                        <th class="text-center">Ver Detalle</th>
-                                        <th class="text-center">Estado</th>
-                                        <th>Fecha límite del presupuesto (si la hay)</th>
-                                        <th class="text-center">Comentario</th>
-                                        <th class="text-right">Usuario</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @if ($paquetes->count() < 1)
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td>No hay ningún pedido de importación de cartas actualmente.</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                    @else
-                                        @foreach ($paquetes as $paquete)    
+                            <div class="card">
+                                <div class="card-body pb-0">
+                                    <h3 class="text-center pb-3">Paquetes para importar, Pendientes de Revisión</h3>
+                                    <table class="table table-responsive table-striped px-0">
+                                        <thead>
                                             <tr>
-                                                <td class="text-center">{{ $paquete->created_at->format('d/m/Y') }}</td>
-                                                
-                                                <td class="text-center">{{ $paquete->id }}</td>
-                                                
-                                                <td class="text-center">
-                                                    <a href="{{route('admin.list-pakage-details', $paquete->id)}}">Ver Detalle del Paquete</a>
-                                                </td>
-                                                
-                                                <td class="text-capitalize">{{ $paquete->estado }}</td>
-
-                                                @if (!is_null($paquete->fecha_caducidad_precio))
-                                                    <td class="text-center">{{ $paquete->fecha_caducidad_precio->format('d/m/Y') }}</td>
-                                                @else
-                                                    <td class="text-center">Aún no hay presupuesto</td>
-                                                @endif
-                                                
-                                                @if (!is_null($paquete->comentario_al_paquete))
-                                                    <td>{{ $paquete->comentario_al_paquete }}</td>
-                                                @else
-                                                    <td>No hay ningún comentario en este paquete</td>
-                                                @endif
-
-                                                <td class="text-right">
-                                                    <a href="{{route('admin.list-pakage-details', $paquete->id)}}">{{$paquete->username}}</a>
-                                                </td>
+                                                <th >Fecha (DD/MM/AAAA)</th>
+                                                <th>Número de Pedido</th>
+                                                <th class="text-center">Ver Detalle</th>
+                                                <th class="text-center">Estado</th>
+                                                <th>Fecha límite del presupuesto (si la hay)</th>
+                                                <th class="text-center">Comentario</th>
+                                                <th class="text-right">Usuario</th>
                                             </tr>
-                                        @endforeach
-                                    @endif
-                                    
-                                </tbody>
-                            </table>
-                            <div class="pagination-container justify-content-center">
-                                {{ $paquetes->links() }}
+                                        </thead>
+                                        <tbody>
+                                            @if ($paquetes->count() < 1)
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>No hay ningún pedido de importación de cartas actualmente.</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                            @else
+                                                @foreach ($paquetes as $paquete)    
+                                                    <tr>
+                                                        <td class="text-center">{{ $paquete->created_at->format('d/m/Y') }}</td>
+                                                        
+                                                        <td class="text-center">{{ $paquete->id }}</td>
+                                                        
+                                                        <td class="text-center">
+                                                            <a href="{{route('admin.list-pakage-details', $paquete->id)}}">Ver Detalle del Paquete</a>
+                                                        </td>
+                                                        
+                                                        <td class="text-capitalize">{{ $paquete->estado }}</td>
+
+                                                        @if (!is_null($paquete->fecha_caducidad_precio))
+                                                            <td class="text-center">{{ $paquete->fecha_caducidad_precio->format('d/m/Y') }}</td>
+                                                        @else
+                                                            <td class="text-center">Aún no hay presupuesto</td>
+                                                        @endif
+                                                        
+                                                        @if (!is_null($paquete->comentario_al_paquete))
+                                                            <td>{{ $paquete->comentario_al_paquete }}</td>
+                                                        @else
+                                                            <td>No hay ningún comentario en este paquete</td>
+                                                        @endif
+
+                                                        <td class="text-right">
+                                                            <a href="{{route('admin.list-pakage-details', $paquete->id)}}">{{$paquete->username}}</a>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            @endif
+                                            
+                                        </tbody>
+                                    </table>
+                                    <div class="pagination-container d-flex justify-content-center">
+                                        {{ $paquetes->links() }}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

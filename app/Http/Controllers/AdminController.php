@@ -39,8 +39,10 @@ class AdminController extends Controller
         $typeCartas = TypeCarta::all();
 
         $categories = Category::all();
+
+        $paquetesParaImportar = Paquete::where('estado', 'Cerrado y Tramitando Importación')->paginate(20);
         
-        return view('auth.admin', compact('dolar', 'typeProducts', 'typeCartas', 'categories'));
+        return view('auth.admin', compact('dolar', 'typeProducts', 'typeCartas', 'categories', 'paquetesParaImportar'));
     }
 
     public function VisualizarCompras()
@@ -125,7 +127,7 @@ class AdminController extends Controller
 
     public function listaPaquetesPedidos()
     {
-        $paquetes = Paquete::where('estado', '!=', 'Abierto')->paginate(20);
+        $paquetes = Paquete::where('estado', 'Revisando')->paginate(20);
 
         return view('auth.paquetes.admin-paquetes', compact('paquetes'));
     }
@@ -176,7 +178,7 @@ class AdminController extends Controller
 
         foreach ($campos as $campo) 
         {
-            if (isset($campo[3])) 
+            if (isset($campo[2])) 
             {
                 array_push($array, $campo);
             }
@@ -212,6 +214,6 @@ class AdminController extends Controller
 
         Mail::to('mr.corvy@gmail.com')->send(new MailPaqueteRevisado);
 
-        return back();
+        return redirect()->route('admin.list-pakages');
     }
 }

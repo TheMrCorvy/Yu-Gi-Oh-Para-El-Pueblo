@@ -26,7 +26,7 @@
             </div>
 
             <div class="col-lg-12 col-md-12 mb-8 row d-flex justify-content-center">
-                <table class="table mx-7">
+                <table class="table mx-7 table-striped">
                     <thead>
                         <tr>
                             <th >Fecha (AAAA-MM-DD)</th>
