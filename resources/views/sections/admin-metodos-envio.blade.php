@@ -7,18 +7,52 @@
         </div>
         <div class="card-body">
             <h6>Crear Método de Envío:</h6>
-            <form method="post" action="{{route('admin.create-method')}}">
+            <form method="post" action="{{route('admin.create-method')}}" class="row">
                 @csrf
-                <div class="input-group mb-3">
-                    <input 
-                        type="text" 
-                        class="form-control" 
-                        placeholder="Recuerda incluir mayúsculas"  
-                        aria-describedby="button-addon2"
-                    >
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-success" type="button" id="button-addon2">Guardar</button>
+                <div class="col-lg-5">
+                    <div class="js-form-message">
+                        <label class="labels">
+                            Método de Envío: 
+                            <span class="text-danger">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            class="form-control @error('metodo') is-invalid @enderror" 
+                            name="metodo" 
+                            required
+                        />
+
+                        @error('metodo')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
                     </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="form-group">
+                        <label class="labels">
+                            Tiempo Estimado de Entrega: 
+                            <span class="text-danger">*</span>
+                        </label>
+                            
+                        <input 
+                            type="text" 
+                            class="form-control @error('tiempoPrevisto') is-invalid @enderror" 
+                            name="tiempoPrevisto" 
+                            placeholder="Ej: De 1 a 3 días Hábiles"
+                            required
+                        />
+
+                        @error('tiempoPrevisto')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                </div>
+                <div class="col-lg-2 pt-4 mt-2">
+                    <input type="submit" value="guardar" class="btn btn-outline-success">
                 </div>
             </form>
             <h6 class="mt-5">Crear Zona de Envío:</h6>
@@ -168,12 +202,12 @@
                         <input 
                             type="text" 
                             class="form-control" 
-                            placeholder="Recuerda incluir mayúsculas"  
-                            aria-describedby="button-addon2"
+                            placeholder="Recuerda incluir mayúsculas" 
+                            name="metodo"
                             value="${metodo.metodo}"
                         >
                         <div class="input-group-append">
-                            <button class="btn btn-outline-success" type="button">Guardar</button>
+                            <input type="submit" value="guardar" class="btn btn-outline-success">
                         </div>
                     </div>
                     <input type="hidden" name="id-metodo" value="${metodo.id}">

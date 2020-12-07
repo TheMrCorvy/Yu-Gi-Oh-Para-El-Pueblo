@@ -11,5 +11,6 @@ class ZonaEnvio extends Model
     protected $fillable = [
         'zona',
         'precio',
+        'metodo_envio',
     ];
 }

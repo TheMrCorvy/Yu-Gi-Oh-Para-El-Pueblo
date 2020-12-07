@@ -10,6 +10,6 @@ class MetodoEnvio extends Model
 
     protected $fillable = [
         'metodo',
-        'tiempo_envio',
+        'tiempo_previsto',
     ];
 }

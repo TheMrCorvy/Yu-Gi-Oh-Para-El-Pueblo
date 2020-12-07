@@ -14,6 +14,8 @@ use App\TypeCarta;
 use App\Category;
 use App\Paquete;
 use App\Pedido;
+use App\ZonaEnvio;
+use App\MetodoEnvio;
 
 use App\Exports\UsersExport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -219,21 +221,77 @@ class AdminController extends Controller
 
     public function crearZonaEnvio(Request $request)
     {
-        dd($request->all());
+        $campos = $request->only('zona', 'precio', 'metodoEnvio');
+
+        $validator = Validator::make($campos, [
+            'zona' => 'required|string|max:190',
+            'precio' => 'required|integer|min:10',
+            'metodoEnvio' => 'required|integer|exists:metodos_de_envio,id',
+        ]);
+
+        if($validator->fails())
+        {
+            return back()->withErrors('Revisa los datos, es posible que no hayas completado correctamente algún formulario');
+        }
+
+        ZonaEnvio::create([
+            'metodo_envio' => $campos['metodoEnvio'],
+            'zona' => $campos['zona'],
+            'precio' => $campos['precio'],
+        ]);
+
+        return back()->withMessage('Zona de Envios creada con éxito.');
     }
     
     public function crearMetodoEnvio(Request $request)
     {
-        dd($request->all());
+        $campos = $request->only('metodo', 'tiempoPrevisto');
+
+        $validator = Validator::make($campos, [
+            'metodo' => 'required|string|max:190',
+            'tiempoPrevisto' => 'required|string|max:190',
+        ]);
+
+        if($validator->fails())
+        {
+            return back()->withErrors('Revisa los datos, es posible que no hayas completado correctamente algún formulario');
+        }
+
+        MetodoEnvio::create([
+            'metodo' => $campos['metodo'],
+            'tiempo_previsto' => $campos['tiempoPrevisto'],
+        ]);
+
+        return back()->withMessage('Método de Envios creada con éxito.');
     }
     
     public function editarZonaEnvio(Request $request)
     {
-        dd($request->all());
+        $campos = $request->all();
+
+        $validator = Validator::make($campos, [
+            'comentarioAlPaquete' => 'nullable|string|max:190',
+            'fechaCaducudadPrecio' => 'required|after:' . date('Y-m-d'),
+        ]);
+
+        if($validator->fails())
+        {
+            return back()->withErrors('Revisa los datos, es posible que no hayas completado correctamente algún formulario');
+        }
     }
     
     public function editarMetodoEnvio(Request $request)
     {
-        dd($request->all());
+        $campos = $request->all();
+
+        $validator = Validator::make($campos, [
+            'comentarioAlPaquete' => 'nullable|string|max:190',
+            'fechaCaducudadPrecio' => 'required|after:' . date('Y-m-d'),
+        ]);
+
+        if($validator->fails())
+        {
+            return back()->withErrors('Revisa los datos, es posible que no hayas completado correctamente algún formulario');
+        }
     }
 }

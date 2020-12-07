@@ -15,7 +15,10 @@
                     @endif
                     @if (Session::has('errors'))    
                         <div class="alert alert-danger" role="alert">
-                            <strong>Hubo un error, por favor revisá lo que estabas haciendo.</strong>
+                            <strong>Hubo un error.</strong>
+                            <p>
+                                Revisa los datos, es posible que no hayas completado correctamente algún formulario
+                            </p>
                         </div>
                     @endif
                 </div>
