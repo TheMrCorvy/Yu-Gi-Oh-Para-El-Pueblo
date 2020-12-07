@@ -281,31 +281,53 @@ class AdminController extends Controller
     
     public function editarZonaEnvio(Request $request)
     {
-        $campos = $request->all();
+        $campos = $request->only('zona', 'precio', 'metodoEnvio', 'id-zona');
 
         $validator = Validator::make($campos, [
-            'comentarioAlPaquete' => 'nullable|string|max:190',
-            'fechaCaducudadPrecio' => 'required|after:' . date('Y-m-d'),
+            'zona' => 'required|string|min:5|max:190',
+            'precio' => 'required|integer|min:10',
+            'metodoEnvio' => 'required|integer|exists:metodos_de_envio,id',
+            'id-zona' => 'required|integer|exists:zonas_de_envio,id',
         ]);
 
         if($validator->fails())
         {
             return back()->withErrors('Revisa los datos, es posible que no hayas completado correctamente algún formulario');
         }
+
+        $editarZona = ZonaEnvio::find($campos['id-zona']);
+
+        $editarZona->metodo_envio = $campos['metodoEnvio'];
+        $editarZona->zona = $campos['zona'];
+        $editarZona->precio = $campos['precio'];
+        
+        $editarZona->save();
+
+        return back()->withMessage('Zona de envíos editada con éxito.');
     }
     
     public function editarMetodoEnvio(Request $request)
     {
-        $campos = $request->all();
+        $campos = $request->only('id-metodo', 'metodo', 'tiempoPrevisto');
 
         $validator = Validator::make($campos, [
-            'comentarioAlPaquete' => 'nullable|string|max:190',
-            'fechaCaducudadPrecio' => 'required|after:' . date('Y-m-d'),
+            'id-metodo' => 'required|integer|exists:metodos_de_envio,id',
+            'metodo' => 'required|string|min:5',
+            'tiempoPrevisto' => 'required|string|min:10',
         ]);
 
         if($validator->fails())
         {
             return back()->withErrors('Revisa los datos, es posible que no hayas completado correctamente algún formulario');
         }
+
+        $editarMetodo = MetodoEnvio::find($campos['id-metodo']);
+
+        $editarMetodo->metodo = $campos['metodo'];
+        $editarMetodo->tiempo_previsto = $campos['tiempoPrevisto'];
+
+        $editarMetodo->save();
+
+        return back()->withMessage('Método de envío editado con éxito.');
     }
 }

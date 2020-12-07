@@ -198,7 +198,7 @@
             `
                 <form method="post" action="{{route('admin.edit-method')}}" class="w-100 pl-5 row">
                     @csrf
-                    <input type="hidden" name="id-metodod" value="${metodo.id}">
+                    <input type="hidden" name="id-metodo" value="${metodo.id}">
                     <div class="col-lg-4">
                         <div class="js-form-message">
                             <label class="labels">
