@@ -176,4 +176,13 @@ Route::middleware(['auth',])->group(function () {
     Route::get('admin/pedidos-de-importacion/detalle/{idPaquete}', 'AdminController@detallePaquetePedido')->name('admin.list-pakage-details')->middleware('can:admin.list-pakages');
     
     Route::post('admin/pedidos-de-importacion/detalle/{idPaquete}', 'AdminController@revisarPaquete')->name('admin.review-pakage')->middleware('can:admin.review-pakage');
+    
+    //crud zonas y metodos de envio
+    Route::post('admin/editar-zona-envio', 'AdminController@editarZonaEnvio')->name('admin.edit-zone')->middleware('can:admin.edit-zone');
+
+    Route::post('admin/editar-metodo-envio', 'AdminController@editarMetodoEnvio')->name('admin.edit-method')->middleware('can:admin.edit-method');
+    
+    Route::post('admin/crear-zona-envio', 'AdminController@crearZonaEnvio')->name('admin.create-zone')->middleware('can:admin.create-zone');
+
+    Route::post('admin/crear-metodo-envio', 'AdminController@crearMetodoEnvio')->name('admin.create-method')->middleware('can:admin.create-method');
 });

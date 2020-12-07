@@ -16,6 +16,8 @@ use App\TypeProduct;
 use App\User;
 use App\Paquete;
 use App\Pedido;
+use App\ZonaEnvio;
+use App\MetodoEnvio;
 
 use Auth;
 
@@ -313,6 +315,18 @@ class APIPageController extends Controller
         return response()->json([
             'nueva_cantidad_carta' => $pedidoCarta->cantidad,
             'id_carta_pedida' => $pedidoCarta->id,
+        ], 200);
+    }
+
+    public function getMetodosEnvio()
+    {
+        $metodos = MetodoEnvio::select('metodo', 'id', 'tiempo_previsto')->get();
+
+        $zonas = ZonaEnvio::select('metodo_envio', 'id', 'zona', 'precio')->get();
+
+        return response()->json([
+            'metodos' => $metodos,
+            'zonas' => $zonas,
         ], 200);
     }
 }

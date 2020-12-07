@@ -174,5 +174,27 @@ class PermissionsTableSeeder extends Seeder
             'description' => 'permiso para modificar cantidades de cartas, precios, y comentarios',
         ]); 
         
+        //metodos y zonas de envios
+        DB::table('permissions')->insert([
+            'name' => 'editar zona envio',
+            'slug' => 'admin.edit-zone',
+            'description' => 'permiso para modificar las zonas de envios',
+        ]); 
+        DB::table('permissions')->insert([
+            'name' => 'editar metodo envio',
+            'slug' => 'admin.edit-method',
+            'description' => 'permiso para modificar los métodos de envios',
+        ]); 
+        
+        DB::table('permissions')->insert([
+            'name' => 'crear zona envio',
+            'slug' => 'admin.create-zone',
+            'description' => 'permiso para crear nueva zona de envio',
+        ]); 
+        DB::table('permissions')->insert([
+            'name' => 'crear metodo envio',
+            'slug' => 'admin.create-method',
+            'description' => 'permiso para crear nuevo metodo de envio',
+        ]); 
     }
 }

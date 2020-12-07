@@ -216,4 +216,24 @@ class AdminController extends Controller
 
         return redirect()->route('admin.list-pakages');
     }
+
+    public function crearZonaEnvio(Request $request)
+    {
+        dd($request->all());
+    }
+    
+    public function crearMetodoEnvio(Request $request)
+    {
+        dd($request->all());
+    }
+    
+    public function editarZonaEnvio(Request $request)
+    {
+        dd($request->all());
+    }
+    
+    public function editarMetodoEnvio(Request $request)
+    {
+        dd($request->all());
+    }
 }
