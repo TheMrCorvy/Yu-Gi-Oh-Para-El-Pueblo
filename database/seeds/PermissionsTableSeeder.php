@@ -196,5 +196,16 @@ class PermissionsTableSeeder extends Seeder
             'slug' => 'admin.create-method',
             'description' => 'permiso para crear nuevo metodo de envio',
         ]); 
+        
+        DB::table('permissions')->insert([
+            'name' => 'eliminar zona envio',
+            'slug' => 'admin.delete-zone',
+            'description' => 'permiso para eliminar zona de envio',
+        ]); 
+        DB::table('permissions')->insert([
+            'name' => 'eliminar metodo envio',
+            'slug' => 'admin.delete-method',
+            'description' => 'permiso para eliminar metodo de envio',
+        ]); 
     }
 }

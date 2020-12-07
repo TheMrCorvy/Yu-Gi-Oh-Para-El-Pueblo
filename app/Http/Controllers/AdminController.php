@@ -219,6 +219,20 @@ class AdminController extends Controller
         return redirect()->route('admin.list-pakages');
     }
 
+    public function borrarMetodo($idMetodo)
+    {
+        MetodoEnvio::find($idMetodo)->delete();
+
+        return back()->withMessage('Método de envío eliminado con éxito');
+    }
+    
+    public function borrarZona($idZona)
+    {
+        ZonaEnvio::find($idZona)->delete();
+
+        return back()->withMessage('Zona de envío eliminada con éxito');
+    }
+
     public function crearZonaEnvio(Request $request)
     {
         $campos = $request->only('zona', 'precio', 'metodoEnvio');

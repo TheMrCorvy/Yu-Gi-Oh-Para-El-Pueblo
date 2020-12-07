@@ -17,7 +17,7 @@ class CreateZonasDeEnvioTable extends Migration
             $table->id();
 
             $table->unsignedInteger('metodo_envio');
-            $table->foreign('metodo_envio')->references('id')->on('metodos_de_envio');
+            $table->foreign('metodo_envio')->references('id')->on('metodos_de_envio')->onDelete('cascade');
 
             $table->string('zona');
             $table->integer('precio');

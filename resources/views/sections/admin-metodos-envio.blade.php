@@ -196,21 +196,67 @@
         {
             zonaConstruccionEdicion.innerHTML += 
             `
-                <form method="post" action="{{route('admin.edit-method')}}" class="col-lg-12">
+                <form method="post" action="{{route('admin.edit-method')}}" class="w-100 pl-5 row">
                     @csrf
-                    <div class="input-group mb-3">
-                        <input 
-                            type="text" 
-                            class="form-control" 
-                            placeholder="Recuerda incluir mayúsculas" 
-                            name="metodo"
-                            value="${metodo.metodo}"
-                        >
-                        <div class="input-group-append">
-                            <input type="submit" value="guardar" class="btn btn-outline-success">
+                    <input type="hidden" name="id-metodod" value="${metodo.id}">
+                    <div class="col-lg-4">
+                        <div class="js-form-message">
+                            <label class="labels">
+                                Método de Envío: 
+                                <span class="text-danger">*</span>
+                            </label>
+                            <input 
+                                type="text" 
+                                class="form-control @error('metodo') is-invalid @enderror" 
+                                name="metodo" 
+                                value="${metodo.metodo}"
+                                required
+                            />
+
+                            @error('metodo')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
                         </div>
                     </div>
-                    <input type="hidden" name="id-metodo" value="${metodo.id}">
+                    <div class="col-lg-5">
+                        <div class="form-group">
+                            <label class="labels">
+                                Tiempo Estimado de Entrega: 
+                                <span class="text-danger">*</span>
+                            </label>
+                                
+                            <input 
+                                type="text" 
+                                class="form-control @error('tiempoPrevisto') is-invalid @enderror" 
+                                name="tiempoPrevisto" 
+                                placeholder="Ej: De 1 a 3 días Hábiles"
+                                required
+                                value="${metodo.tiempo_previsto}"
+                            />
+
+                            @error('tiempoPrevisto')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-lg-2 pt-4 mt-2">
+                        <input type="submit" value="guardar" class="btn btn-outline-success">
+                    </div>
+                    <div class="col-lg-1 pt-4 mt-2">
+                        <a 
+                            href="/admin/eliminar-metodo-envio/${metodo.id}" 
+                            class="btn btn-outline-danger btn-icon-only"
+                            data-toggle="tooltip" 
+                            data-placement="left" 
+                            title="Eliminar"
+                        >
+                            <i class="fas fa-times"></i>
+                        </a>
+                    </div>
                 </form>
             `
         });
@@ -242,7 +288,7 @@
                             />
                         </div>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-3">
                         <div class="form-group">
                             <label class="labels">
                                 Costo del Envío: 
@@ -277,12 +323,26 @@
                             </div>
                         </div>
                     </div>
+                    <a 
+                        href="/admin/eliminar-zona-envio/${zona.id}" 
+                        class="btn btn-outline-danger btn-icon-only float-left"
+                        style="margin-top: 2rem;"
+                        data-toggle="tooltip" 
+                        data-placement="left" 
+                        title="Eliminar"
+                    >
+                        <i class="fas fa-times"></i>
+                    </a>
                     <div class="col-lg-2 float-left">
                         <input type="submit" value="guardar" class="btn btn-outline-warning btn-sm">
                     </div>
                     <input type="hidden" name="id-zona" value="${zona.id}">
                 </form>
             `
+        });
+
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
         });
     }
 

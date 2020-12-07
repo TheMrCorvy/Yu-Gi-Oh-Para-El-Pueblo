@@ -185,4 +185,8 @@ Route::middleware(['auth',])->group(function () {
     Route::post('admin/crear-zona-envio', 'AdminController@crearZonaEnvio')->name('admin.create-zone')->middleware('can:admin.create-zone');
 
     Route::post('admin/crear-metodo-envio', 'AdminController@crearMetodoEnvio')->name('admin.create-method')->middleware('can:admin.create-method');
+
+    Route::get('admin/eliminar-metodo-envio/{idMetodo}', 'AdminController@borrarMetodo')->name('admin.delete-method')->middleware('can:admin.delete-method');
+
+    Route::get('admin/eliminar-zona-envio/{idZona}', 'AdminController@borrarZona')->name('admin.delete-zone')->middleware('can:admin.delete-zone');
 });
