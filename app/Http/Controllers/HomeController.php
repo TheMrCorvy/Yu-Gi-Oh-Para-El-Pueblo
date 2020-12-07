@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Auth;
+use Session;
 use Illuminate\Support\Facades\Hash;
 
 use DB;
@@ -22,6 +23,8 @@ use Cart;
 
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MailVendedor;
+
+use App\ZonaEnvio;
 
 class HomeController extends Controller
 {
@@ -175,8 +178,23 @@ class HomeController extends Controller
             'finalizada' => false,
         ]);
 
-        if ($primerPaso['envio']) {
-            return back()->with(['formulario' => '2', 'ordenCompra' => $ordenCompra->id, 'usuario' => $usuario]);
+        OrdenCompra::where('finalizada', false)->whereMonth('fecha', '<=', now()->subMonth()->month)->delete();
+
+        if ($primerPaso['envio']) 
+        {
+            $envios = ZonaEnvio::join('metodos_de_envio', 'zonas_de_envio.metodo_envio', '=', 'metodos_de_envio.id')
+                                ->select(
+                                    'zonas_de_envio.id as id_zona',
+                                    'zonas_de_envio.zona',
+                                    'zonas_de_envio.precio',
+                                    'metodos_de_envio.metodo',
+                                    'metodos_de_envio.tiempo_previsto',
+                                    'metodos_de_envio.id as id_metodo'
+                                )
+                                ->get()
+                                ->groupBy('metodo');
+
+            return back()->with(['formulario' => '2', 'ordenCompra' => $ordenCompra->id, 'usuario' => $usuario, 'envios' => $envios]);
         }
 
         return back()->with(['formulario' => '3', 'ordenCompra' => $ordenCompra->id, 'usuario' => $usuario]);
@@ -198,6 +216,7 @@ class HomeController extends Controller
             'barrio' => 'nullable|min:5|max:15|string',
             'ciudad' => 'required|min:4|max:25|string',
             'provincia' => 'required|min:5|max:25|string',
+            'metodoEnvio' => 'required|string|min:32|max:48',
         ], $messages);
 
         $usuario = User::where('username', Auth::user()->username)->first();
@@ -210,6 +229,10 @@ class HomeController extends Controller
         $usuario->localidad = $segundoPaso['provincia'];
 
         $usuario->save();
+
+        $ordenCompra = OrdenCompra::find($segundoPaso['ordenCompra']);
+        $ordenCompra->metodo_envio = $segundoPaso['metodoEnvio'];
+        $ordenCompra->save();
 
         return back()->with(['formulario' => '3', 'ordenCompra' => $segundoPaso['ordenCompra'], 'usuario' => $usuario]);
     }

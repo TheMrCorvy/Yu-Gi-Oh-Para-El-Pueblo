@@ -33,6 +33,7 @@ class CreateOrdenComprasTable extends Migration
             $table->boolean('finalizada');
 
             $table->boolean('envio');
+            $table->string('metodo_envio')->nullable();
             $table->timestamps();
         });
     }

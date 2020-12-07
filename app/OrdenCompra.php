@@ -23,4 +23,6 @@ class OrdenCompra extends Model
         'codigo_postal',
         'finalizada'
     ];
+
+    protected $dates = ['created_at', 'fecha'];
 }

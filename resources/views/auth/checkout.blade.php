@@ -92,9 +92,13 @@
           <div class="col-lg-8">
             <div class="card">
 
-              @if (Session::has('errors'))    
-                  <div class="alert alert-danger" role="alert">
-                      <strong>{{ Session::get('errors') }}</strong>
+              @if (Session::has('errors'))
+                  <div class="mt-3 px-3">
+                    @foreach (Session::get('errors')->messages() as $error => $mensaje)
+                      <div class="alert alert-danger" role="alert">
+                        <strong>{{$error}}: </strong>{{$mensaje[0]}}
+                      </div>
+                    @endforeach
                   </div>
               @endif
               

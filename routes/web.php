@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\ZonaEnvio;
+
 Route::get('/', 'HomeController@index')->name('Landing');
 
 Route::get('info', function() {
