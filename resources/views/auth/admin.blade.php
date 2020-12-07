@@ -204,7 +204,7 @@
 
                 <hr class="col-lg-12 my-8">
 
-                <h1 class="h1 title text-center col-lg-12 text-capitalize"><a href="{{ route('admin.compras') }}"><u>ventas del último mes</u></a></h1>
+                @include('sections.admin-metodos-envio')
 
                 @include('sections.admin-cpc', [
                     'typeProducts' => $typeProducts,
