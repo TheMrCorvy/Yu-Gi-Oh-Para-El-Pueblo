@@ -178,13 +178,13 @@ class AdminController extends Controller
 
         foreach ($campos as $campo) 
         {
-            if (isset($campo[2])) 
+            if (is_array($campo)) 
             {
                 array_push($array, $campo);
             }
         }
 
-        for ($i=2; $i < count($array) -1; $i++) 
+        for ($i=0; $i < count($array); $i++) 
         { 
             $pedido = Pedido::find($array[$i][0]);
 

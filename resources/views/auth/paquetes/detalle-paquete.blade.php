@@ -146,7 +146,7 @@
                             <p>
                                 @if ($paquete->fecha_caducidad_precio)
                                     <strong>
-                                        Precio Válido Hasta: {{$paquete->fecha_caducidad_precio}}
+                                        Precio Válido Hasta: {{$paquete->fecha_caducidad_precio->format('d/m/Y')}}
                                     </strong>
                                     <br>
                                     <small class="text-muted">(Año-Mes-Día)</small>
