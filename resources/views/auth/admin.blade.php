@@ -127,10 +127,10 @@
                                 <tbody>
                                     @if ($paquetesParaImportar->count() < 1)
                                         <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
                                             <td>No hay ningún pedido de importación de cartas actualmente.</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
                                             <td></td>
                                             <td></td>
                                             <td></td>

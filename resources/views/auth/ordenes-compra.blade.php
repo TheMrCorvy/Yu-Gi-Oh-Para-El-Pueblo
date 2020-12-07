@@ -39,7 +39,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($ordenes as $orden)    
+                        @if ($ordenes->count() < 1)
+                          <tr>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td>Aún no hay ninguna orden de compra.</td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                          </tr>
+                        @else
+                          @foreach ($ordenes as $orden)    
                             <tr>
                                 <td class="text-center">{{ $orden->fecha }}</td>
                                 <td class="text-center">{{ $orden->id }}</td>
@@ -54,7 +65,7 @@
                                 <td class="text-right"><a href="/admin/detalle-venta/{{ $orden->username }}/{{ $orden->id }}">Ver Detalle</a></td>
                             </tr>
                         @endforeach
-                        
+                        @endif
                     </tbody>
                 </table>
                 <div class="pagination-container justify-content-center">
