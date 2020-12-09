@@ -135,7 +135,6 @@ class ComprasController extends Controller
         }
 
         return redirect()->route('Checkout')->withMessage('Hubo un error en la transacción. Revisá que los datos de tu tarjeta estén correctos, y que tengas fondos disponibles en la mísma. Si el error se repite, por favor contactános al WhatsApp 011 3771-9677 o al email info@yugiohparaelpueblo.com');
-
     }
 
     public function AplicarCupon($codigoCupon)

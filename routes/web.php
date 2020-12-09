@@ -58,7 +58,7 @@ Route::middleware('auth')->group(function () {
 
 
     //carrito
-    Route::get('add-to-cart/{id}', 'UserController@AddToCart')->name('Añadir Al Carrito');
+    Route::get('add-to-cart/{id?}/{esUnPedido?}', 'UserController@AddToCart')->name('Añadir Al Carrito');
     
     Route::get('remove-from-cart/{id}', 'UserController@QuitarDelCarrito')->name('Quitar Del Carrito');
     

@@ -16,62 +16,92 @@ use Cart;
 
 class UserController extends Controller
 {
-    public function Carrito()
+    public function AddToCart($id, $idPaquete = null, $señaPaquete = null) 
     {
-        if (null !== auth()->id()) {
-            $productosEnCarrito = Cart::session(auth()->id())->getContent();
-        }else{
-            $productosEnCarrito = '';
-        }
+        if (!is_null($señaPaquete) && !is_null($idPaquete)) 
+        {
+            $paquete = Paquete::find($idPaquete);
 
-        return view('carrito', compact('productosEnCarrito'));
-    }
+            if (is_null($paquete) || $paquete->estado !== 'Abierto y Confirmado' || $paquete->username !== Auth::user()->username) 
+            {
+                return view('errors.404');
+            }
 
-    public function AddToCart($id) 
-    {
-        $producto = Product::where('id', '=', $id)
-                            ->where('stock', '>=', 1)
-                            ->first();
+            $productosEnCarrito = \Cart::session(auth()->id())->getContent();
 
-        $multiplicador = Multiplicador::orderBy('id', 'DESC')->select('multiplicador')->first();
-
-        if (Cart::session(auth()->id())->get($producto->id)) {
-            return redirect()->back();
-        }//hay que verificar si el producto a añadir está de hecho en el carrito, esto para evitar que se compre más de lo q se tiene stock
-
-        if ($producto->oferta > 0 && $producto->fecha_oferta >= date('Y-m-d')) {
-            $precioOferta = ($producto->oferta / 100) * $producto->precio;
-            $restar = $producto->precio - $precioOferta;
-
-            $precioReal = $restar * $multiplicador->multiplicador;
+            if ($productosEnCarrito->count() > 0) 
+            {
+                return back()->withMessage('No puedes pagar la seña de tu pedido de importación mientras tengas productos en tu carrito de compras.');
+            }
 
             Cart::session(auth()->id())->add(array(
-                'id' => $producto->id,
-                'name' => $producto->nombre,
-                'price' => floor($precioReal), //round va a redondear los valores al valor original en algunos casos (si el valor original es 30, y round recibe 28, va a dejarlo otra vez en 30) en cambio floor, lo que hace es cortar los números después de la coma
+                'id' => $idPaquete,
+                'name' => 'Seña Pedido de Importación',
+                'price' => $señaPaquete,
                 'quantity' => 1,
-                'attributes' => array($producto->link_img, $producto->stock),
-                'associatedModel' => $producto,
+                'attributes' => array('https://prueba-servicio-al-toque.s3-sa-east-1.amazonaws.com/seo_img/logo.jpeg', 1),
+                'associatedModel' => $paquete,
             ));
-        }else {
-            // poner el \Cart me permite usarlo sin tener que importarlo, porque al importarlo tira un error de que no puede ser llamado desde un método estático
-            $precioReal = $producto->precio * $multiplicador->multiplicador;
 
-            Cart::session(auth()->id())->add(array(
-                'id' => $producto->id,
-                'name' => $producto->nombre,
-                'price' => round($precioReal, -1),
-                'quantity' => 1,
-                'attributes' => array($producto->link_img, $producto->oferta, $producto->fecha_oferta, $producto->stock),
-                'associatedModel' => $producto,
-            ));
+            session()->put('pagando_seña', true);
+
+        } elseif(is_null($señaPaquete) && is_null($idPaquete) && !session()->has('pagando_seña'))
+        {
+            $producto = Product::where('id', '=', $id)
+                                ->where('stock', '>=', 1)
+                                ->first();
+    
+            if (is_null($producto) || $producto->stock <= 0) {
+                return view('errors.404');
+            }
+    
+            $multiplicador = Multiplicador::orderBy('id', 'DESC')->select('multiplicador')->first();
+    
+            if (Cart::session(auth()->id())->get($producto->id)) {
+                return redirect()->back();
+            }//hay que verificar si el producto a añadir está de hecho en el carrito, esto para evitar que se compre más de lo q se tiene stock
+    
+            if ($producto->oferta > 0 && $producto->fecha_oferta >= date('Y-m-d')) {
+                $precioOferta = ($producto->oferta / 100) * $producto->precio;
+                $restar = $producto->precio - $precioOferta;
+    
+                $precioReal = $restar * $multiplicador->multiplicador;
+    
+                Cart::session(auth()->id())->add(array(
+                    'id' => $producto->id,
+                    'name' => $producto->nombre,
+                    'price' => floor($precioReal), //round va a redondear los valores al valor original en algunos casos (si el valor original es 30, y round recibe 28, va a dejarlo otra vez en 30) en cambio floor, lo que hace es cortar los números después de la coma
+                    'quantity' => 1,
+                    'attributes' => array($producto->link_img, $producto->stock),
+                    'associatedModel' => $producto,
+                ));
+            }else {
+                // poner el \Cart me permite usarlo sin tener que importarlo, porque al importarlo tira un error de que no puede ser llamado desde un método estático
+                $precioReal = $producto->precio * $multiplicador->multiplicador;
+    
+                Cart::session(auth()->id())->add(array(
+                    'id' => $producto->id,
+                    'name' => $producto->nombre,
+                    'price' => round($precioReal, -1),
+                    'quantity' => 1,
+                    'attributes' => array($producto->link_img, $producto->oferta, $producto->fecha_oferta, $producto->stock),
+                    'associatedModel' => $producto,
+                ));
+            }
+        }else
+        {
+            return back();
         }
 
-        return redirect()->back();
+        return back();
     }
 
     public function ActualizarCarrito($id)
     {
+        if (session()->has('pagando_seña')) {
+            return back();
+        }
+
         $actualizar = 'Actualizar' . $id; //el nombre del input
 
         $stockDisponible = Product::select('stock')->where('id', $id)->first();
@@ -114,6 +144,11 @@ class UserController extends Controller
     public function QuitarDelCarrito($id)
     {
         Cart::session(auth()->id())->remove($id);
+
+        if (session()->has('pagando_seña')) 
+        {
+            session()->forget('pagando_seña');
+        }
 
         return redirect()->back();
     }
