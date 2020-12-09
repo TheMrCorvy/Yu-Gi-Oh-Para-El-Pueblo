@@ -58,8 +58,8 @@
                     </div>
                     <div class="media align-items-center">
                       <h3 class="h6 opacity-8 mr-3">Envío</h3>
-                      <div class="media-body text-right">
-                        <small class="text-muted">(coordinar luego de la compra)</small>
+                      <div class="media-body text-right pt-3">
+                        <small class="text-muted">Puedes elegir la opción de envío durante el proceso de pago.</small>
                       </div>
                     </div>
                     <hr class="line-info mb-3">

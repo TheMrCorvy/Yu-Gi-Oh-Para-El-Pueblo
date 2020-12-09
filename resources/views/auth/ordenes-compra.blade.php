@@ -52,12 +52,12 @@
                         @else
                           @foreach ($ordenes as $orden)    
                             <tr>
-                                <td class="text-center">{{ $orden->fecha }}</td>
+                                <td class="text-center">{{ $orden->fecha->format('d/m/Y') }}</td>
                                 <td class="text-center">{{ $orden->id }}</td>
                                 <td class="text-center"><a href="/admin/detalle-venta/{{ $orden->username }}/{{ $orden->id }}">{{ $orden->username }}</a></td>
                                 <td>{{ $orden->forma_de_pago }}</td>
                                 @if ($orden->envio)
-                                    <td>Envío a Domicilio</td>
+                                    <td>Solicitó Envío</td>
                                 @else
                                     <td>Retirará en el Local</td>
                                 @endif
