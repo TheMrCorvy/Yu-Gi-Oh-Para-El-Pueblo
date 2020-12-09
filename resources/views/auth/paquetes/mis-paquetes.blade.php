@@ -92,6 +92,11 @@
                                     </div>
 
                                     <div class="card-footer bg-secondary">
+                                        @if ($paquete->estado === "Abierto y Confirmado")
+                                            <small>
+                                                Dirígete a los detalles de tu paquete para pagar la seña, y comenzar con el proceso de importación.
+                                            </small>
+                                        @endif
                                         <a href="{{route('Administrar Paquete', $paquete->id)}}" class="btn btn-link float-right addAjax detalles">
                                             ver detalles y Administrar Paquete
                                             <i class="fas fa-chevron-right"></i>

@@ -1,4 +1,4 @@
-@extends('layouts.app', ['class' => 'pricing-page'])
+@extends('layouts.app', ['class' => 'pricing-page bg-secondary'])
 
 @section('content')
 
@@ -12,7 +12,7 @@
         <div class="my-5">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-8 mx-auto text-center my-5">
+                    <div class="col-lg-8 mx-auto text-center mt-5 mb-3">
                         <h3 class="display-3 pt-4">Detalles del Paquete</h3>
                         <small class="description">Estado actual del Paquete: <span class="text-success" id="estado-paquete">{{$paquete->estado}}</span></small>
                         <br>
@@ -33,6 +33,18 @@
                             </button>
                         </form>
                     </div>
+
+                    @if (Session::has('message'))
+                        <div class="col-lg-12">
+                            <div class="alert alert-info">
+                                <strong>Advertencia</strong>
+                                <br>
+                                <p>
+                                    {{Session::get('message')}}
+                                </p>
+                            </div>
+                        </div>
+                    @endif
 
                     <div class="col-lg-12 text-center">
                         <p class="text-danger d-none" id="errors">
@@ -139,7 +151,7 @@
                     <div class="col-lg-12 row justify-content-center">
                         @if ($montoTotal > 0)
                             <div class="col-lg-12 pr-0 text-right mb-5">
-                                <button class="btn btn-outline-info">pagar seña</button>
+                                <a href="{{route('Añadir Al Carrito', [0, $paquete->id, $pagoInicial])}}" class="btn btn-outline-info">pagar seña</a>
                             </div>
                         @endif
                         <div class="col-lg-4 pr-0 text-right">

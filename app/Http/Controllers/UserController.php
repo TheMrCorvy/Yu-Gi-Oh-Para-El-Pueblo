@@ -9,6 +9,7 @@ use App\Product;
 use App\Cupon;
 use App\CuponUser;
 use App\Multiplicador;
+use App\Paquete;
 
 use Auth;
 
@@ -44,6 +45,8 @@ class UserController extends Controller
             ));
 
             session()->put('pagando_seña', true);
+
+            return redirect()->route('Checkout');
 
         } elseif(is_null($señaPaquete) && is_null($idPaquete) && !session()->has('pagando_seña'))
         {
@@ -105,18 +108,6 @@ class UserController extends Controller
         $actualizar = 'Actualizar' . $id; //el nombre del input
 
         $stockDisponible = Product::select('stock')->where('id', $id)->first();
-
-        // if (empty($stockDisponible) || $stockDisponible == 0) 
-        // { // esto es para la parte de los pedidos, si no encuentra ningun producto, o si el stock de un producto es igual a 0, le va a dejar al usuario hacer lo q quiera, total es un pedido para importación
-        //     Cart::session(auth()->id())->update($id,[
-        //         'quantity' => array(
-        //             'relative' => false,
-        //             'value' => request($actualizar)
-        //         )
-        //     ]);
-
-        //     return back();
-        // }
 
         $validar = request()->validate([
             $actualizar => 'required|integer|min:1'
