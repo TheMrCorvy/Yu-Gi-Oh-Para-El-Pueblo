@@ -21,7 +21,8 @@ class OrdenCompra extends Model
         'ciudad', 
         'envio',
         'codigo_postal',
-        'finalizada'
+        'finalizada',
+        'es_pedido'
     ];
 
     protected $dates = ['created_at', 'fecha'];

@@ -89,6 +89,16 @@
                                                 </button>
                                             </form>
                                         @endif
+                                        
+                                        @if (!($paquete->fecha_caducidad_precio >= now()->format('Y-m-d')) && !is_null($paquete->fecha_caducidad_precio) && $paquete->estado !== "Abierto")
+                                            <form method="post" action="{{route('Pedir Presupuesto')}}" class="col-lg-12 text-center mt-4">
+                                                @csrf
+                                                <input type="hidden" name="id-paquete" value="{{$paquete->id}}">
+                                                <button class="btn btn-outline-success btn-action-pedido">
+                                                    Pedir presupuesto
+                                                </button>
+                                            </form>
+                                        @endif
                                     </div>
 
                                     <div class="card-footer bg-secondary">

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Mail;
 
 class PaquetesController extends Controller
 {
-    public function NotificarPedidoDeCartas()
+    public function PedirPresupuesto()
     {
         $request = request()->validate([
             'id-paquete' => 'required|integer|exists:paquetes,id',
@@ -26,6 +26,8 @@ class PaquetesController extends Controller
         if ($paquete->estado !== "Abierto" || $paquete->estado !== "Abierto y Confirmado") 
         {
             $paquete->estado = "Revisando";
+
+            $paquete->fecha_caducidad_precio = null;
 
             $paquete->save();
 

@@ -28,6 +28,11 @@ class UserController extends Controller
                 return view('errors.404');
             }
 
+            if(!($paquete->fecha_caducidad_precio >= now()->format('Y-m-d')))
+            {
+                return back()->withMessage('Ya pasó la fecha límite en la que podías pagar la seña para este paquete. Tendrás que enviarlo a revisión nuevamente para que podamos darte un precio actualizado.');
+            }
+
             $productosEnCarrito = \Cart::session(auth()->id())->getContent();
 
             if ($productosEnCarrito->count() > 0) 
@@ -44,7 +49,9 @@ class UserController extends Controller
                 'associatedModel' => $paquete,
             ));
 
-            session()->put('pagando_seña', true);
+            session()->put('pagando_seña', $idPaquete);
+
+            session()->put('pago_inicial', $señaPaquete);
 
             return redirect()->route('Checkout');
 
@@ -139,6 +146,8 @@ class UserController extends Controller
         if (session()->has('pagando_seña')) 
         {
             session()->forget('pagando_seña');
+
+            session()->forget('pago_inicial');
         }
 
         return redirect()->back();

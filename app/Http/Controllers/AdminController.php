@@ -58,6 +58,7 @@ class AdminController extends Controller
                                         'envio'
                                     )
                                     ->where('finalizada', true)
+                                    ->where('es_pedido', false)
                                     ->orderBy('id', 'DESC')
                                     ->paginate(50);
         

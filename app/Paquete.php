@@ -15,6 +15,7 @@ class Paquete extends Model
         'comentario_al_paquete',
         'username',
         'envio',
+        'orden_compra',
     ];
 
     protected $dates = ['created_at', 'fecha_caducidad_precio'];

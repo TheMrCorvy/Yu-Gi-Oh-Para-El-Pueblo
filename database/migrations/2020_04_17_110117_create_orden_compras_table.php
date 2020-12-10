@@ -14,7 +14,7 @@ class CreateOrdenComprasTable extends Migration
     public function up()
     {
         Schema::create('ordenes_compras', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->string('username');
             
             $table->date('fecha');
@@ -34,6 +34,7 @@ class CreateOrdenComprasTable extends Migration
 
             $table->boolean('envio');
             $table->string('metodo_envio')->nullable();
+            $table->boolean('es_pedido')->nullable();
             $table->timestamps();
         });
     }

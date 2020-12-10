@@ -17,7 +17,9 @@ class CreatePaquetesTable extends Migration
             $table->increments('id');
 
             $table->string('username');
-            // $table->foreign('id_usuario')->references('id')->on('users');
+
+            $table->unsignedInteger('orden_compra')->nullable();
+            $table->foreign('orden_compra')->references('id')->on('ordenes_compras')->onDelete('cascade');
 
             $table->string('estado');
             $table->string('comentario_al_paquete')->nullable();

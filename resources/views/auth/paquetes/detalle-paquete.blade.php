@@ -19,19 +19,35 @@
                         @if ($paquete->comentario_al_paquete)
                             <small class="description">{{$paquete->comentario_al_paquete}}</small>
                         @endif
-                        <form 
-                            method="post" 
-                            action="{{route('Pedir Presupuesto')}}" 
-                            class="col-lg-12 text-center mt-4 d-none" 
-                            id="pedir-presupuesto"
-                            estado="{{$paquete->estado}}"
-                        >
-                            @csrf
-                            <input type="hidden" name="id-paquete" value="{{$paquete->id}}">
-                            <button class="btn btn-outline-success btn-action-pedido">
-                                Pedir presupuesto
-                            </button>
-                        </form>
+                        @if (!($paquete->fecha_caducidad_precio >= now()->format('Y-m-d')) && !is_null($paquete->fecha_caducidad_precio))
+                            <form 
+                                method="post" 
+                                action="{{route('Pedir Presupuesto')}}" 
+                                class="col-lg-12 text-center mt-4" 
+                                id="pedir-presupuesto"
+                                estado="{{$paquete->estado}}"
+                            >
+                                @csrf
+                                <input type="hidden" name="id-paquete" value="{{$paquete->id}}">
+                                <button class="btn btn-outline-success btn-action-pedido">
+                                    Pedir presupuesto
+                                </button>
+                            </form>
+                        @else
+                            <form 
+                                method="post" 
+                                action="{{route('Pedir Presupuesto')}}" 
+                                class="col-lg-12 text-center mt-4 d-none" 
+                                id="pedir-presupuesto"
+                                estado="{{$paquete->estado}}"
+                            >
+                                @csrf
+                                <input type="hidden" name="id-paquete" value="{{$paquete->id}}">
+                                <button class="btn btn-outline-success btn-action-pedido">
+                                    Pedir presupuesto
+                                </button>
+                            </form>
+                        @endif
                     </div>
 
                     @if (Session::has('message'))
@@ -46,11 +62,18 @@
                         </div>
                     @endif
 
-                    <div class="col-lg-12 text-center">
-                        <p class="text-danger d-none" id="errors">
-                            
-                        </p>
-                    </div>
+                    @if (!($paquete->fecha_caducidad_precio >= now()->format('Y-m-d')) && !is_null($paquete->fecha_caducidad_precio))
+                        <div class="col-lg-12 text-center">
+                            <p class="text-danger" id="errors">
+                                Ya pasó la fecha límite en la que podías pagar la seña para este paquete. Tendrás que enviarlo a revisión nuevamente para que podamos darte un precio actualizado.
+                            </p>
+                        </div>
+                    @else
+                        <div class="col-lg-12 text-center">
+                            <p class="text-danger d-none" id="errors">
+                            </p>
+                        </div>
+                    @endif
                     
                     <div class="col-lg-12 table-responsive mb-3">
                         <table class="table">

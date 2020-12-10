@@ -54,7 +54,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('importaciones-a-pedido/detalle/{idPaquete}', 'HomeController@detallePaquete')->name('Administrar Paquete');
 
-    Route::post('importaciones-a-pedido/pedir-presupuesto', 'PaquetesController@NotificarPedidoDeCartas')->name('Pedir Presupuesto');
+    Route::post('importaciones-a-pedido/pedir-presupuesto', 'PaquetesController@PedirPresupuesto')->name('Pedir Presupuesto');
 
 
     //carrito
