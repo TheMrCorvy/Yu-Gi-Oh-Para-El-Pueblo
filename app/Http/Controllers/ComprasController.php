@@ -51,7 +51,7 @@ class ComprasController extends Controller
         {
             $pagoInicial = ceil(session()->get('pago_inicial'));
 
-            $ordenFinalizada = $this->finalizarOrdenCompra($ordenCompra, $pagoInicial);
+            $ordenFinalizada = $this->finalizarOrdenCompra($ordenCompra, 'Pago en Efectivo', $pagoInicial);
 
             $paquete = Paquete::find(session()->get('pagando_seña'));
 
@@ -90,7 +90,7 @@ class ComprasController extends Controller
             
             if ($this->GenerarProductosComprados($ordenCompra, $productosComprados)) 
             {
-                $this->finalizarOrdenCompra($ordenCompra);
+                $this->finalizarOrdenCompra($ordenCompra, 'Pago en Efectivo');
 
                 if ($this->ReducirStock($productosComprados)) {
                     Cart::session(auth()->id())->clear();
@@ -107,13 +107,12 @@ class ComprasController extends Controller
         }
     }
 
-    private function finalizarOrdenCompra($ordenCompra, $pagoInicial = null)
+    private function finalizarOrdenCompra($ordenCompra, $formaDePago, $pagoInicial = null)
     {
         $finalizarOrden = OrdenCompra::where('id', $ordenCompra)->where('username', Auth::user()->username)->first();
         
-        $finalizarOrden->forma_de_pago = 'Pago en Efectivo';
+        $finalizarOrden->forma_de_pago = $formaDePago;
         $finalizarOrden->fecha = date('Y-m-d');
-        $finalizarOrden->monto_total = !is_null($pagoInicial) ? $pagoInicial : floor(Cart::session(auth()->id())->getTotal());
         $finalizarOrden->finalizada = true;
         $finalizarOrden->es_pedido = !is_null($pagoInicial) ? true : false;
 
@@ -169,7 +168,7 @@ class ComprasController extends Controller
             {
                 $pagoInicial = ceil(session()->get('pago_inicial'));
 
-                $ordenFinalizada = $this->finalizarOrdenCompra($datosTarjeta['ordenCompra'], $pagoInicial);
+                $ordenFinalizada = $this->finalizarOrdenCompra($datosTarjeta['ordenCompra'], 'Pago Online con MercadoPago', $pagoInicial);
 
                 $paquete = Paquete::find(session()->get('pagando_seña'));
 
@@ -197,7 +196,7 @@ class ComprasController extends Controller
     
                 if ($this->GenerarProductosComprados($datosTarjeta['ordenCompra'], $productosComprados)) 
                 {
-                    $this->finalizarOrdenCompra($datosTarjeta['ordenCompra']);
+                    $this->finalizarOrdenCompra($datosTarjeta['ordenCompra'], 'Pago Online con MercadoPago');
     
                     if ($this->ReducirStock($productosComprados)) 
                     {
@@ -263,6 +262,14 @@ class ComprasController extends Controller
 
     public function CrearPeticionPagoMP($cardNetwork, $cardToken, $email, $installments)
     {
+        if (session()->has('precio_envio')) 
+        {
+            $precioConEnvio = floor(Cart::session(auth()->id())->getTotal()) + session()->get('precio_envio');
+        }else
+        {
+            $precioConEnvio = floor(Cart::session(auth()->id())->getTotal());
+        }
+        
         $requestStatus = $this->makeRequest(
             'POST',
             '/v1/payments',
@@ -272,11 +279,11 @@ class ComprasController extends Controller
                     'email' => $email,
                 ],
                 'binary_mode' => true, //binary_mode es para pedir que la transaccion tenga solo 2 estados, aprobada o rechazada
-                'transaction_amount' => session()->has('pagando_seña') ? ceil(session()->get('pago_inicial')) : floor(Cart::session(auth()->id())->getTotal()),
+                'transaction_amount' => $precioConEnvio,
                 'payment_method_id' => $cardNetwork,
                 'token' => $cardToken,
                 'installments' => intval($installments),//la cantidad de cuotas en el pago
-                'statement_descriptor' => config('app.name'),
+                'statement_descriptor' => 'Yu-Gi-Oh! Para El Pueblo',
             ],
             [],
             $isJsonRequest = true
@@ -306,6 +313,11 @@ class ComprasController extends Controller
         // );
 
         // despues se manda el dinero a mi cuenta, y despues se paga realmente
+
+        if (session()->has('precio_envio')) 
+        {
+            session()->forget('precio_envio');
+        }
 
         return $requestStatus;
     }

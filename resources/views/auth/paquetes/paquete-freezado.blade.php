@@ -106,13 +106,30 @@
                                 </strong>
                             </p>
                         </div>
-                        <div class="col-lg-4 pr-0 text-right">
-                            <p>
-                                <strong>
-                                    Seña Pagada: $ {{$pagoInicial}}
-                                </strong>
-                            </p>
-                        </div>
+                        @if (!is_null($ordenCompra->precio_envio))
+                            <div class="col-lg-4 pr-0 text-right">
+                                <p>
+                                    <strong>
+                                        Seña Pagada: $ {{ceil($pagoInicial)}}
+                                    </strong>
+                                </p>
+                            </div>
+                            <div class="col-lg-4 pr-0 text-right">
+                                <p>
+                                    <strong>
+                                        Precio del Envío: $ {{$ordenCompra->precio_envio}}
+                                    </strong>
+                                </p>
+                            </div>
+                        @else
+                            <div class="col-lg-4 pr-0 text-right">
+                                <p>
+                                    <strong>
+                                        Seña Pagada: $ {{$pagoInicial}}
+                                    </strong>
+                                </p>
+                            </div>
+                        @endif
                     </div>
                     @if ($ordenCompra->envio !== "Retiro en el Local")
                         <div class="col-lg-8 mx-auto text-center mb-3">

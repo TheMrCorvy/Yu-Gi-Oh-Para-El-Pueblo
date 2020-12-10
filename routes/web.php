@@ -56,6 +56,8 @@ Route::middleware('auth')->group(function () {
 
     Route::post('importaciones-a-pedido/pedir-presupuesto', 'PaquetesController@PedirPresupuesto')->name('Pedir Presupuesto');
 
+    Route::get('importaciones-a-pedido/{idPaquete}', 'PaquetesController@realizarPagoFinal')->name('Realizar Pago Final');
+
 
     //carrito
     Route::get('add-to-cart/{id}/{idPaquete?}/{pagoInicial?}', 'UserController@AddToCart')->name('Añadir Al Carrito');

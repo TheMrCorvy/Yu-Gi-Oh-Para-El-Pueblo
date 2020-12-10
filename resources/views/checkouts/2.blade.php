@@ -22,12 +22,26 @@
                     <div class="card-header px-0" id="heading-{{$envio[0]->id_metodo}}">
                       <h5 class="mb-0">
                         @if ($envio[0]->id_metodo <= 1)
-                          <button class="btn btn-link w-100 text-primary text-left" type="button" data-toggle="collapse" data-target="#collapse-{{$envio[0]->id_metodo}}" aria-expanded="true" aria-controls="collapse-{{$envio[0]->id_metodo}}">
+                          <button 
+                              class="btn btn-link w-100 text-primary text-left" 
+                              type="button" 
+                              data-toggle="collapse" 
+                              data-target="#collapse-{{$envio[0]->id_metodo}}" 
+                              aria-expanded="true" 
+                              aria-controls="collapse-{{$envio[0]->id_metodo}}"
+                          >
                             {{$envio[0]->metodo}}
                             <i class="ni ni-bold-down float-right"></i>
                           </button>
                         @else
-                          <button class="btn btn-link w-100 text-primary text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse-{{$envio[0]->id_metodo}}" aria-expanded="false" aria-controls="collapse-{{$envio[0]->id_metodo}}">
+                          <button 
+                              class="btn btn-link w-100 text-primary text-left collapsed" 
+                              type="button" 
+                              data-toggle="collapse" 
+                              data-target="#collapse-{{$envio[0]->id_metodo}}" 
+                              aria-expanded="false" 
+                              aria-controls="collapse-{{$envio[0]->id_metodo}}"
+                          >
                             {{$envio[0]->metodo}}
                             <i class="ni ni-bold-down float-right"></i>
                           </button>

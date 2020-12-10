@@ -172,7 +172,7 @@
                     </div>
                 
                     <div class="col-lg-12 row justify-content-center">
-                        @if ($montoTotal > 0)
+                        @if ($montoTotal > 0 && $paquete->estado === "Abierto y Confirmado")
                             <div class="col-lg-12 pr-0 text-right mb-5">
                                 <a href="{{route('Añadir Al Carrito', [0, $paquete->id, $pagoInicial])}}" class="btn btn-outline-info">pagar seña</a>
                             </div>
@@ -186,9 +186,15 @@
                                     <br>
                                     <small class="text-muted">(Año-Mes-Día)</small>
                                 @else
-                                    <strong>
-                                        Precio Válido Hasta: <small class="text-warning">Aún no disponible.</small>
-                                    </strong>
+                                    @if ($paquete->estado === 'Cerrado y Tramitando Importación')
+                                        <strong>
+                                            Precio Válido Hasta: <small class="text-warning">Ya se pagó la seña.</small>
+                                        </strong>
+                                    @else
+                                        <strong>
+                                            Precio Válido Hasta: <small class="text-warning">Aún no disponible.</small>
+                                        </strong>
+                                    @endif
                                 @endif
                             </p>
                         </div>

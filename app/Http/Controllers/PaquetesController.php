@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Cart;
 use Auth;
 use App\Paquete;
 use Illuminate\Http\Request;
@@ -40,79 +41,48 @@ class PaquetesController extends Controller
             return view('errors.404');
         }
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    
+    public function realizarPagoFinal($idPaquete)
     {
-        //
-    }
+        $paquete = Paquete::find($idPaquete);
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+        if (Auth::user()->username !== $paquete->username || $paquete->estado !== 'El paquete llegó al local') 
+        {
+            return view('errors.404');
+        }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        $pedidos = Pedido::where('paquete', $idPaquete)->get();
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Paquete  $paquete
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Paquete $paquete)
-    {
-        //
-    }
+        Cart::session(auth()->id())->clear();
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Paquete  $paquete
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Paquete $paquete)
-    {
-        //
-    }
+        $montoTotal = 0;
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Paquete  $paquete
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Paquete $paquete)
-    {
-        //
-    }
+        foreach ($pedidos as $pedido) 
+        {
+            $montoTotal = $montoTotal + ($pedido->precio * $pedido->cantidad);
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Paquete  $paquete
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Paquete $paquete)
-    {
-        //
+        $pagoInicial = $montoTotal / 10;
+
+        session()->put('pagando_seña', $idPaquete);
+
+        session()->put('pago_inicial', ceil($montoTotal - $pagoInicial));
+
+        Cart::session(auth()->id())->add(array(
+            'id' => $idPaquete,
+            'name' => 'Pago Final Pedido de Importación',
+            'price' => ceil($montoTotal - $pagoInicial),
+            'quantity' => 1,
+            'attributes' => array('https://prueba-servicio-al-toque.s3-sa-east-1.amazonaws.com/seo_img/logo.jpeg', 1),
+            'associatedModel' => $paquete,
+        ));
+
+        return redirect()
+                        ->route('Checkout')
+                        ->with([
+                            'formulario' => '3', 
+                            'ordenCompra' => $paquete->orden_compra, 
+                            'usuario' => User::find(Auth::user()->id),
+                        ]);
     }
 }

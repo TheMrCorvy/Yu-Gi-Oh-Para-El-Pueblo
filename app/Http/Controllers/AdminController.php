@@ -273,6 +273,11 @@ class AdminController extends Controller
 
         $paquete = Paquete::find($campos['id-paquete']);
 
+        if ($campos['seguimiento-envio'] == 3) 
+        {
+            $paquete->estado = 'El paquete llegó al local';
+        }
+
         $paquete->seguimiento_envio = $estadoEnvio[$campos['seguimiento-envio']];
 
         $paquete->save();

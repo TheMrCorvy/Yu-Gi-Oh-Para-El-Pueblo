@@ -229,6 +229,14 @@ class HomeController extends Controller
             'metodoEnvio' => 'required|string|min:32|max:48',
         ], $messages);
 
+        $zonaEnvio = explode(",", $segundoPaso['metodoEnvio']);
+
+        $zonaEnvio = substr($zonaEnvio[1], 1);
+
+        $precioEnvio = ZonaEnvio::select('precio')->where('zona', 'LIKE', "%$zonaEnvio%")->first();
+
+        session()->put('precio_envio', $precioEnvio->precio);
+
         $usuario = User::where('username', Auth::user()->username)->first();
 
         $usuario->calle1_timbre = $segundoPaso['calle1'];
@@ -242,6 +250,7 @@ class HomeController extends Controller
 
         $ordenCompra = OrdenCompra::find($segundoPaso['ordenCompra']);
         $ordenCompra->metodo_envio = $segundoPaso['metodoEnvio'];
+        $ordenCompra->precio_envio = $precioEnvio->precio;
         $ordenCompra->save();
 
         return back()->with(['formulario' => '3', 'ordenCompra' => $segundoPaso['ordenCompra'], 'usuario' => $usuario]);
@@ -253,7 +262,12 @@ class HomeController extends Controller
     {
         $destruir = OrdenCompra::where('id', $ordenCompra)->first();
 
-        $destruir->delete();
+        $paquete = Paquete::find($destruir->id);
+
+        if (is_null($paquete)) 
+        {
+            $destruir->delete();
+        }
 
         return redirect()->route('Landing');
     }
