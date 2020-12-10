@@ -28,6 +28,7 @@ use Validator;
 
 use App\Mail\MailPedidoImportacion;
 use App\Mail\MailPaqueteRevisado;
+use App\Mail\MailPedidoRealizado;
 use Illuminate\Support\Facades\Mail;
 
 class AdminController extends Controller
@@ -43,8 +44,10 @@ class AdminController extends Controller
         $categories = Category::all();
 
         $paquetesParaImportar = Paquete::where('estado', 'Cerrado y Tramitando Importación')->paginate(20);
+
+        $paquetesImportandose = Paquete::where('estado', 'En Camino')->get();
         
-        return view('auth.admin', compact('dolar', 'typeProducts', 'typeCartas', 'categories', 'paquetesParaImportar'));
+        return view('auth.admin', compact('dolar', 'typeProducts', 'typeCartas', 'categories', 'paquetesParaImportar', 'paquetesImportandose'));
     }
 
     public function VisualizarCompras()
@@ -226,6 +229,57 @@ class AdminController extends Controller
         Mail::to('mr.corvy@gmail.com')->send(new MailPaqueteRevisado);
 
         return redirect()->route('admin.list-pakages');
+    }
+
+    public function notificarPedidoRealizado($idPaquete)
+    {
+        $paquete = Paquete::find($idPaquete);
+
+        $paquete->estado = 'En Camino';
+
+        $paquete->seguimiento_envio = 'Ya se realizó el pedido de importacion';
+
+        $paquete->save();
+
+        $notifyUser = User::select('email')->where('username', $paquete->username)->first();
+
+        Mail::to($notifyUser->email)->send(new MailPedidoRealizado($idPaquete, 0));
+
+        return back()->withMessage('Notificación realizada con éxito.');
+    }
+
+    public function notificarSeguimientoEnvio(Request $request)
+    {
+        $campos = $request->only('seguimiento-envio', 'id-paquete');
+
+        $validator = Validator::make($campos, [
+            'seguimiento-envio' => 'required|string',
+            'id-paquete' => 'required|integer|exists:paquetes,id',
+        ]);
+
+        if($validator->fails())
+        {
+            return back()->withErrors('Revisa los datos, es posible que no hayas completado correctamente algún formulario');
+        }
+
+        $estadoEnvio = [
+            'El Paquete ya fue pedido',
+            'El Paquete ya fue despachado de su país de origen',
+            'El paquete ya ingresó a Argentina',
+            'El paquete ya está listo para la entrega'
+        ];
+
+        $paquete = Paquete::find($campos['id-paquete']);
+
+        $paquete->seguimiento_envio = $estadoEnvio[$campos['seguimiento-envio']];
+
+        $paquete->save();
+
+        $notifyUser = User::select('email')->where('username', $paquete->username)->first();
+
+        Mail::to($notifyUser->email)->send(new MailPedidoRealizado($campos['id-paquete'], $campos['seguimiento-envio']));
+
+        return back()->withMessage('Seguimiento de envío notificado conéxito');
     }
 
     public function borrarMetodo($idMetodo)

@@ -70,8 +70,6 @@ class ComprasController extends Controller
 
             $paquete->fecha_caducidad_precio = null;
 
-            $paquete->seguimiento_envio = 'En Camino';
-
             $paquete->save();
 
             session()->forget('pagando_seña');
@@ -180,8 +178,6 @@ class ComprasController extends Controller
                 $paquete->orden_compra = $ordenFinalizada->id;
 
                 $paquete->fecha_caducidad_precio = null;
-
-                $paquete->seguimiento_envio = 'En Camino';
 
                 $paquete->save();
 

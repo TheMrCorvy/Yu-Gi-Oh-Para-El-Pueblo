@@ -167,11 +167,15 @@ class PermissionsTableSeeder extends Seeder
             'slug' => 'admin.list-pakages',
             'description' => 'permiso para ver la lista de pedidos del exterior',
         ]); 
-        
         DB::table('permissions')->insert([
             'name' => 'revisar pedido',
             'slug' => 'admin.review-pakage',
             'description' => 'permiso para modificar cantidades de cartas, precios, y comentarios',
+        ]); 
+        DB::table('permissions')->insert([
+            'name' => 'notificar pedido realizado',
+            'slug' => 'admin.notify',
+            'description' => 'permiso para cambiar el seguimiento del envio del paquete',
         ]); 
         
         //metodos y zonas de envios

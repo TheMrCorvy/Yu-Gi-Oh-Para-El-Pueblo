@@ -18,7 +18,7 @@
                         <div class="col-lg-12 col-md-12 mb-5 row d-flex justify-content-center">
                             <div class="card">
                                 <div class="card-body pb-0">
-                                    <h3 class="text-center pb-3">Paquetes para importar, Pendientes de Revisión</h3>
+                                    <h3 class="text-center">Paquetes para importar, Pendientes de Revisión</h3>
                                     <table class="table table-responsive table-striped px-0">
                                         <thead>
                                             <tr>

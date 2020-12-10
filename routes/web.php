@@ -177,6 +177,10 @@ Route::middleware(['auth',])->group(function () {
     
     Route::post('admin/pedidos-de-importacion/detalle/{idPaquete}', 'AdminController@revisarPaquete')->name('admin.review-pakage')->middleware('can:admin.review-pakage');
     
+    Route::get('admin/notificar/{idPaquete}', 'AdminController@notificarPedidoRealizado')->name('admin.notify')->middleware('can:admin.notify');
+    
+    Route::post('admin/notificar', 'AdminController@notificarSeguimientoEnvio')->name('admin.notify-shipment');
+    
     //crud zonas y metodos de envio
     Route::post('admin/editar-zona-envio', 'AdminController@editarZonaEnvio')->name('admin.edit-zone')->middleware('can:admin.edit-zone');
 

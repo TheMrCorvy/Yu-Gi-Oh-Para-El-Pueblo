@@ -1,7 +1,6 @@
 @extends('layouts.app', ['class' => 'pricing-page bg-secondary'])
 
 @section('content')
-{{dd($ordenAsociada)}}
     <style>
         .boton-hover-pedido:hover{
             cursor: pointer;

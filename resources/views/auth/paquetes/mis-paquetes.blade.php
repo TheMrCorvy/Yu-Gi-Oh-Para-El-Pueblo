@@ -73,6 +73,14 @@
                                             ></div>
                                         </div>
                                         <td>Estado: <span class="text-success">{{$paquete->estado}}</span></td>
+
+                                        <br>
+                                        <br>
+
+                                        @if (!is_null($paquete->seguimiento_envio))
+                                            <span class="text-info">{{$paquete->seguimiento_envio}}</span>
+                                        @endif
+                                        
                                         @if ($paquete->estado === "Abierto" || $paquete->estado === "Abierto y Revisando" || $paquete->estado === "Abierto y Revisado")
                                             <br>
                                             <td><small>Todavía puedes añadir o quitar cartas, o modificar sus cantidades</small></td>

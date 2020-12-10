@@ -111,73 +111,10 @@
                     </a>
                 </h1>
 
-                <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-body pb-0">
-                            <h3 class="text-left pb-3">Paquetes listos para importar</h3>
-                            <table class="table table-responsive table-striped px-0">
-                                <thead>
-                                    <tr>
-                                        <th >Fecha (DD/MM/AAAA)</th>
-                                        <th>Número de Pedido</th>
-                                        <th class="text-center">Ver Detalle</th>
-                                        <th class="text-center">Estado</th>
-                                        <th>Fecha límite del presupuesto (si la hay)</th>
-                                        <th class="text-center">Comentario</th>
-                                        <th class="text-right">Usuario</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @if ($paquetesParaImportar->count() < 1)
-                                        <tr>
-                                            <td>No hay ningún pedido de importación de cartas actualmente.</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                    @else
-                                        @foreach ($paquetesParaImportar as $paquete)    
-                                            <tr>
-                                                <td class="text-center">{{ $paquete->created_at->format('d/m/Y') }}</td>
-                                                
-                                                <td class="text-center">{{ $paquete->id }}</td>
-                                                
-                                                <td class="text-center">
-                                                    <a href="{{route('admin.list-pakage-details', $paquete->id)}}">Ver Detalle del Paquete</a>
-                                                </td>
-                                                
-                                                <td class="text-capitalize">{{ $paquete->estado }}</td>
-
-                                                @if (!is_null($paquete->fecha_caducidad_precio))
-                                                    <td class="text-center">{{ $paquete->fecha_caducidad_precio->format('d/m/Y') }}</td>
-                                                @else
-                                                    <td class="text-center">Aún no hay presupuesto</td>
-                                                @endif
-                                                
-                                                @if (!is_null($paquete->comentario_al_paquete))
-                                                    <td>{{ $paquete->comentario_al_paquete }}</td>
-                                                @else
-                                                    <td>No hay ningún comentario en este paquete</td>
-                                                @endif
-
-                                                <td class="text-right">
-                                                    <a href="{{route('admin.list-pakage-details', $paquete->id)}}">{{$paquete->username}}</a>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    @endif
-                                    
-                                </tbody>
-                            </table>
-                            <div class="pagination-container d-flex justify-content-center">
-                                {{ $paquetesParaImportar->links() }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @include('sections.admin-pedidos-confirmados', [
+                    'paquetesParaImportar' => $paquetesParaImportar,
+                    'paquetesImportandose' => $paquetesImportandose,
+                ])
 
                 <hr class="col-lg-12 my-8">
 
