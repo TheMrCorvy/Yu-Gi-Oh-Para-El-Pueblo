@@ -163,7 +163,7 @@ class AdminController extends Controller
 
         $pagoInicial = $montoTotal / 10;
 
-        if ($paquete->estado === 'En Camino') 
+        if ($paquete->estado === 'En Camino' || $paquete->estado === 'Finalizado') 
         {
             $ordenCompra = OrdenCompra::find($paquete->orden_compra);
 

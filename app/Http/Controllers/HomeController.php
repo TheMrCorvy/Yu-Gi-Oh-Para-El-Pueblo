@@ -44,7 +44,9 @@ class HomeController extends Controller
 
     public function viewImportarCartas()
     {
-        $paquetes = Paquete::where('username', Auth::user()->username)->orderBy('id', 'DESC')->get();
+        $paquetes = Paquete::where('username', Auth::user()->username)
+                                ->orderBy('id', 'DESC')
+                                ->get();
 
         return view('auth.paquetes.mis-paquetes', compact('paquetes'));
     }
@@ -72,7 +74,7 @@ class HomeController extends Controller
 
         $pagoInicial = $montoTotal / 10;
 
-        if ($paquete->estado === 'En Camino') 
+        if ($paquete->estado === 'En Camino' || $paquete->estado === "Finalizado") 
         {
             $ordenCompra = OrdenCompra::find($paquete->orden_compra);
 

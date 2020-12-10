@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Cart;
 use Auth;
+use App\User;
+use App\Pedido;
 use App\Paquete;
 use Illuminate\Http\Request;
 use App\Mail\MailPedidoImportacion;
@@ -67,6 +69,8 @@ class PaquetesController extends Controller
         session()->put('pagando_seña', $idPaquete);
 
         session()->put('pago_inicial', ceil($montoTotal - $pagoInicial));
+
+        session()->put('pago_final', true);
 
         Cart::session(auth()->id())->add(array(
             'id' => $idPaquete,

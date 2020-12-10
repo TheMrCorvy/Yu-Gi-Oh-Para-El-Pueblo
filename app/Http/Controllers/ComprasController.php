@@ -64,8 +64,14 @@ class ComprasController extends Controller
                 );
             }
 
-            $paquete->estado = 'Cerrado y Tramitando Importación';
-
+            if (session()->has('pago_final')) 
+            {
+                $paquete->estado = 'Finalizado';
+            } else 
+            {
+                $paquete->estado = 'Cerrado y Tramitando Importación';
+            }
+            
             $paquete->orden_compra = $ordenFinalizada->id;
 
             $paquete->fecha_caducidad_precio = null;
@@ -172,7 +178,13 @@ class ComprasController extends Controller
 
                 $paquete = Paquete::find(session()->get('pagando_seña'));
 
-                $paquete->estado = 'Cerrado y Tramitando Importación';
+                if (session()->has('pago_final')) 
+                {
+                    $paquete->estado = 'Finalizado';
+                } else 
+                {
+                    $paquete->estado = 'Cerrado y Tramitando Importación';
+                }
 
                 $paquete->orden_compra = $ordenFinalizada->id;
 

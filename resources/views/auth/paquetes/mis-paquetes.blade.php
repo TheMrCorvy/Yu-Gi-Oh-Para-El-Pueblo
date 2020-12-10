@@ -121,8 +121,8 @@
                                         @endif
                                         
                                         @if ($paquete->estado === "El paquete llegó al local")
-                                            <a href="{{route('Administrar Paquete', $paquete->id)}}" class="btn btn-link float-right addAjax detalles">
-                                                Realizar pago final
+                                            <a href="{{route('Realizar Pago Final', $paquete->id)}}" class="btn btn-link float-right addAjax detalles">
+                                                Completar Pago
                                                 <i class="fas fa-chevron-right"></i>
                                             </a>
                                         @else
