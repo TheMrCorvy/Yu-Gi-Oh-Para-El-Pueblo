@@ -163,15 +163,15 @@ class AdminController extends Controller
 
         $pagoInicial = $montoTotal / 10;
 
-        if (!is_null($paquete->orden_compra)) 
+        if ($paquete->estado === 'En Camino') 
         {
-            $ordenAsociada = OrdenCompra::find($paquete->orden_compra);
-        }else
-        {
-            $ordenAsociada = null;
-        }
+            $ordenCompra = OrdenCompra::find($paquete->orden_compra);
 
-        return view('auth.paquetes.admin-detalle-paquete', compact('pedidos', 'paquete', 'montoTotal', 'pagoInicial', 'usuario', 'ordenAsociada'));
+            return view('auth.paquetes.paquete-freezado', compact('pedidos', 'paquete', 'montoTotal', 'pagoInicial', 'usuario', 'ordenCompra'));
+        } else 
+        {
+            return view('auth.paquetes.admin-detalle-paquete', compact('pedidos', 'paquete', 'montoTotal', 'pagoInicial', 'usuario'));
+        }
     }
 
     public function revisarPaquete(Request $request, $idPaquete)
@@ -226,7 +226,9 @@ class AdminController extends Controller
 
         $paquete->save();
 
-        Mail::to('mr.corvy@gmail.com')->send(new MailPaqueteRevisado);
+        $notifyUser = User::select('email')->where('username', $paquete->username)->first();
+
+        Mail::to($notifyUser->email)->send(new MailPaqueteRevisado);
 
         return redirect()->route('admin.list-pakages');
     }
@@ -237,7 +239,7 @@ class AdminController extends Controller
 
         $paquete->estado = 'En Camino';
 
-        $paquete->seguimiento_envio = 'Ya se realizó el pedido de importacion';
+        $paquete->seguimiento_envio = 'Ya se realizó el pedido de importación';
 
         $paquete->save();
 

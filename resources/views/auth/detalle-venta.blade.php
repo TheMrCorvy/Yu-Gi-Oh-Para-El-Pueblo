@@ -85,7 +85,7 @@
                     </form>
                 </div>
 
-                @if ($ordenDeCompra->envio)
+                @if ($ordenDeCompra->envio !== 'Retiro en el Local')
                     <div class="col-lg-8 mx-auto text-center mt-5 mb-3">
                         <h3 class="display-3 pt-4">Detalles para el Envío</h3>
                         <small class="lead">Método de Envío: {{$ordenDeCompra->metodo_envio}} </small>
@@ -130,9 +130,6 @@
                 </div>
 
                 <div class="col-lg-12 card card-plain" style="margin-top: -50px !important;">
-                    {{-- <div class="card-header d-flex justify-content-between">
-                        <h6 class="card-title-text-primary">{{ $ordenDeCompra->nombre }}</h6>
-                    </div> --}}
                     <div class="card-body">
                         <p class="lead">
                             <strong class="text-capitalize">

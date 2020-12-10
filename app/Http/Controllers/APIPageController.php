@@ -134,6 +134,7 @@ class APIPageController extends Controller
                                 )
                                 ->where('username', $username)
                                 ->where('finalizada', true)
+                                ->where('es_pedido', false)
                                 ->orderBy('id', 'DESC')
                                 ->get();
                             

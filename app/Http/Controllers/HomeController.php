@@ -72,7 +72,17 @@ class HomeController extends Controller
 
         $pagoInicial = $montoTotal / 10;
 
-        return view('auth.paquetes.detalle-paquete', compact('pedidos', 'paquete', 'montoTotal', 'pagoInicial'));
+        if ($paquete->estado === 'En Camino') 
+        {
+            $ordenCompra = OrdenCompra::find($paquete->orden_compra);
+
+            $usuario = User::where('username', $paquete->username)->first();
+
+            return view('auth.paquetes.paquete-freezado', compact('pedidos', 'paquete', 'montoTotal', 'pagoInicial', 'usuario', 'ordenCompra'));
+        } else 
+        {
+            return view('auth.paquetes.detalle-paquete', compact('pedidos', 'paquete', 'montoTotal', 'pagoInicial'));
+        }
     }
 
     public function Checkout()

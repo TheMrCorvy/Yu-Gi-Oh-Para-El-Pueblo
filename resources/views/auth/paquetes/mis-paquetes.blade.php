@@ -84,10 +84,14 @@
                                         @if ($paquete->estado === "Abierto" || $paquete->estado === "Abierto y Revisando" || $paquete->estado === "Abierto y Revisado")
                                             <br>
                                             <td><small>Todavía puedes añadir o quitar cartas, o modificar sus cantidades</small></td>
+                                            <br>
+                                            <br>
                                         @endif
-                                        <br>
-                                        <br>
-                                        <p>Forma de Entrega: <span class="text-danger">Elegir después de pagar la seña</span>.</p>
+                                        
+                                        @if ($paquete->estado !== "En Camino")
+                                            <p>Forma de Entrega: <span class="text-danger">Elegir después de pagar la seña</span>.</p>
+                                        @endif
+
                                         @if ($paquete->estado === "Abierto")
                                             <form method="post" action="{{route('Pedir Presupuesto')}}" class="col-lg-12 text-center mt-4">
                                                 @csrf

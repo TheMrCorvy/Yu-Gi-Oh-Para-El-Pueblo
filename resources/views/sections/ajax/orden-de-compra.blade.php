@@ -26,7 +26,7 @@
               
               <h6 class="card-title text-primary mt-3 col-lg-6">Número de Orden: {{ $compra->id }}</h6>
 
-              <h6 class="card-title text-primary mt-3 text-right col-lg-6">Fecha: {{ $compra->fecha }} <br><small class="text-muted">(Año-Mes-Día)</small></h6>
+              <h6 class="card-title text-primary mt-3 text-right col-lg-6">Fecha: {{ $compra->fecha->format('d/m/Y') }} <br><small class="text-muted">(Año-Mes-Día)</small></h6>
             </div>
 
             <div class="card-body">
