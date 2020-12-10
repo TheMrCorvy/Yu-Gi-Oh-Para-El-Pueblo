@@ -55,6 +55,15 @@ class ComprasController extends Controller
 
             $paquete = Paquete::find(session()->get('pagando_seña'));
 
+            if (!($paquete->fecha_caducidad_precio >= now()->format('Y-m-d')) && !is_null($paquete->fecha_caducidad_precio)) 
+            {
+                return redirect()
+                ->route('Administrar Paquete', $paquete->id)
+                ->withMessage(
+                    'Ya pasó la fecha límite en la que podías pagar la seña para este paquete. Tendrás que enviarlo a revisión nuevamente para que podamos darte un precio actualizado.'
+                );
+            }
+
             $paquete->estado = 'Cerrado y Tramitando Importación';
 
             $paquete->orden_compra = $ordenFinalizada->id;
@@ -131,8 +140,21 @@ class ComprasController extends Controller
             'ordenCompra' => 'required|min:1|max:5|string',
             'cupon' => 'nullable|string|min:10|max:30',
         ], $messages);
+        
+        if (session()->has('pagando_seña')) 
+        {
+            $paquete = Paquete::find(session()->get('pagando_seña'));
 
-        if (!session()->has('pagando_seña')) {
+            if (!($paquete->fecha_caducidad_precio >= now()->format('Y-m-d')) && !is_null($paquete->fecha_caducidad_precio)) 
+            {
+                return redirect()
+                ->route('Administrar Paquete', $paquete->id)
+                ->withMessage(
+                    'Ya pasó la fecha límite en la que podías pagar la seña para este paquete. Tendrás que enviarlo a revisión nuevamente para que podamos darte un precio actualizado.'
+                );
+            }
+        }else
+        {
             $this->AplicarCupon($datosTarjeta['cupon']);
         }
 

@@ -160,7 +160,15 @@ class AdminController extends Controller
 
         $pagoInicial = $montoTotal / 10;
 
-        return view('auth.paquetes.admin-detalle-paquete', compact('pedidos', 'paquete', 'montoTotal', 'pagoInicial', 'usuario'));
+        if (!is_null($paquete->orden_compra)) 
+        {
+            $ordenAsociada = OrdenCompra::find($paquete->orden_compra);
+        }else
+        {
+            $ordenAsociada = null;
+        }
+
+        return view('auth.paquetes.admin-detalle-paquete', compact('pedidos', 'paquete', 'montoTotal', 'pagoInicial', 'usuario', 'ordenAsociada'));
     }
 
     public function revisarPaquete(Request $request, $idPaquete)
