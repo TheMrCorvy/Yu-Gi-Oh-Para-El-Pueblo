@@ -337,7 +337,7 @@
         expansion.value = ''
         cantidad.value = ''
 
-        await fetch("/api/v1/ApiPage/addToPakage", {
+        await fetch("/api/v1/APIPage/addToPakage", {
             headers: {
                 "Content-Type": "application/json",
             },
