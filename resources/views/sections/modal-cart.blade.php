@@ -78,7 +78,7 @@
             </div>
         @else
 
-        <div class="card bg-gradient-success col-lg-5 mx-auto">
+        <div class="card bg-gradient-success col-lg-5 mx-auto my-auto py-auto" style="max-height: 12rem;">
             <!-- Card body -->
             <div class="card-body">
                 <div class="row" style="position: relative;">
@@ -94,6 +94,14 @@
                 <p class="mt-3 mb-0 text-white text-sm">
                     ¡Aprovechá que tenemos cupones y descuentos exclusivos!
                 </p>
+            </div>
+        </div>
+
+        <div class="card px-0 col-lg-6 mt-3">
+            <div class="card-body row" id="zonaConstruccionEnvios">
+                <div class="spinner-border text-danger" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
             </div>
         </div>
             
