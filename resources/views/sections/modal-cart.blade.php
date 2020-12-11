@@ -7,7 +7,7 @@
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
-    <div class="modal-body">
+    <div class="modal-body row justify-content-around">
         @php
         $productos = Cart::session(auth()->id())->getContent();
         @endphp
@@ -49,7 +49,7 @@
                     </div>
                 </div>
             @endforeach
-            <div class="card bg-gradient-primary col-lg-5 mx-auto">
+            <div class="card bg-gradient-primary col-lg-5 my-auto py-auto" style="max-height: 12rem;">
                 <!-- Card body -->
                 <div class="card-body">
                     <div class="row" style="position: relative;">
@@ -66,6 +66,14 @@
                     <p class="mt-3 mb-0 text-sm">
                         <span class="text-light mr-2"><i class="fas fa-info-circle text-white"></i> Podrás aplicar un cupón en el checkout al realizar la compra.</span>
                     </p>
+                </div>
+            </div>
+
+            <div class="card px-0 col-lg-6 mt-3">
+                <div class="card-body row" id="zonaConstruccionEnvios">
+                    <div class="spinner-border text-danger" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
                 </div>
             </div>
         @else
@@ -119,5 +127,24 @@
                 modal.setAttribute('style', 'display: none');
             })
         });
+
+        getInfoEnvios()
     })
+
+    async function getInfoEnvios()
+    {
+        await fetch("/api/v1/APIPage/getInfoEnvios", 
+        {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            method: "get",
+        })
+        .then((textResponse) => textResponse.text())
+        .then((response) => 
+        {
+            document.getElementById('zonaConstruccionEnvios').innerHTML = response
+        })
+        .catch((error) => console.log(error));
+    }
 </script>
