@@ -7,6 +7,7 @@ use Auth;
 use App\User;
 use App\Pedido;
 use App\Paquete;
+use App\OrdenCompra;
 use Illuminate\Http\Request;
 use App\Mail\MailPedidoImportacion;
 use Illuminate\Support\Facades\Mail;
@@ -34,7 +35,7 @@ class PaquetesController extends Controller
 
             $paquete->save();
 
-            Mail::to('mr.corvy@gmail.com')->send(new MailPedidoImportacion($paquete->id));
+            Mail::to('mr.corvy@yopmail.com')->send(new MailPedidoImportacion($paquete->id));
 
             return redirect()->to(route('Importar Cartas'));
 
@@ -64,18 +65,20 @@ class PaquetesController extends Controller
             $montoTotal = $montoTotal + ($pedido->precio * $pedido->cantidad);
         }
 
-        $pagoInicial = $montoTotal / 10;
+        $ordenCompra = OrdenCompra::find($paquete->orden_compra);
+
+        // $pagoInicial = $montoTotal / 10;
 
         session()->put('pagando_seña', $idPaquete);
 
-        session()->put('pago_inicial', ceil($montoTotal - $pagoInicial));
+        // session()->put('pago_inicial', ceil($montoTotal - $paquete->pago_inicial - $ordenCompra->precio_envio));
 
         session()->put('pago_final', true);
 
         Cart::session(auth()->id())->add(array(
             'id' => $idPaquete,
             'name' => 'Pago Final Pedido de Importación',
-            'price' => ceil($montoTotal - $pagoInicial),
+            'price' => ceil($montoTotal - $paquete->pago_inicial - $ordenCompra->precio_envio),
             'quantity' => 1,
             'attributes' => array('https://prueba-servicio-al-toque.s3-sa-east-1.amazonaws.com/seo_img/logo.jpeg', 1),
             'associatedModel' => $paquete,

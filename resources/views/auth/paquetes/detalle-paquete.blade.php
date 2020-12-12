@@ -93,9 +93,9 @@
                                         <td class="text-left text-capitalize">{{$cartaPedida->nombre_carta}}</td>
                                         
                                         @if ($cartaPedida->expansion)
-                                            <td class="text-center text-capitalize">{{$cartaPedida->expansion}}</td>
+                                            <td class="text-center">{{$cartaPedida->expansion}}</td>
                                         @else
-                                            <td class="text-center text-capitalize text-success">El precio más barato.</td>
+                                            <td class="text-center text-success">El precio más barato.</td>
                                         @endif
                                         
                                         @if ($cartaPedida->precio)
@@ -174,7 +174,7 @@
                     <div class="col-lg-12 row justify-content-center">
                         @if ($montoTotal > 0 && $paquete->estado === "Abierto y Confirmado")
                             <div class="col-lg-12 pr-0 text-right mb-5">
-                                <a href="{{route('Añadir Al Carrito', [0, $paquete->id, $pagoInicial])}}" class="btn btn-outline-info">pagar seña</a>
+                                <a href="{{route('Añadir Al Carrito', [0, $paquete->id])}}" class="btn btn-outline-info">pagar seña</a>
                             </div>
                         @endif
                         <div class="col-lg-4 pr-0 text-right">
@@ -213,10 +213,16 @@
                         </div>
                         <div class="col-lg-4 pr-0 text-right">
                             <p>
-                                @if ($pagoInicial > 0)
-                                    <strong>
-                                        Seña a Pagar: $ {{$pagoInicial}}
-                                    </strong>
+                                @if ($pagoInicial > 0 || !is_null($paquete->pago_inicial))
+                                    @if (!is_null($paquete->pago_inicial))
+                                        <strong>
+                                            Seña a Pagar: $ {{$paquete->pago_inicial}}
+                                        </strong>
+                                    @else
+                                        <strong>
+                                            Seña a Pagar: $ {{$pagoInicial}}
+                                        </strong>
+                                    @endif
                                 @else
                                     <strong>
                                         Seña a Pagar: <small class="text-warning">Aún no disponible.</small>

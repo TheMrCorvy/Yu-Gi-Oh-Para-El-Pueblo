@@ -10,6 +10,8 @@ use App\Cupon;
 use App\CuponUser;
 use App\Multiplicador;
 use App\Paquete;
+use App\Pedido;
+use App\OrdenCompra;
 
 use Auth;
 
@@ -17,9 +19,9 @@ use Cart;
 
 class UserController extends Controller
 {
-    public function AddToCart($id, $idPaquete = null, $señaPaquete = null) 
+    public function AddToCart($id, $idPaquete = null) 
     {
-        if (!is_null($señaPaquete) && !is_null($idPaquete)) 
+        if (!is_null($idPaquete)) 
         {
             $paquete = Paquete::find($idPaquete);
 
@@ -40,10 +42,30 @@ class UserController extends Controller
                 return back()->withMessage('No puedes pagar la seña de tu pedido de importación mientras tengas productos en tu carrito de compras.');
             }
 
+            $pedidos = Pedido::select('precio', 'cantidad')->where('paquete', $idPaquete)->get();
+
+            $montoTotal = 0;
+
+            foreach ($pedidos as $pedido) 
+            {
+                if ($pedido->precio) 
+                {
+                    $montoTotal = $montoTotal + ($pedido->precio * $pedido->cantidad);
+                }
+            }
+
+            $pagoInicial = $montoTotal / 10;
+
+            $paquete->pago_inicial = $pagoInicial;
+
+            $paquete->estado = 'Pagando';
+
+            $paquete->save();
+
             Cart::session(auth()->id())->add(array(
                 'id' => $idPaquete,
                 'name' => 'Seña Pedido de Importación',
-                'price' => $señaPaquete,
+                'price' => $pagoInicial,
                 'quantity' => 1,
                 'attributes' => array('https://prueba-servicio-al-toque.s3-sa-east-1.amazonaws.com/seo_img/logo.jpeg', 1),
                 'associatedModel' => $paquete,
@@ -51,11 +73,11 @@ class UserController extends Controller
 
             session()->put('pagando_seña', $idPaquete);
 
-            session()->put('pago_inicial', $señaPaquete);
+            // session()->put('pago_inicial', $señaPaquete);
 
             return redirect()->route('Checkout');
 
-        } elseif(is_null($señaPaquete) && is_null($idPaquete) && !session()->has('pagando_seña'))
+        } elseif(is_null($idPaquete) && !session()->has('pagando_seña'))
         {
             $producto = Product::where('id', '=', $id)
                                 ->where('stock', '>=', 1)
@@ -148,6 +170,12 @@ class UserController extends Controller
             session()->forget('pagando_seña');
 
             session()->forget('pago_inicial');
+
+            $paquete = Paquete::find($id);
+
+            $paquete->estado = 'Abierto y Confirmado';
+
+            $paquete->save();
         }
 
         return redirect()->back();

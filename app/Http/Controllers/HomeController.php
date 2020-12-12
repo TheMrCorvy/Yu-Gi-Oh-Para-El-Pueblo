@@ -74,7 +74,12 @@ class HomeController extends Controller
 
         $pagoInicial = $montoTotal / 10;
 
-        if ($paquete->estado === 'En Camino' || $paquete->estado === "Finalizado") 
+        if (
+            $paquete->estado === 'En Camino' || 
+            $paquete->estado === "Finalizado" || 
+            $paquete->estado === "Pagando" ||
+            $paquete->estado === "El paquete llegó al local"
+        ) 
         {
             $ordenCompra = OrdenCompra::find($paquete->orden_compra);
 
@@ -89,11 +94,7 @@ class HomeController extends Controller
 
     public function Checkout()
     {
-        if (null !== auth()->id()) {
-            $productosEnCarrito = \Cart::session(auth()->id())->getContent();
-        }else{
-            $productosEnCarrito = '';
-        }
+        $productosEnCarrito = \Cart::session(auth()->id())->getContent();
 
         $usuario = User::where('username', Auth::user()->username)->first();
 
@@ -178,7 +179,7 @@ class HomeController extends Controller
         $ordenCompra = OrdenCompra::create([
             'username' => $usuario->username,
             'fecha' => date('Y-m-d'),
-            'monto_total' => floor(Cart::session(auth()->id())->getTotal()),
+            'monto_total' => ceil(Cart::session(auth()->id())->getTotal()),
             'nombre' => $primerPaso['nombre'],
             'dni' => $primerPaso['dni'],
             'calle' => $primerPaso['calle'],
@@ -189,6 +190,15 @@ class HomeController extends Controller
             'envio' => $primerPaso['envio'],
             'finalizada' => false,
         ]);
+
+        if (session()->has('pagando_seña')) 
+        {
+            $paquete = Paquete::find(session()->get('pagando_seña'));
+
+            $paquete->orden_compra = $ordenCompra->id;
+
+            $paquete->save();
+        }
 
         OrdenCompra::where('finalizada', false)->whereMonth('fecha', '<=', now()->subMonth()->month)->delete();
 
@@ -237,7 +247,12 @@ class HomeController extends Controller
 
         $precioEnvio = ZonaEnvio::select('precio')->where('zona', 'LIKE', "%$zonaEnvio%")->first();
 
-        session()->put('precio_envio', $precioEnvio->precio);
+        if (is_null($precioEnvio)) 
+        {
+            return view('errors.500');
+        }
+
+        // session()->put('precio_envio', $precioEnvio->precio);
 
         $usuario = User::where('username', Auth::user()->username)->first();
 
@@ -254,6 +269,16 @@ class HomeController extends Controller
         $ordenCompra->metodo_envio = $segundoPaso['metodoEnvio'];
         $ordenCompra->precio_envio = $precioEnvio->precio;
         $ordenCompra->save();
+
+        $condition = new \Darryldecode\Cart\CartCondition(array(
+            'name' => $segundoPaso['metodoEnvio'],
+            'type' => 'shipping',
+            'target' => 'total',
+            'value' => '+' . $precioEnvio->precio,
+            'order' => 1
+        ));
+
+        Cart::session(auth()->id())->condition($condition);
 
         return back()->with(['formulario' => '3', 'ordenCompra' => $segundoPaso['ordenCompra'], 'usuario' => $usuario]);
     }

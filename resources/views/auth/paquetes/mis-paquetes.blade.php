@@ -77,18 +77,18 @@
                                         <br>
                                         <br>
 
-                                        @if (!is_null($paquete->seguimiento_envio))
+                                        @if (!is_null($paquete->seguimiento_envio) && $paquete->estado !== 'Finalizado')
                                             <span class="text-info">{{$paquete->seguimiento_envio}}</span>
                                         @endif
                                         
-                                        @if ($paquete->estado === "Abierto" || $paquete->estado === "Abierto y Revisando" || $paquete->estado === "Abierto y Revisado")
+                                        @if ($paquete->estado === "Abierto" || $paquete->estado === "Abierto y Revisando" || $paquete->estado === "Abierto y Confirmado")
                                             <br>
                                             <td><small>Todavía puedes añadir o quitar cartas, o modificar sus cantidades</small></td>
                                             <br>
                                             <br>
                                         @endif
                                         
-                                        @if ($paquete->estado !== "En Camino")
+                                        @if ($paquete->estado === "Abierto" || $paquete->estado === "Abierto y Revisando" || $paquete->estado === "Abierto y Confirmado")
                                             <p>Forma de Entrega: <span class="text-danger">Elegir después de pagar la seña</span>.</p>
                                         @endif
 
@@ -183,7 +183,7 @@
                         </li>
                         <li>
                             <p>
-                                Expansión/Rareza (opcional, si no se especifica se usará el precio más barato)
+                                Expansión/Rareza (opcional, si no se especifica se buscará el precio más barato)
                             </p>
                         </li>
                     </ol>
@@ -192,6 +192,12 @@
                     </p>
                     <p class="description">
                         <strong>LOS PRECIOS DADOS LUEGO DE LA REVISIÓN NO SON PERMANENTES</strong>. El precio final que reciba tu paquete tendrá una fecha de caducidad, y si no pagas la seña antes de dicha fecha, el paquete no será válido para importar y tendrá que pasar nuevamente por revisión para darte un presupuesto nuevo.
+                    </p>
+                    <p class="description">
+                        Si quisieras editar algún item que hayas agregado a tu paquete, solo haz click en "sumar todo al pedido", o simplemente recarga la página, luego de eso te aparecerá tu paquete con la opción administrarlo.
+                    </p>
+                    <p class="description">
+                        Siempre que tu paquete esté "<strong class="text-success">Abierto</strong>", o "<strong class="text-success">Abierto y Confirmado</strong>", podrás sumar cartas, o administrar las que ya están agregadas.
                     </p>
                 </div>
                 <div class="modal-footer">
@@ -315,7 +321,9 @@
     function comenzarPedido()
     {
         $("#bd-example-modal-xl").modal("hide")
-        $("#modal-pedido").modal("show")
+        setTimeout(() => {
+            $("#modal-pedido").modal("show")
+        }, 1000);
     }
 
     async function sumarAlPaquete(e)

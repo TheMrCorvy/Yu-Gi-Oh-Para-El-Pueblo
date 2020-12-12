@@ -15,8 +15,16 @@
                     <div class="col-lg-8 mx-auto text-center my-5">
                         <h3 class="display-3 pt-4">Detalles del Paquete</h3>
                         <small class="description">Estado actual del Paquete: <span class="text-success" id="estado-paquete">{{$paquete->estado}}</span></small>
-                        <br>
+                        
+                        @if ($paquete->estado === "Cerrado y Tramitando Importación")
+                            <br>
+                            <br>
+                            <a href="{{route('admin.notify', $paquete->id)}}" class="btn btn-outline-danger">
+                                notificar pedido realizado
+                            </a>
+                        @endif
 
+                        <br>
                         <div class="form-group mt-3">
                             <label for="comentar-paquete">Dejar un comentario al paquete:</label>
                             <textarea 
@@ -176,10 +184,16 @@
                         </div>
                         <div class="col-lg-2 pr-0 text-center">
                             <p>
-                                @if ($pagoInicial > 0)
-                                    <strong>
-                                        Seña a Pagar: $ {{$pagoInicial}}
-                                    </strong>
+                                @if ($pagoInicial > 0 || !is_null($paquete->pago_inicial))
+                                    @if (!is_null($paquete->pago_inicial))
+                                        <strong>
+                                            Seña a Pagar: $ {{$paquete->pago_inicial}}
+                                        </strong>
+                                    @else
+                                        <strong>
+                                            Seña a Pagar: $ {{$pagoInicial}}
+                                        </strong>
+                                    @endif
                                 @else
                                     <strong>
                                         Seña a Pagar: <small class="text-warning">Aún no disponible.</small>

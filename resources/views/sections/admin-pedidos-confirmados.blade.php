@@ -1,6 +1,6 @@
 <div class="col-lg-12">
     <div class="card">
-        <div class="card-body pb-0">
+        <div class="card-body pb-0 table-responsive">
             <h3 class="text-left pb-3">Paquetes listos para importar</h3>
             <p class="">
                 Desde acá se puede notificar a los usuarios cuando ya hayas hecho el pedido de importación.
@@ -8,7 +8,7 @@
             @if ($paquetesParaImportar->count() < 1)
                 <table class="table table-striped px-0">
             @else
-                <table class="table table-responsive table-striped px-0">
+                <table class="table table-striped px-0">
             @endif
                 <thead>
                     <tr>

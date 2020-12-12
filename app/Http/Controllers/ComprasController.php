@@ -49,10 +49,6 @@ class ComprasController extends Controller
     {
         if (session()->has('pagando_seña')) 
         {
-            $pagoInicial = ceil(session()->get('pago_inicial'));
-
-            $ordenFinalizada = $this->finalizarOrdenCompra($ordenCompra, 'Pago en Efectivo', $pagoInicial);
-
             $paquete = Paquete::find(session()->get('pagando_seña'));
 
             if (!($paquete->fecha_caducidad_precio >= now()->format('Y-m-d')) && !is_null($paquete->fecha_caducidad_precio)) 
@@ -63,6 +59,8 @@ class ComprasController extends Controller
                     'Ya pasó la fecha límite en la que podías pagar la seña para este paquete. Tendrás que enviarlo a revisión nuevamente para que podamos darte un precio actualizado.'
                 );
             }
+
+            $ordenFinalizada = $this->finalizarOrdenCompra($ordenCompra, 'Pago en Efectivo', ceil(Cart::session(auth()->id())->getTotal()));
 
             if (session()->has('pago_final')) 
             {
@@ -78,14 +76,13 @@ class ComprasController extends Controller
 
             $paquete->save();
 
-            session()->forget('pagando_seña');
             session()->forget('pago_inicial');
 
             Cart::session(auth()->id())->clear();
 
             Cart::session(auth()->id())->clearCartConditions();
 
-            Mail::to('mr.corvy@gmail.com')->send(new MailPedidoEncargado);
+            Mail::to('mr.corvy@yopmail.com')->send(new MailPedidoEncargado);
 
             return redirect()->route('Importar Cartas');
         } else 
@@ -103,7 +100,7 @@ class ComprasController extends Controller
 
                     Cart::session(auth()->id())->clearCartConditions(); //hay que quitar el descuento en efectivo
                     
-                    Mail::to('mr.corvy@gmail.com')->send(new MailVendedor);
+                    Mail::to('mr.corvy@yopmail.com')->send(new MailVendedor);
         
                     return redirect()->route('home', Auth::user()->username);
                 }
@@ -172,9 +169,9 @@ class ComprasController extends Controller
         {
             if (session()->has('pagando_seña')) 
             {
-                $pagoInicial = ceil(session()->get('pago_inicial'));
+                // $pagoInicial = ceil(session()->get('pago_inicial'));
 
-                $ordenFinalizada = $this->finalizarOrdenCompra($datosTarjeta['ordenCompra'], 'Pago Online con MercadoPago', $pagoInicial);
+                $ordenFinalizada = $this->finalizarOrdenCompra($datosTarjeta['ordenCompra'], 'Pago Online con MercadoPago', ceil(Cart::session(auth()->id())->getTotal()));
 
                 $paquete = Paquete::find(session()->get('pagando_seña'));
 
@@ -193,13 +190,12 @@ class ComprasController extends Controller
                 $paquete->save();
 
                 session()->forget('pagando_seña');
-                session()->forget('pago_inicial');
 
                 Cart::session(auth()->id())->clear();
 
                 Cart::session(auth()->id())->clearCartConditions();
 
-                Mail::to('mr.corvy@gmail.com')->send(new MailPedidoEncargado);
+                Mail::to('mr.corvy@yopmail.com')->send(new MailPedidoEncargado);
 
                 return redirect()->route('Importar Cartas');
 
@@ -215,7 +211,7 @@ class ComprasController extends Controller
                         Cart::session(auth()->id())->clear();
                         Cart::session(auth()->id())->clearCartConditions(); //hay que quitar el cupon de descuento
     
-                        Mail::to('mr.corvy@gmail.com')->send(new MailVendedor);
+                        Mail::to('mr.corvy@yopmail.com')->send(new MailVendedor);
     
                         return redirect()->route('home', Auth::user()->username);
                     }else {
@@ -273,15 +269,7 @@ class ComprasController extends Controller
     }
 
     public function CrearPeticionPagoMP($cardNetwork, $cardToken, $email, $installments)
-    {
-        if (session()->has('precio_envio')) 
-        {
-            $precioConEnvio = floor(Cart::session(auth()->id())->getTotal()) + session()->get('precio_envio');
-        }else
-        {
-            $precioConEnvio = floor(Cart::session(auth()->id())->getTotal());
-        }
-        
+    {   
         $requestStatus = $this->makeRequest(
             'POST',
             '/v1/payments',
@@ -291,7 +279,7 @@ class ComprasController extends Controller
                     'email' => $email,
                 ],
                 'binary_mode' => true, //binary_mode es para pedir que la transaccion tenga solo 2 estados, aprobada o rechazada
-                'transaction_amount' => $precioConEnvio,
+                'transaction_amount' => ceil(Cart::session(auth()->id())->getTotal()),
                 'payment_method_id' => $cardNetwork,
                 'token' => $cardToken,
                 'installments' => intval($installments),//la cantidad de cuotas en el pago
@@ -326,10 +314,10 @@ class ComprasController extends Controller
 
         // despues se manda el dinero a mi cuenta, y despues se paga realmente
 
-        if (session()->has('precio_envio')) 
-        {
-            session()->forget('precio_envio');
-        }
+        // if (session()->has('precio_envio')) 
+        // {
+        //     session()->forget('precio_envio');
+        // }
 
         return $requestStatus;
     }

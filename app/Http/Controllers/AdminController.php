@@ -144,7 +144,7 @@ class AdminController extends Controller
 
         $usuario = User::where('username', $paquete->username)->first();
 
-        if (is_null($paquete) || $paquete->username !== Auth::user()->username) 
+        if (is_null($paquete)) 
         {
             return view('errors.404');
         }
@@ -222,13 +222,19 @@ class AdminController extends Controller
 
         $paquete->fecha_caducidad_precio = $campos['fechaCaducudadPrecio'];
 
-        $paquete->estado = 'Abierto y Confirmado';
+        if ($paquete->estado !== 'Cerrado y Tramitando Importación') 
+        {
+            $paquete->estado = 'Abierto y Confirmado';
+        }
 
         $paquete->save();
 
         $notifyUser = User::select('email')->where('username', $paquete->username)->first();
 
-        Mail::to($notifyUser->email)->send(new MailPaqueteRevisado);
+        if ($paquete->estado !== 'Cerrado y Tramitando Importación') 
+        {
+            Mail::to($notifyUser->email)->send(new MailPaqueteRevisado);
+        }
 
         return redirect()->route('admin.list-pakages');
     }

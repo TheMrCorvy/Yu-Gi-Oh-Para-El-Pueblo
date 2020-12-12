@@ -110,7 +110,7 @@
     <div class="modal-footer">
         @if ($productos->count() >= 1)
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Volver</button>
-            <a href="{{ route('Checkout') }}" type="button" class="btn btn-primary">¡Pagar Ahora!</a>
+            <a href="{{ route('Checkout') }}" class="btn btn-primary">¡Pagar Ahora!</a>
         @else
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Volver</button>
         @endif

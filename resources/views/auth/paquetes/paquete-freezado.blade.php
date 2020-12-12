@@ -50,6 +50,12 @@
                             </p>
                         </div>
                     @endif
+
+                    @if ($paquete->username === Auth::user()->username && $paquete->estado !== "Finalizado")
+                        <div class="col-lg-12 text-right mb-5">
+                            <a href="{{route('Realizar Pago Final', $paquete->id)}}" class="btn btn-outline-danger">pagar precio Final</a>
+                        </div>
+                    @endif
                     
                     <div class="col-lg-12 table-responsive mb-3">
                         <table class="table">
@@ -69,9 +75,9 @@
                                         <td class="text-left text-capitalize">{{$cartaPedida->nombre_carta}}</td>
                                         
                                         @if ($cartaPedida->expansion)
-                                            <td class="text-center text-capitalize">{{$cartaPedida->expansion}}</td>
+                                            <td class="text-center">{{$cartaPedida->expansion}}</td>
                                         @else
-                                            <td class="text-center text-capitalize text-success">El precio más barato.</td>
+                                            <td class="text-center text-success">El precio más barato.</td>
                                         @endif
                                         
                                         @if ($cartaPedida->precio)
@@ -99,6 +105,11 @@
                     </div>
                 
                     <div class="col-lg-12 row justify-content-end">
+                        @if ($paquete->username === Auth::user()->username && $paquete->estado !== "Finalizado")
+                            <div class="col-lg-12 pr-0 text-right mb-5">
+                                <a href="{{route('Realizar Pago Final', $paquete->id)}}" class="btn btn-outline-danger">pagar precio Final</a>
+                            </div>
+                        @endif
                         <div class="col-lg-4 pr-0 text-right">
                             <p>
                                 <strong>
@@ -106,18 +117,18 @@
                                 </strong>
                             </p>
                         </div>
-                        @if (!is_null($ordenCompra->precio_envio))
+                        @if (isset($ordenCompra) && !is_null($ordenCompra->precio_envio))
                             <div class="col-lg-4 pr-0 text-right">
                                 <p>
                                     <strong>
-                                        Seña Pagada: $ {{ceil($pagoInicial)}}
+                                        Seña Pagada: $ {{ceil($paquete->pago_inicial)}}
                                     </strong>
                                 </p>
                             </div>
                             <div class="col-lg-4 pr-0 text-right">
                                 <p>
                                     <strong>
-                                        Precio del Envío: $ {{$ordenCompra->precio_envio}}
+                                        Costo del Envío Pagado: $ {{$ordenCompra->precio_envio}}
                                     </strong>
                                 </p>
                             </div>
@@ -125,13 +136,13 @@
                             <div class="col-lg-4 pr-0 text-right">
                                 <p>
                                     <strong>
-                                        Seña Pagada: $ {{$pagoInicial}}
+                                        Seña Pagada: $ {{ceil($paquete->pago_inicial)}}
                                     </strong>
                                 </p>
                             </div>
                         @endif
                     </div>
-                    @if ($ordenCompra->envio !== "Retiro en el Local")
+                    @if (isset($ordenCompra) && $ordenCompra->envio !== "Retiro en el Local")
                         <div class="col-lg-8 mx-auto text-center mb-3">
                             <h3 class="display-3 pt-4">Detalles para el Envío</h3>
                             <div class="col-lg-12 text-center px-3">
@@ -143,9 +154,8 @@
                                 </p>
                             </div>
                         </div>
-                        
-                        <div class="col-lg-12 table-responsive">
-                            <table class="table">
+                        <div class="col-lg-12 table-responsive mb-5">
+                            <table class="table table-striped">
                                 <thead>
                                     <tr>
                                         <th>Nombre</th>
@@ -158,7 +168,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    
                                     <tr>
                                         <td class="text-capitalize">{{ $usuario->name }}</td>
                                         <td class="text-capitalize">{{ $usuario->calle1_timbre }}</td>
@@ -168,7 +177,6 @@
                                         <td class="text-capitalize">{{ $usuario->ciudad }}</td>
                                         <td class="text-capitalize">{{ $usuario->localidad }}</td>
                                     </tr>
-                                    
                                 </tbody>
                             </table>
                         </div>
@@ -177,48 +185,44 @@
                             <h6 class="display-3 pt-4">El paquete se retirará por el Local</h6>
                         </div>
                     @endif
-                    <div class="col-lg-12 d-flex justify-content-end">
-                        <small class="text-muted">Podrás editar un producto del paquete, siempre y cuando este no esté en revisión.</small>
-                    </div>   
-                    <div class="col-lg-12 d-flex justify-content-end pt-2">
-                        <small class="text-muted">Una vez presupuestado el paquete podrás volver a editarlo, pero ten en cuenta que al agregar cartas a tu pedido, este deberá volver a revisarse.</small>
-                    </div> 
 
-                    <div class="col-lg-12 card card-plain mb-0" style="margin-top: -50px !important;">
-                        <div class="card-header bg-secondary text-center">
-                            <h4 class="lead">
-                                Datos de Facturación
-                            </h4>
+                    @isset($ordenCompra)
+                        <div class="col-lg-12 card card-plain mb-0" style="margin-top: -50px !important;">
+                            <div class="card-header pt-0 bg-secondary text-center">
+                                <h4 class="lead mt-0">
+                                    Datos de Facturación
+                                </h4>
+                            </div>
+                            <div class="card-body pb-0 pt-0">
+                                <p class="lead mt-0">
+                                    <strong class="text-capitalize">
+                                        {{ $ordenCompra->nombre }}
+                                    </strong>
+                                    - DNI o CUIL 
+                                    <strong class="text-capitalize">
+                                        {{ $ordenCompra->dni }}
+                                    </strong>
+                                </p>
+                                <p class="lead">
+                                    <strong class="text-capitalize">
+                                        {{ $ordenCompra->calle }}, 
+                                    </strong>
+                                    <strong class="text-capitalize">
+                                        {{ $ordenCompra->altura }}
+                                    </strong> - Código Postal: 
+                                    <strong>
+                                        {{ $ordenCompra->codigo_postal }}, 
+                                    </strong>
+                                    <strong class="text-capitalize">
+                                        {{ $ordenCompra->ciudad }}, 
+                                    </strong>
+                                    <strong class="text-capitalize">
+                                        {{ $ordenCompra->provincia }}
+                                    </strong>
+                                </p>
+                            </div>
                         </div>
-                        <div class="card-body pb-0 pt-0">
-                            <p class="lead mt-0">
-                                <strong class="text-capitalize">
-                                    {{ $ordenCompra->nombre }}
-                                </strong>
-                                - DNI o CUIL 
-                                <strong class="text-capitalize">
-                                    {{ $ordenCompra->dni }}
-                                </strong>
-                            </p>
-                            <p class="lead">
-                                <strong class="text-capitalize">
-                                    {{ $ordenCompra->calle }}, 
-                                </strong>
-                                <strong class="text-capitalize">
-                                    {{ $ordenCompra->altura }}
-                                </strong> - Código Postal: 
-                                <strong>
-                                    {{ $ordenCompra->codigo_postal }}, 
-                                </strong>
-                                <strong class="text-capitalize">
-                                    {{ $ordenCompra->ciudad }}, 
-                                </strong>
-                                <strong class="text-capitalize">
-                                    {{ $ordenCompra->provincia }}
-                                </strong>
-                            </p>
-                        </div>
-                    </div>
+                    @endisset
               
                 </div>
             </div>

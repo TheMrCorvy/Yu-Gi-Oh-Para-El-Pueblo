@@ -321,24 +321,19 @@ class APIPageController extends Controller
 
     public function getMetodosEnvio()
     {
-        $envios = cache()->remember('info-envios', 60*60*24*3, function()
-        {   
-            $metodos = MetodoEnvio::select('metodo', 'id', 'tiempo_previsto')->get();
+        $metodos = MetodoEnvio::select('metodo', 'id', 'tiempo_previsto')->get();
 
-            $zonas = ZonaEnvio::select('metodo_envio', 'id', 'zona', 'precio')->get();
+        $zonas = ZonaEnvio::select('metodo_envio', 'id', 'zona', 'precio')->get();
 
-            return [
-                'metodos' => $metodos,
-                'zonas' => $zonas,
-            ];
-        });
-
-        return response()->json($envios, 200);
+        return response()->json([
+            'metodos' => $metodos,
+            'zonas' => $zonas,
+        ], 200);
     }
 
     public function getInfoEnvios()
     {
-        $enviosCacheados = cache()->remember('info-envios-cart', 60*60*24*3, function()
+        $enviosCacheados = cache()->remember('info-envios-cart', 60*60*24, function()
         {   
             $envios = ZonaEnvio::join('metodos_de_envio', 'zonas_de_envio.metodo_envio', '=', 'metodos_de_envio.id')
                                 ->select(
