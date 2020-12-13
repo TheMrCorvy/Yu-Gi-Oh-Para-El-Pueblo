@@ -43,11 +43,13 @@ class AdminController extends Controller
 
         $categories = Category::all();
 
-        $paquetesParaImportar = Paquete::where('estado', 'Cerrado y Tramitando Importación')->paginate(20);
+        $paquetesParaImportar = Paquete::where('estado', 'Cerrado y Tramitando Importación')->get();
 
         $paquetesImportandose = Paquete::where('estado', 'En Camino')->get();
+
+        $paquetesFinalizados = Paquete::where('estado', 'Finalizado')->paginate('10');
         
-        return view('auth.admin', compact('dolar', 'typeProducts', 'typeCartas', 'categories', 'paquetesParaImportar', 'paquetesImportandose'));
+        return view('auth.admin', compact('dolar', 'typeProducts', 'typeCartas', 'categories', 'paquetesParaImportar', 'paquetesImportandose', 'paquetesFinalizados'));
     }
 
     public function VisualizarCompras()
@@ -293,6 +295,26 @@ class AdminController extends Controller
         Mail::to($notifyUser->email)->send(new MailPedidoRealizado($campos['id-paquete'], $campos['seguimiento-envio']));
 
         return back()->withMessage('Seguimiento de envío notificado conéxito');
+    }
+
+    public function eliminarPaquete($idPaquete)
+    {
+        $paquete = Paquete::find($idPaquete);
+
+        if ($paquete->estado !== "Finalizado") 
+        {
+            return view('errors.404');
+        }
+
+        $ordenCompra = OrdenCompra::find($paquete->orden_compra);
+
+        $pedidos = Pedido::where('paquete', $paquete->id)->delete();
+
+        $paquete->delete();
+        
+        $ordenCompra->delete();
+
+        return back()->withMessage('Paquete eliminado con éxito');
     }
 
     public function borrarMetodo($idMetodo)

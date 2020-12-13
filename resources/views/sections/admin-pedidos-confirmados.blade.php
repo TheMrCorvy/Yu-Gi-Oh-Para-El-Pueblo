@@ -56,9 +56,6 @@
                     
                 </tbody>
             </table>
-            <div class="pagination-container d-flex justify-content-center">
-                {{ $paquetesParaImportar->links() }}
-            </div>
         </div>
     </div>
 </div>
@@ -66,7 +63,7 @@
 <div class="col-lg-12">
     <div class="card">
         <div class="card-body pb-0">
-            <h3 class="text-right pb-3">Paquetes Paquetes en camino</h3>
+            <h3 class="text-right pb-3">Paquetes en camino</h3>
             <p class="">
                 Desde acá se puede notificar a los usuarios cuando haya algún cambio en el seguimiento del envío.
             </p>
@@ -136,6 +133,72 @@
                     
                 </tbody>
             </table>
+        </div>
+    </div>
+</div>
+<div class="col-lg-12">
+    <div class="card">
+        <div class="card-body pb-0 table-responsive">
+            <h3 class="text-center pb-3">Paquetes Finalizados</h3>
+            <p class="">
+                Acá están todos aquellos paquetes cuyo estado sea "Finalizado", y que el usuario ya pagó el precio final.
+            </p>
+            <table class="table table-striped px-0">
+                <thead>
+                    <tr>
+                        <th >Fecha (DD/MM/AAAA)</th>
+                        <th>Número de Pedido</th>
+                        <th class="text-center">Ver Detalle</th>
+                        <th class="text-center">Eliminar</th>
+                        <th class="text-right">Comentario</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if ($paquetesFinalizados->count() < 1)
+                        <tr>
+                            <td>No hay ningún pedido de importación de cartas actualmente.</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    @else
+                        @foreach ($paquetesFinalizados as $paquete)    
+                            <tr>
+                                <td class="text-center">{{ $paquete->created_at->format('d/m/Y') }}</td>
+                                
+                                <td class="text-center">{{ $paquete->id }}</td>
+                                
+                                <td class="text-center">
+                                    <a href="{{route('admin.list-pakage-details', $paquete->id)}}">Ver Detalle del Paquete</a>
+                                </td>
+
+                                <td class="text-center">
+                                    <a 
+                                        href="{{route('admin.delete-pakage', $paquete->id)}}" 
+                                        class="btn btn-outline-danger btn-icon-only"
+                                        data-toggle="tooltip" 
+                                        data-placement="top" 
+                                        title="Eliminar"
+                                    >
+                                        <i class="fas fa-times"></i>
+                                    </a>
+                                </td>
+
+                                @if (!is_null($paquete->comentario_al_paquete))
+                                    <td class="text-right">{{ $paquete->comentario_al_paquete }}</td>
+                                @else
+                                    <td class="text-right">No hay ningún comentario en este paquete</td>
+                                @endif
+                            </tr>
+                        @endforeach
+                    @endif
+                    
+                </tbody>
+            </table>
+            <div class="pagination-container d-flex justify-content-center">
+                {{ $paquetesFinalizados->links() }}
+            </div>
         </div>
     </div>
 </div>

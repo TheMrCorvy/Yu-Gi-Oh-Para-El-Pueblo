@@ -177,6 +177,11 @@ class PermissionsTableSeeder extends Seeder
             'slug' => 'admin.notify',
             'description' => 'permiso para cambiar el seguimiento del envio del paquete',
         ]); 
+        DB::table('permissions')->insert([
+            'name' => 'eliminar paquete',
+            'slug' => 'admin.delete-pakage',
+            'description' => 'permiso para eliminar un paquete finalizado, y todos los pedidos y orden de compra relacionados',
+        ]); 
         
         //metodos y zonas de envios
         DB::table('permissions')->insert([

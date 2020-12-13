@@ -114,6 +114,7 @@
                 @include('sections.admin-pedidos-confirmados', [
                     'paquetesParaImportar' => $paquetesParaImportar,
                     'paquetesImportandose' => $paquetesImportandose,
+                    'paquetesFinalizados' => $paquetesFinalizados
                 ])
 
                 <hr class="col-lg-12 my-8">
