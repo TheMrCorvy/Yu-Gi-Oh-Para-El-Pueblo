@@ -106,7 +106,7 @@
                 >
                     <a href="{{ route('admin.list-pakages') }}">
                         <u>
-                            ver pedidos pendientes de revisión
+                            ver paquetes pendientes de revisión
                         </u>
                     </a>
                 </h1>
