@@ -54,6 +54,13 @@ class RegisterController extends Controller
             'username' => ['required', 'string', 'max:255', 'min:4', 'regex:/^[A-Za-z0-9 ]+$/'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ], [
+            'regex' => 'Solo se permiten letras y números en este campo.',
+            'confirmed' => 'La contraseñas ingresadas no son las mismas.',
+            'required' => 'Este campo es obligatorio',
+            'unique' => 'El email ingresado ya está registrado.',
+            'min' => 'No se ha alcanzado el mínimo de caractéres en este campo.',
+            'max' => 'Se ha sobrepasado el límite de caractéres para este campo.'
         ]);
     }
 
