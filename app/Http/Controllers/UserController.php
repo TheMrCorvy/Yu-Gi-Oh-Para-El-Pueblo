@@ -203,12 +203,13 @@ class UserController extends Controller
             'email' => 'Parece que no ingresaste una dirección de Email válida.',
             'string' => 'El tipo de valor esperado es distinto al enviado.',
             'integer' => 'Solo se permiten números.',
+            'regex' => 'Solo se permiten letras y números en este campo.'
         ];
 
         $editar = request()->validate([
-            'nombreUsuario' => 'required|string|min:5|max:35',
+            'nombreUsuario' => 'required|string|min:5|max:35|regex:/^[A-Za-z0-9 ]+$/',
             'emailUsuario' => 'required|email|min:6',
-            'apodoUsuario' => 'required|string|min:5|max:15',
+            'apodoUsuario' => 'required|string|min:5|max:15|regex:/^[A-Za-z0-9 ]+$/',
             'numeroUsuario' => 'required|string|min:8|max:14',
             'calle1Usuario' => 'nullable|string|min:3|max:75',
             'calle2Usuario' => 'nullable|string|min:3|max:25',
