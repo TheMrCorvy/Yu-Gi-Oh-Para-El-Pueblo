@@ -54,7 +54,7 @@ class UserController extends Controller
                 }
             }
 
-            $pagoInicial = $montoTotal / 10;
+            $pagoInicial = $montoTotal / 2;
 
             $paquete->pago_inicial = $pagoInicial;
 

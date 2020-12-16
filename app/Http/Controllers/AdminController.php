@@ -163,7 +163,7 @@ class AdminController extends Controller
             }
         }
 
-        $pagoInicial = $montoTotal / 10;
+        $pagoInicial = $montoTotal / 2;
 
         if ($paquete->estado === 'En Camino' || $paquete->estado === 'Finalizado') 
         {
@@ -276,7 +276,7 @@ class AdminController extends Controller
             'El Paquete ya fue pedido',
             'El Paquete ya fue despachado de su país de origen',
             'El paquete ya ingresó a Argentina',
-            'El paquete ya está listo para la entrega'
+            'El paquete ya está listo para la entrega. Completa el pago para poder enviar el paquete'
         ];
 
         $paquete = Paquete::find($campos['id-paquete']);

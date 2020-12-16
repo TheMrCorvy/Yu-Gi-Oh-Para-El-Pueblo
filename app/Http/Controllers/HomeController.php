@@ -72,7 +72,7 @@ class HomeController extends Controller
             }
         }
 
-        $pagoInicial = $montoTotal / 10;
+        $pagoInicial = $montoTotal / 2;
 
         if (
             $paquete->estado === 'Cerrado y Tramitando Importación' || 

@@ -116,16 +116,29 @@
                   </div>
                 </div>
                 <br>
-                <div class="row">
-                  <div class="col-lg-12">
-                    <div class="js-form-message mb-4">
-                      <label class="form-label text-left">
-                        Ingresar Cupón de Descuento
-                      </label>
-                      <input type="text" class="form-control" placeholder="Cupón de Descuento" name="cupon">
+                @if (session()->has('pagando_seña'))
+                    <div class="row d-none">
+                      <div class="col-lg-12">
+                        <div class="js-form-message mb-4">
+                          <label class="form-label text-left">
+                            Ingresar Cupón de Descuento
+                          </label>
+                          <input type="text" class="form-control" placeholder="Cupón de Descuento" name="cupon">
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
+                @else
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <div class="js-form-message mb-4">
+                          <label class="form-label text-left">
+                            Ingresar Cupón de Descuento
+                          </label>
+                          <input type="text" class="form-control" placeholder="Cupón de Descuento" name="cupon">
+                        </div>
+                      </div>
+                    </div>
+                @endif
 
                 <div class="alert alert-primary d-none" role="alert" id="d-none">
                   <p>Cargando. Por favor espere, esto puede tardar unos momentos mientras verificamos todo. Sea paciente.</p>
@@ -161,10 +174,14 @@
             </div>
 
             {{-- PAGAR EN EFECTIVO --}}
-            <div class="tab-pane fade text-center" id="tabs-icons-text-2" role="tabpanel" aria-labelledby="tabs-icons-text-2-tab">
+            <div class="tab-pane fade text-center pb-4" id="tabs-icons-text-2" role="tabpanel" aria-labelledby="tabs-icons-text-2-tab">
               <a href="{{ route('Pago En La Entrega', Session::get('ordenCompra')) }}" class="btn btn-success my-4">Finalizar Compra</a>
 
               <p>Al pagar en efectivo obtendrás un descuento exclusivo del <u class="text-success">5%</u> en el total de todos los productos que compres. (No podrás aplicar cupones de descuento al elegir éste medio de pago).</p>
+              
+              <small class="text-danger mb-3">
+                Importante: Si estás pagando un pedido de importación de cartas, no se calculará el 5% de descuento.
+              </small>
             </div>
         </div>
     </div>
