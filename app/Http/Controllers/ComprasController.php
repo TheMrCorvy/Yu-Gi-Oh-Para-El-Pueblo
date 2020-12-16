@@ -67,14 +67,14 @@ class ComprasController extends Controller
             {
                 $paquete->estado = 'Finalizado';
 
-                Mail::to('mr.corvy@yopmail.com')->send(new MailPagoFinalRealizado);
+                Mail::to('info@yugiohparaelpueblo.com')->send(new MailPagoFinalRealizado);
 
                 session()->forget('pago_final');
             } else 
             {
                 $paquete->estado = 'Cerrado y Tramitando Importación';
 
-                Mail::to('mr.corvy@yopmail.com')->send(new MailPedidoEncargado);
+                Mail::to('info@yugiohparaelpueblo.com')->send(new MailPedidoEncargado);
             }
             
             $paquete->orden_compra = $ordenFinalizada->id;
@@ -105,7 +105,7 @@ class ComprasController extends Controller
 
                     Cart::session(auth()->id())->clearCartConditions(); //hay que quitar el descuento en efectivo
                     
-                    Mail::to('mr.corvy@yopmail.com')->send(new MailVendedor);
+                    Mail::to('info@yugiohparaelpueblo.com')->send(new MailVendedor);
         
                     return redirect()->route('home', Auth::user()->username);
                 }
@@ -182,14 +182,14 @@ class ComprasController extends Controller
                 {
                     $paquete->estado = 'Finalizado';
 
-                    Mail::to('mr.corvy@yopmail.com')->send(new MailPagoFinalRealizado);
+                    Mail::to('info@yugiohparaelpueblo.com')->send(new MailPagoFinalRealizado);
 
                     session()->forget('pago_final');
                 } else 
                 {
                     $paquete->estado = 'Cerrado y Tramitando Importación';
 
-                    Mail::to('mr.corvy@yopmail.com')->send(new MailPedidoEncargado);
+                    Mail::to('info@yugiohparaelpueblo.com')->send(new MailPedidoEncargado);
                 }
 
                 $paquete->orden_compra = $ordenFinalizada->id;
@@ -218,7 +218,7 @@ class ComprasController extends Controller
                         Cart::session(auth()->id())->clear();
                         Cart::session(auth()->id())->clearCartConditions(); //hay que quitar el cupon de descuento
     
-                        Mail::to('mr.corvy@yopmail.com')->send(new MailVendedor);
+                        Mail::to('info@yugiohparaelpueblo.com')->send(new MailVendedor);
     
                         return redirect()->route('home', Auth::user()->username);
                     }else {

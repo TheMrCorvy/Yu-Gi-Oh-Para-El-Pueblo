@@ -35,7 +35,7 @@ class PaquetesController extends Controller
 
             $paquete->save();
 
-            Mail::to('mr.corvy@yopmail.com')->send(new MailPedidoImportacion($paquete->id));
+            Mail::to('info@yugiohparaelpueblo.com')->send(new MailPedidoImportacion($paquete->id));
 
             return redirect()->to(route('Importar Cartas'));
 
