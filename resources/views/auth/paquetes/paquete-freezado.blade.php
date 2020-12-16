@@ -51,8 +51,8 @@
                         </div>
                     @endif
 
-                    @if ($paquete->username === Auth::user()->username && $paquete->estado !== "Finalizado")
-                        <div class="col-lg-12 text-right mb-5">
+                    @if ($paquete->username === Auth::user()->username && $paquete->estado === "El paquete llegó al local")
+                        <div class="col-lg-12 text-right mb-5" style="padding-right: 2rem;">
                             <a href="{{route('Realizar Pago Final', $paquete->id)}}" class="btn btn-outline-danger">pagar precio Final</a>
                         </div>
                     @endif
@@ -105,7 +105,7 @@
                     </div>
                 
                     <div class="col-lg-12 row justify-content-end">
-                        @if ($paquete->username === Auth::user()->username && $paquete->estado !== "Finalizado")
+                        @if ($paquete->username === Auth::user()->username && $paquete->estado === "El paquete llegó al local")
                             <div class="col-lg-12 pr-0 text-right mb-5">
                                 <a href="{{route('Realizar Pago Final', $paquete->id)}}" class="btn btn-outline-danger">pagar precio Final</a>
                             </div>
@@ -142,7 +142,7 @@
                             </div>
                         @endif
                     </div>
-                    @if (isset($ordenCompra) && $ordenCompra->envio !== "Retiro en el Local")
+                    @if (isset($ordenCompra) && $ordenCompra->envio)
                         <div class="col-lg-8 mx-auto text-center mb-3">
                             <h3 class="display-3 pt-4">Detalles para el Envío</h3>
                             <div class="col-lg-12 text-center px-3">
@@ -181,47 +181,49 @@
                             </table>
                         </div>
                     @else
-                        <div class="col-lg-8 mx-auto text-center mt-5">
+                        <div class="col-lg-8 mx-auto text-center my-5">
                             <h6 class="display-3 pt-4">El paquete se retirará por el Local</h6>
                         </div>
                     @endif
 
                     @isset($ordenCompra)
-                        <div class="col-lg-12 card card-plain mb-0" style="margin-top: -50px !important;">
-                            <div class="card-header pt-0 bg-secondary text-center">
-                                <h4 class="lead mt-0">
-                                    Datos de Facturación
-                                </h4>
+                        @if ($ordenCompra->username !== Auth::user()->username)
+                            <div class="col-lg-12 card card-plain mb-4" style="margin-top: -50px !important;">
+                                <div class="card-header pt-0 bg-secondary text-center">
+                                    <h4 class="lead mt-3">
+                                        Datos de Facturación
+                                    </h4>
+                                </div>
+                                <div class="card-body pb-0 pt-0">
+                                    <p class="lead mt-0">
+                                        <strong class="text-capitalize">
+                                            {{ $ordenCompra->nombre }}
+                                        </strong>
+                                        - DNI o CUIL 
+                                        <strong class="text-capitalize">
+                                            {{ $ordenCompra->dni }}
+                                        </strong>
+                                    </p>
+                                    <p class="lead">
+                                        <strong class="text-capitalize">
+                                            {{ $ordenCompra->calle }}, 
+                                        </strong>
+                                        <strong class="text-capitalize">
+                                            {{ $ordenCompra->altura }}
+                                        </strong> - Código Postal: 
+                                        <strong>
+                                            {{ $ordenCompra->codigo_postal }}, 
+                                        </strong>
+                                        <strong class="text-capitalize">
+                                            {{ $ordenCompra->ciudad }}, 
+                                        </strong>
+                                        <strong class="text-capitalize">
+                                            {{ $ordenCompra->provincia }}
+                                        </strong>
+                                    </p>
+                                </div>
                             </div>
-                            <div class="card-body pb-0 pt-0">
-                                <p class="lead mt-0">
-                                    <strong class="text-capitalize">
-                                        {{ $ordenCompra->nombre }}
-                                    </strong>
-                                    - DNI o CUIL 
-                                    <strong class="text-capitalize">
-                                        {{ $ordenCompra->dni }}
-                                    </strong>
-                                </p>
-                                <p class="lead">
-                                    <strong class="text-capitalize">
-                                        {{ $ordenCompra->calle }}, 
-                                    </strong>
-                                    <strong class="text-capitalize">
-                                        {{ $ordenCompra->altura }}
-                                    </strong> - Código Postal: 
-                                    <strong>
-                                        {{ $ordenCompra->codigo_postal }}, 
-                                    </strong>
-                                    <strong class="text-capitalize">
-                                        {{ $ordenCompra->ciudad }}, 
-                                    </strong>
-                                    <strong class="text-capitalize">
-                                        {{ $ordenCompra->provincia }}
-                                    </strong>
-                                </p>
-                            </div>
-                        </div>
+                        @endif
                     @endisset
               
                 </div>

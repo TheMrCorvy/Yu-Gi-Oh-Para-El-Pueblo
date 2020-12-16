@@ -294,7 +294,7 @@ class AdminController extends Controller
 
         Mail::to($notifyUser->email)->send(new MailPedidoRealizado($campos['id-paquete'], $campos['seguimiento-envio']));
 
-        return back()->withMessage('Seguimiento de envío notificado conéxito');
+        return back()->withMessage('Seguimiento de envío notificado con éxito');
     }
 
     public function eliminarPaquete($idPaquete)
@@ -336,7 +336,7 @@ class AdminController extends Controller
         $campos = $request->only('zona', 'precio', 'metodoEnvio');
 
         $validator = Validator::make($campos, [
-            'zona' => 'required|string|max:190',
+            'zona' => 'required|string|max:90',
             'precio' => 'required|integer|min:10',
             'metodoEnvio' => 'required|integer|exists:metodos_de_envio,id',
         ]);
@@ -360,7 +360,7 @@ class AdminController extends Controller
         $campos = $request->only('metodo', 'tiempoPrevisto');
 
         $validator = Validator::make($campos, [
-            'metodo' => 'required|string|max:190',
+            'metodo' => 'required|string|max:90',
             'tiempoPrevisto' => 'required|string|max:190',
         ]);
 
@@ -382,7 +382,7 @@ class AdminController extends Controller
         $campos = $request->only('zona', 'precio', 'metodoEnvio', 'id-zona');
 
         $validator = Validator::make($campos, [
-            'zona' => 'required|string|min:5|max:190',
+            'zona' => 'required|string|min:5|max:90',
             'precio' => 'required|integer|min:10',
             'metodoEnvio' => 'required|integer|exists:metodos_de_envio,id',
             'id-zona' => 'required|integer|exists:zonas_de_envio,id',
@@ -410,8 +410,8 @@ class AdminController extends Controller
 
         $validator = Validator::make($campos, [
             'id-metodo' => 'required|integer|exists:metodos_de_envio,id',
-            'metodo' => 'required|string|min:5',
-            'tiempoPrevisto' => 'required|string|min:10',
+            'metodo' => 'required|string|min:5|max:90',
+            'tiempoPrevisto' => 'required|string|min:10|max:190',
         ]);
 
         if($validator->fails())

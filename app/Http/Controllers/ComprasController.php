@@ -13,6 +13,7 @@ use Cart;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MailVendedor;
 use App\Mail\MailPedidoEncargado;
+use App\Mail\MailPagoFinalRealizado;
 
 use App\Product;
 use App\Compra;
@@ -61,13 +62,19 @@ class ComprasController extends Controller
             }
 
             $ordenFinalizada = $this->finalizarOrdenCompra($ordenCompra, 'Pago en Efectivo', ceil(Cart::session(auth()->id())->getTotal()));
-
+            
             if (session()->has('pago_final')) 
             {
                 $paquete->estado = 'Finalizado';
+
+                Mail::to('mr.corvy@yopmail.com')->send(new MailPagoFinalRealizado);
+
+                session()->forget('pago_final');
             } else 
             {
                 $paquete->estado = 'Cerrado y Tramitando Importación';
+
+                Mail::to('mr.corvy@yopmail.com')->send(new MailPedidoEncargado);
             }
             
             $paquete->orden_compra = $ordenFinalizada->id;
@@ -81,8 +88,6 @@ class ComprasController extends Controller
             Cart::session(auth()->id())->clear();
 
             Cart::session(auth()->id())->clearCartConditions();
-
-            Mail::to('mr.corvy@yopmail.com')->send(new MailPedidoEncargado);
 
             return redirect()->route('Importar Cartas');
         } else 
@@ -137,7 +142,7 @@ class ComprasController extends Controller
             'card_token' => 'required',
             'email' => 'required|min:3|max:40|email',
             'installments' => 'required|min:1|integer',
-            'ordenCompra' => 'required|min:1|max:5|string',
+            'ordenCompra' => 'required|integer|exists:ordenes_compras,id',
             'cupon' => 'nullable|string|min:10|max:30',
         ], $messages);
         
@@ -169,8 +174,6 @@ class ComprasController extends Controller
         {
             if (session()->has('pagando_seña')) 
             {
-                // $pagoInicial = ceil(session()->get('pago_inicial'));
-
                 $ordenFinalizada = $this->finalizarOrdenCompra($datosTarjeta['ordenCompra'], 'Pago Online con MercadoPago', ceil(Cart::session(auth()->id())->getTotal()));
 
                 $paquete = Paquete::find(session()->get('pagando_seña'));
@@ -178,9 +181,15 @@ class ComprasController extends Controller
                 if (session()->has('pago_final')) 
                 {
                     $paquete->estado = 'Finalizado';
+
+                    Mail::to('mr.corvy@yopmail.com')->send(new MailPagoFinalRealizado);
+
+                    session()->forget('pago_final');
                 } else 
                 {
                     $paquete->estado = 'Cerrado y Tramitando Importación';
+
+                    Mail::to('mr.corvy@yopmail.com')->send(new MailPedidoEncargado);
                 }
 
                 $paquete->orden_compra = $ordenFinalizada->id;
@@ -194,8 +203,6 @@ class ComprasController extends Controller
                 Cart::session(auth()->id())->clear();
 
                 Cart::session(auth()->id())->clearCartConditions();
-
-                Mail::to('mr.corvy@yopmail.com')->send(new MailPedidoEncargado);
 
                 return redirect()->route('Importar Cartas');
 
@@ -221,6 +228,9 @@ class ComprasController extends Controller
                     return abort(500);
                 }
             }
+        }else
+        {
+            return abort(500);
         }
 
         return redirect()->route('Checkout')->withMessage('Hubo un error en la transacción. Revisá que los datos de tu tarjeta estén correctos, y que tengas fondos disponibles en la mísma. Si el error se repite, por favor contactános al WhatsApp 011 3771-9677 o al email info@yugiohparaelpueblo.com');

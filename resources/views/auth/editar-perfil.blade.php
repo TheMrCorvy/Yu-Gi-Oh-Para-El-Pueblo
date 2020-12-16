@@ -45,7 +45,7 @@
 
             <div class="form-group col-lg-4">
               <label for="example-text-input" class="form-control-label">Tu apodo dentro del sitio:</label>
-              <input id="apodoUsuario" name="apodoUsuario" class="form-control @error('apodoUsuario') is-invalid @enderror" type="text" value="{{ $usuario->username }}">
+              <input id="apodoUsuario" name="apodoUsuario" class="form-control @error('apodoUsuario') is-invalid @enderror" type="text" value="{{ $usuario->username }}" disabled>
               @error('apodoUsuario')
                   <span class="invalid-feedback" role="alert">
                       <strong>{{ $message }}</strong>

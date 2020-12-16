@@ -12,7 +12,7 @@ class MultiplicadorSeeder extends Seeder
     public function run()
     {
         DB::table('multiplicador')->insert([
-            'multiplicador' => 75,
+            'multiplicador' => 100,
         ]); 
     }
 }

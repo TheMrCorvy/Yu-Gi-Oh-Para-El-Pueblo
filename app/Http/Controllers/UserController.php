@@ -178,6 +178,22 @@ class UserController extends Controller
             $paquete->save();
         }
 
+        if (Cart::session(auth()->id())->getContent()->count() < 1) 
+        {
+            Cart::session(auth()->id())->clearCartConditions();
+
+            if (session()->has('pagando_seña'))
+            {
+                session()->forget('pagando_seña');
+                session()->forget('pago_inicial');
+            }
+
+            if (session()->has('pago_final')) 
+            {
+                session()->forget('pago_final');
+            }
+        }
+
         return redirect()->back();
     }
     
@@ -203,25 +219,26 @@ class UserController extends Controller
             'email' => 'Parece que no ingresaste una dirección de Email válida.',
             'string' => 'El tipo de valor esperado es distinto al enviado.',
             'integer' => 'Solo se permiten números.',
-            'regex' => 'Solo se permiten letras y números en este campo.'
+            'regex' => 'Solo se permiten letras y números en este campo.',
+            // 'unique' => 'El campo :attribute ya está registrado.',
         ];
 
         $editar = request()->validate([
             'nombreUsuario' => 'required|string|min:5|max:35|regex:/^[A-Za-z0-9 ]+$/',
             'emailUsuario' => 'required|email|min:6',
-            'apodoUsuario' => 'required|string|min:5|max:15|regex:/^[A-Za-z0-9 ]+$/',
+            // 'apodoUsuario' => 'required|string|min:5|max:15|regex:/^[A-Za-z0-9 ]+$/|unique:users,username',
             'numeroUsuario' => 'required|string|min:8|max:14',
             'calle1Usuario' => 'nullable|string|min:3|max:75',
             'calle2Usuario' => 'nullable|string|min:3|max:25',
             'alturaUsuario' => 'required|integer',
-            'barrioUsuario' => 'nullable|string|min:3|max:25',
-            'provinciaUsuario' => 'required|string|min:3|max:15',
-            'ciudadUsuario' => 'required|min:3|max:25|string'
+            'barrioUsuario' => 'nullable|string|min:3|max:75',
+            'provinciaUsuario' => 'required|string|min:3|max:75',
+            'ciudadUsuario' => 'required|min:3|max:75|string'
         ], $message);
 
         $usuario->name = $editar['nombreUsuario'];    
         $usuario->email = $editar['emailUsuario'];    
-        $usuario->username = $editar['apodoUsuario'];    
+        // $usuario->username = $editar['apodoUsuario'];    
         $usuario->num_telefono = $editar['numeroUsuario'];    
         $usuario->calle1_timbre = $editar['calle1Usuario'];    
         $usuario->calle2 = $editar['calle2Usuario'];    
@@ -232,6 +249,6 @@ class UserController extends Controller
 
         $usuario->save();
 
-        return redirect(route('home', Auth::user()->username));
+        return redirect(route('home', $username));
     }
 }

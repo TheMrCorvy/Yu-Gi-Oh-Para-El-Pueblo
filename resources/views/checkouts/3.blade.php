@@ -80,7 +80,7 @@
                         Nombre escrito en la Tarjeta
                         <span class="text-danger">*</span>
                       </label>
-                      <input type="text" class="form-control" placeholder="Juanito Alcachofa" data-checkout="cardholderName" required="">
+                      <input type="text" class="form-control text-capitalize" placeholder="Juanito Alcachofa" data-checkout="cardholderName" required="">
                     </div>
                   </div>
                   
@@ -104,7 +104,7 @@
                         <span class="text-danger">    *    </span>
                         <small class="text-muted">(Los 3 o 4 números detrás de tu tarjeta)</small>
                       </label>
-                      <input type="text" class="form-control col-lg-2" placeholder="***" data-checkout="securityCode" required="">
+                      <input type="text" class="form-control col-lg-2" placeholder="***" data-checkout="securityCode" required="" id="cvc">
                     </div>
                   </div>
                   
@@ -216,6 +216,7 @@
 
       async function setCardNetwork(binCard)
       {
+        console.log(binCard)
           return await mercadoPago.getPaymentMethod(
               { 
                 "bin": bin 
@@ -311,8 +312,8 @@
         var tax_split = tax.split('|');
             var CFT = tax_split[0].replace('CFT_', ''),
             TEA = tax_split[1].replace('TEA_', '');
-        document.getElementById('cft').innerHTML = CFT;
-        document.getElementById('tea').innerHTML = TEA;
+        // document.getElementById('cft').innerHTML = CFT;
+        // document.getElementById('tea').innerHTML = TEA;
       }
 
     })

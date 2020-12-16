@@ -75,6 +75,7 @@ class HomeController extends Controller
         $pagoInicial = $montoTotal / 10;
 
         if (
+            $paquete->estado === 'Cerrado y Tramitando Importación' || 
             $paquete->estado === 'En Camino' || 
             $paquete->estado === "Finalizado" || 
             $paquete->estado === "Pagando" ||
@@ -94,11 +95,17 @@ class HomeController extends Controller
 
     public function Checkout()
     {
-        $productosEnCarrito = \Cart::session(auth()->id())->getContent();
+        $productosEnCarrito = Cart::session(auth()->id())->getContent();
 
         $usuario = User::where('username', Auth::user()->username)->first();
 
-        return view('auth.checkout', compact('productosEnCarrito', 'usuario'));
+        if (Cart::session(auth()->id())->getTotal() < 1)
+        {
+            return redirect()->route('Landing');
+        } else 
+        {
+            return view('auth.checkout', compact('productosEnCarrito', 'usuario'));
+        }
     }
 
     public function ComprarAhora($idProducto)
@@ -158,8 +165,8 @@ class HomeController extends Controller
             'dni' => 'required|min:6|max:10|string',
             'calle' => 'required|min:5|max:80|string',
             'altura' => 'required|integer',
-            'provincia' => 'required|min:3|max:25|string',
-            'ciudad' => 'required|min:3|max:30|string',
+            'provincia' => 'required|min:3|max:75|string',
+            'ciudad' => 'required|min:3|max:75|string',
             'codigoPostal' => 'required|integer',
             'envio' => 'required|in:1,0',
         ], $messages);
@@ -194,6 +201,11 @@ class HomeController extends Controller
         if (session()->has('pagando_seña')) 
         {
             $paquete = Paquete::find(session()->get('pagando_seña'));
+
+            if (is_null($paquete)) 
+            {
+                return view('errors.404');
+            }
 
             $paquete->orden_compra = $ordenCompra->id;
 
@@ -232,13 +244,13 @@ class HomeController extends Controller
 
         $segundoPaso = request()->validate([
             'ordenCompra' => 'required|min:1|max:5|string',
-            'calle1' => 'required|min:5|max:50|string',
+            'calle1' => 'required|min:5|max:90|string',
             'calle2' => 'nullable|min:3|max:15|string',
             'altura' => 'required|integer',
-            'barrio' => 'nullable|min:5|max:15|string',
-            'ciudad' => 'required|min:4|max:25|string',
-            'provincia' => 'required|min:5|max:25|string',
-            'metodoEnvio' => 'required|string|min:32|max:48',
+            'barrio' => 'nullable|min:3|max:35|string',
+            'ciudad' => 'required|min:3|max:65|string',
+            'provincia' => 'required|min:3|max:65|string',
+            'metodoEnvio' => 'required|string|min:3|max:190',
         ], $messages);
 
         $zonaEnvio = explode(",", $segundoPaso['metodoEnvio']);
@@ -289,12 +301,14 @@ class HomeController extends Controller
     {
         $destruir = OrdenCompra::where('id', $ordenCompra)->first();
 
-        $paquete = Paquete::find($destruir->id);
+        $paquete = Paquete::where('orden_compra', $destruir->id)->first();
 
         if (is_null($paquete)) 
         {
             $destruir->delete();
         }
+
+        Cart::session(auth()->id())->clearCartConditions();
 
         return redirect()->route('Landing');
     }

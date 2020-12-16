@@ -8,7 +8,7 @@
         <div class="row">
           <div class="col-md-12 text-center">
             <h4 class="display-4">Error :(</h4>
-            <p class="lead">We are sorry. This was unexpected.</p>
+            <p class="lead">Ocurrió un error en el servidor...</p>
           </div>
         </div>
       </div>

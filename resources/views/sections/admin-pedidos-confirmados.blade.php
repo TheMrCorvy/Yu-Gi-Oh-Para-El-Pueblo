@@ -15,7 +15,7 @@
                         <th >Fecha (DD/MM/AAAA)</th>
                         <th>Número de Pedido</th>
                         <th class="text-center">Ver Detalle</th>
-                        <th class="text-center">Notificar</th>
+                        <th class="text-center">Notificar Pedido Realizado</th>
                         <th class="text-right">Comentario</th>
                     </tr>
                 </thead>
