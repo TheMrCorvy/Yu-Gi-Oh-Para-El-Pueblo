@@ -67,14 +67,14 @@ class ComprasController extends Controller
             {
                 $paquete->estado = 'Finalizado';
 
-                Mail::to('mr.corvy@gmail.com')->send(new MailPagoFinalRealizado($ordenFinalizada));
+                Mail::to('info@yugiohparaelpueblo.com')->send(new MailPagoFinalRealizado($ordenFinalizada));
 
                 session()->forget('pago_final');
             } else 
             {
                 $paquete->estado = 'Cerrado y Tramitando Importación';
 
-                Mail::to('mr.corvy@gmail.com')->send(new MailPedidoEncargado($ordenFinalizada));
+                Mail::to('info@yugiohparaelpueblo.com')->send(new MailPedidoEncargado($ordenFinalizada));
             }
             
             $paquete->orden_compra = $ordenFinalizada->id;
@@ -105,7 +105,7 @@ class ComprasController extends Controller
 
                     Cart::session(auth()->id())->clearCartConditions(); //hay que quitar el descuento en efectivo
                     
-                    Mail::to('mr.corvy@gmail.com')->send(new MailVendedor($ordenFinalizada));
+                    Mail::to('info@yugiohparaelpueblo.com')->send(new MailVendedor($ordenFinalizada));
         
                     return redirect()->route('home', Auth::user()->username);
                 }
@@ -182,14 +182,14 @@ class ComprasController extends Controller
                 {
                     $paquete->estado = 'Finalizado';
 
-                    Mail::to('mr.corvy@gmail.com')->send(new MailPagoFinalRealizado($ordenFinalizada));
+                    Mail::to('info@yugiohparaelpueblo.com')->send(new MailPagoFinalRealizado($ordenFinalizada));
 
                     session()->forget('pago_final');
                 } else 
                 {
                     $paquete->estado = 'Cerrado y Tramitando Importación';
 
-                    Mail::to('mr.corvy@gmail.com')->send(new MailPedidoEncargado($ordenFinalizada));
+                    Mail::to('info@yugiohparaelpueblo.com')->send(new MailPedidoEncargado($ordenFinalizada));
                 }
 
                 $paquete->orden_compra = $ordenFinalizada->id;
@@ -218,7 +218,7 @@ class ComprasController extends Controller
                         Cart::session(auth()->id())->clear();
                         Cart::session(auth()->id())->clearCartConditions(); //hay que quitar el cupon de descuento
     
-                        Mail::to('mr.corvy@gmail.com')->send(new MailVendedor($ordenFinalizada));
+                        Mail::to('info@yugiohparaelpueblo.com')->send(new MailVendedor($ordenFinalizada));
     
                         return redirect()->route('home', Auth::user()->username);
                     }else {
@@ -233,7 +233,7 @@ class ComprasController extends Controller
             return abort(500);
         }
 
-        return redirect()->route('Checkout')->withMessage('Hubo un error en la transacción. Revisá que los datos de tu tarjeta estén correctos, y que tengas fondos disponibles en la mísma. Si el error se repite, por favor contactános al WhatsApp 011 3771-9677 o al email mr.corvy@gmail.com');
+        return redirect()->route('Checkout')->withMessage('Hubo un error en la transacción. Revisá que los datos de tu tarjeta estén correctos, y que tengas fondos disponibles en la mísma. Si el error se repite, por favor contactános al WhatsApp 011 3771-9677 o al email info@yugiohparaelpueblo.com');
     }
 
     public function AplicarCupon($codigoCupon)
