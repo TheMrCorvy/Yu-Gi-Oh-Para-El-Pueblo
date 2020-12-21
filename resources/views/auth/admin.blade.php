@@ -112,8 +112,6 @@
                 </h1>
 
                 @include('sections.admin-pedidos-confirmados', [
-                    'paquetesParaImportar' => $paquetesParaImportar,
-                    'paquetesImportandose' => $paquetesImportandose,
                     'paquetesFinalizados' => $paquetesFinalizados
                 ])
 

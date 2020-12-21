@@ -349,4 +349,30 @@ class APIPageController extends Controller
 
         return view('sections.ajax.info-envios', compact('enviosCacheados'));
     }
+
+    public function getTablasPaquetes()
+    {
+        $paquetesParaImportar = Paquete::join('ordenes_compras', 'paquetes.orden_compra', 'ordenes_compras.id')
+                                        ->select(
+                                            'ordenes_compras.forma_de_pago',
+                                            'ordenes_compras.monto_total',
+                                            'ordenes_compras.envio',
+                                            'ordenes_compras.metodo_envio',
+                                            'ordenes_compras.precio_envio',
+                                            'paquetes.username',
+                                            'paquetes.created_at',
+                                            'paquetes.id',
+                                            'paquetes.comentario_al_paquete'
+                                        )
+                                        ->where('paquetes.estado', 'Cerrado y Tramitando Importación')
+                                        ->where('ordenes_compras.es_pedido', true)
+                                        ->where('ordenes_compras.finalizada', true)
+                                        ->get();
+
+        $paquetesImportandose = Paquete::where('estado', 'En Camino')->get();
+
+        $paquetesPendientesDePagoFinal = Paquete::where('estado', 'El paquete llegó al local')->get();
+
+        return view('sections.ajax.tablas-paquetes', compact('paquetesParaImportar', 'paquetesImportandose', 'paquetesPendientesDePagoFinal'));
+    }
 }

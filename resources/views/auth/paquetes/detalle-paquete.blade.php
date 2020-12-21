@@ -172,7 +172,7 @@
                 
                     <div class="col-lg-12 row justify-content-center">
                         @if ($montoTotal > 0 && $paquete->estado === "Abierto y Confirmado")
-                            <div class="col-lg-12 pr-0 text-right mb-5">
+                            <div class="col-lg-12 pr-0 text-right mb-5" id="pagar-seña">
                                 <a href="{{route('Añadir Al Carrito', [0, $paquete->id])}}" class="btn btn-outline-info">pagar seña</a>
                             </div>
                         @endif
@@ -248,10 +248,12 @@
 
     <script>
         const pedirPresupuesto = document.getElementById('pedir-presupuesto')
+        const pagarSeña = document.getElementById('pagar-seña')
 
         if (pedirPresupuesto.getAttribute('estado') === "Abierto") 
         {
             pedirPresupuesto.classList.remove('d-none')
+            pagarSeña.classList.remove('d-none')
         }
 
         document.getElementById('back').addEventListener('click', e => {
@@ -285,6 +287,7 @@
                 if (respuesta.nuevo_estado_paquete === "Abierto") 
                 {
                     pedirPresupuesto.classList.remove('d-none')
+                    pagarSeña.classList.add('d-none')
                 }
             }
             

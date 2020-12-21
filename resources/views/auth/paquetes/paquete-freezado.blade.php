@@ -16,10 +16,13 @@
                         <small class="description">Estado actual del Paquete: <span class="text-success" id="estado-paquete">{{$paquete->estado}}</span></small>
                         <br>
                         @if ($paquete->comentario_al_paquete)
-                            <small class="description">{{$paquete->comentario_al_paquete}}</small>
+                            <div class="py-3">
+                                <small class="description">{{$paquete->comentario_al_paquete}}</small>
+                            </div>
                         @endif
-                        <br>
-                        <small class="description">{{$paquete->seguimiento_envio}}</small>
+                        <div class="mt-3">
+                            <small class="description">{{$paquete->seguimiento_envio}}</small>
+                        </div>
                     </div>
 
                     @if (Session::has('message'))
@@ -34,7 +37,7 @@
                         </div>
                     @endif
 
-                    <div class="col-lg-12 text-center">
+                    <div class="col-lg-12 text-center mt-3">
                         <a href="#" class="btn mb-3 btn-warning btn-sm" id="back">VOLVER</a>
                     </div>
 
@@ -110,33 +113,38 @@
                                 <a href="{{route('Realizar Pago Final', $paquete->id)}}" class="btn btn-outline-danger">pagar precio Final</a>
                             </div>
                         @endif
+                        <div class="col-lg-12 text-center mb-3 pr-0">
+                            <p>
+                                Forma de Pago Elegida: <strong>{{$ordenCompra->forma_de_pago}}</strong>
+                            </p>
+                        </div>
                         <div class="col-lg-4 pr-0 text-right">
                             <p>
-                                <strong>
-                                    Monto Total: $ {{$montoTotal}}
+                                <strong class="text-primary">
+                                    <u>Monto Total</u>: $ {{$montoTotal}}
                                 </strong>
                             </p>
                         </div>
                         @if (isset($ordenCompra) && !is_null($ordenCompra->precio_envio))
                             <div class="col-lg-4 pr-0 text-right">
                                 <p>
-                                    <strong>
-                                        Seña Pagada: $ {{ceil($paquete->pago_inicial)}}
+                                    <strong class="text-success">
+                                        <u>Seña Pagada</u>: $ {{ceil($paquete->pago_inicial)}}
                                     </strong>
                                 </p>
                             </div>
                             <div class="col-lg-4 pr-0 text-right">
                                 <p>
-                                    <strong>
-                                        Costo del Envío Pagado: $ {{$ordenCompra->precio_envio}}
+                                    <strong class="text-warning">
+                                        <u>Costo del Envío Pagado</u>: $ {{$ordenCompra->precio_envio}}
                                     </strong>
                                 </p>
                             </div>
                         @else
                             <div class="col-lg-4 pr-0 text-right">
                                 <p>
-                                    <strong>
-                                        Seña Pagada: $ {{ceil($paquete->pago_inicial)}}
+                                    <strong class="text-success">
+                                        <u>Seña Pagada</u>: $ {{ceil($paquete->pago_inicial)}}
                                     </strong>
                                 </p>
                             </div>
@@ -181,10 +189,18 @@
                             </table>
                         </div>
                     @else
-                        <div class="col-lg-8 mx-auto text-center my-5">
+                        <div class="col-lg-8 mx-auto text-center mb-5">
                             <h6 class="display-3 pt-4">El paquete se retirará por el Local</h6>
                         </div>
                     @endif
+
+                    <div class="col-lg-12 text-center mb-5">
+                        @if ($paquete->username === Auth::user()->username)
+                            <small>
+                                Siempre que lo desees podrás enviarnos un <strong class="text-success">WhatsApp</strong> a <strong>011 3771-9677</strong>, o en <strong class="text-info">Email</strong> a <strong>info@yugiohparaelpueblo.com</strong>.
+                            </small>
+                        @endif
+                    </div>
 
                     @isset($ordenCompra)
                         @if ($ordenCompra->username !== Auth::user()->username)

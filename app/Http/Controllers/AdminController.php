@@ -43,13 +43,24 @@ class AdminController extends Controller
 
         $categories = Category::all();
 
-        $paquetesParaImportar = Paquete::where('estado', 'Cerrado y Tramitando Importación')->get();
-
-        $paquetesImportandose = Paquete::where('estado', 'En Camino')->get();
-
-        $paquetesFinalizados = Paquete::where('estado', 'Finalizado')->paginate('10');
+        $paquetesFinalizados = Paquete::join('ordenes_compras', 'paquetes.orden_compra', 'ordenes_compras.id')
+                                        ->select(
+                                            'ordenes_compras.forma_de_pago',
+                                            'ordenes_compras.monto_total',
+                                            'ordenes_compras.envio',
+                                            'ordenes_compras.metodo_envio',
+                                            'ordenes_compras.precio_envio',
+                                            'paquetes.username',
+                                            'paquetes.created_at',
+                                            'paquetes.id',
+                                            'paquetes.comentario_al_paquete'
+                                        )
+                                        ->where('paquetes.estado', 'Finalizado')
+                                        ->where('ordenes_compras.es_pedido', true)
+                                        ->where('ordenes_compras.finalizada', true)
+                                        ->paginate('10');
         
-        return view('auth.admin', compact('dolar', 'typeProducts', 'typeCartas', 'categories', 'paquetesParaImportar', 'paquetesImportandose', 'paquetesFinalizados'));
+        return view('auth.admin', compact('dolar', 'typeProducts', 'typeCartas', 'categories', 'paquetesFinalizados'));
     }
 
     public function VisualizarCompras()
@@ -165,7 +176,7 @@ class AdminController extends Controller
 
         $pagoInicial = $montoTotal / 2;
 
-        if ($paquete->estado === 'En Camino' || $paquete->estado === 'Finalizado') 
+        if ($paquete->estado === 'En Camino' || $paquete->estado === 'Finalizado' || $paquete->estado === 'El paquete llegó al local') 
         {
             $ordenCompra = OrdenCompra::find($paquete->orden_compra);
 
