@@ -73,7 +73,7 @@
                                         <i class="fas fa-times"></i>
                                     </a>
                                 </td>
-
+{{--  --}}
                                 @if (!is_null($paquete->comentario_al_paquete))
                                     <td class="text-right">{{ $paquete->comentario_al_paquete }}</td>
                                 @else
