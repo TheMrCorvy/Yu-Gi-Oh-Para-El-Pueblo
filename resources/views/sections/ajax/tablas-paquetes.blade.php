@@ -17,7 +17,7 @@
                         <th class="text-center">Ver Detalle</th>
                         <th class="text-center">Notificar Pedido Realizado</th>
                         <th>Forma de Pago</th>
-                        <th>Seña Pagada</th>
+                        <th class="text-center">Seña Pagada</th>
                         <th class="text-center">Precio y Método de envio <br> <span class="text-muted">(Si lo hay)</span></th>
                         <th class="text-right">Comentario</th>
                     </tr>
@@ -55,7 +55,7 @@
                                     {{$paquete->forma_de_pago}}
                                 </td>
 
-                                <td>
+                                <td class="text-center">
                                     $ {{$paquete->monto_total}}
                                 </td>
 
@@ -121,7 +121,6 @@
                                 
                                 <td>
                                     <form action="{{route('admin.notify-shipment')}}" method="post">
-                                        @csrf
                                         <div class="form-group">
                                             <label>
                                                 <small>{{$paquete->seguimiento_envio}}</small>

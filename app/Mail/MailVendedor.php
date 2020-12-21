@@ -17,11 +17,13 @@ class MailVendedor extends Mailable implements ShouldQueue
      * @return void
      */
 
+    public $ordenCompra;
+
     public $subject = 'Alguien compró uno o más productos desde la página web';
 
-    public function __construct()
+    public function __construct($orden)
     {
-        //
+        $this->ordenCompra = $orden;
     }
 
     /**

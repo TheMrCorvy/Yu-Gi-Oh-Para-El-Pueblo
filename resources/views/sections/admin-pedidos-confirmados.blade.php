@@ -17,7 +17,7 @@
                         <th>Número de Pedido</th>
                         <th class="text-center">Ver Detalle</th>
                         <th>Forma de Pago</th>
-                        <th>Seña Pagada</th>
+                        <th class="text-center">Segundo Pago</th>
                         <th class="text-center">Precio y Método de envio <br> <span class="text-muted">(Si lo hay)</span></th>
                         <th class="text-center">Eliminar Pedido</th>
                         <th class="text-right">Comentario</th>
@@ -50,7 +50,7 @@
                                     {{$paquete->forma_de_pago}}
                                 </td>
 
-                                <td>
+                                <td class="text-center">
                                     $ {{$paquete->monto_total}}
                                 </td>
 

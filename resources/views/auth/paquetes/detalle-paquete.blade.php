@@ -253,7 +253,10 @@
         if (pedirPresupuesto.getAttribute('estado') === "Abierto") 
         {
             pedirPresupuesto.classList.remove('d-none')
-            pagarSeña.classList.remove('d-none')
+            if (pagarSeña) 
+            {
+                pagarSeña.classList.add('d-none')
+            }
         }
 
         document.getElementById('back').addEventListener('click', e => {
@@ -287,7 +290,10 @@
                 if (respuesta.nuevo_estado_paquete === "Abierto") 
                 {
                     pedirPresupuesto.classList.remove('d-none')
-                    pagarSeña.classList.add('d-none')
+                    if (pagarSeña) 
+                    {
+                        pagarSeña.classList.add('d-none')
+                    }
                 }
             }
             

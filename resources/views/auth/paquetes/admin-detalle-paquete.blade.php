@@ -27,12 +27,21 @@
                         <br>
                         <div class="form-group mt-3">
                             <label for="comentar-paquete">Dejar un comentario al paquete:</label>
-                            <textarea 
-                                class="form-control form-control-alternative" 
-                                id="comentar-paquete" 
-                                rows="3"
-                                name="comentarioAlPaquete"
-                            >{{$paquete->comentario_al_paquete}}</textarea>
+                            @if (old('comentarioAlPaquete'))
+                                <textarea 
+                                    class="form-control form-control-alternative" 
+                                    id="comentar-paquete" 
+                                    rows="3"
+                                    name="comentarioAlPaquete"
+                                >{{old('comentarioAlPaquete')}}</textarea>
+                            @else
+                                <textarea 
+                                    class="form-control form-control-alternative" 
+                                    id="comentar-paquete" 
+                                    rows="3"
+                                    name="comentarioAlPaquete"
+                                >{{$paquete->comentario_al_paquete}}</textarea>
+                            @endif
                             <small class="description float-right" id="desc-comentario">0/190</small>
                             @error('comentarioAlPaquete')
                                 <span class="invalid-feedback" role="alert">
@@ -207,21 +216,31 @@
                                     precio válido hasta:
                                 </strong>
                             </p>
-                            @if (!is_null($paquete->fecha_caducidad_precio))
+                            @if (old('fechaCaducudadPrecio'))
                                 <input 
                                     class="form-control form-control-alternative" 
                                     type="date" 
-                                    value="{{$paquete->fecha_caducidad_precio->format('Y-m-d')}}" 
+                                    value="{{old('fechaCaducudadPrecio')}}" 
                                     id="fechaCaducudadPrecio"
                                     name="fechaCaducudadPrecio"
                                 >
                             @else
-                                <input 
-                                    class="form-control form-control-alternative" 
-                                    type="date" 
-                                    id="fechaCaducudadPrecio"
-                                    name="fechaCaducudadPrecio"
-                                >
+                                @if (!is_null($paquete->fecha_caducidad_precio))
+                                    <input 
+                                        class="form-control form-control-alternative" 
+                                        type="date" 
+                                        value="{{$paquete->fecha_caducidad_precio->format('Y-m-d')}}" 
+                                        id="fechaCaducudadPrecio"
+                                        name="fechaCaducudadPrecio"
+                                    >
+                                @else
+                                    <input 
+                                        class="form-control form-control-alternative" 
+                                        type="date" 
+                                        id="fechaCaducudadPrecio"
+                                        name="fechaCaducudadPrecio"
+                                    >
+                                @endif
                             @endif
                             @error('fechaCaducudadPrecio')
                                 <span class="invalid-feedback" role="alert">

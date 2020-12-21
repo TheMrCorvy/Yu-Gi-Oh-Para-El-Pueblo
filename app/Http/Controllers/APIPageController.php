@@ -367,11 +367,12 @@ class APIPageController extends Controller
                                         ->where('paquetes.estado', 'Cerrado y Tramitando Importación')
                                         ->where('ordenes_compras.es_pedido', true)
                                         ->where('ordenes_compras.finalizada', true)
+                                        ->orderBy('paquetes.id', 'desc')
                                         ->get();
 
-        $paquetesImportandose = Paquete::where('estado', 'En Camino')->get();
+        $paquetesImportandose = Paquete::where('estado', 'En Camino')->orderBy('id', 'desc')->get();
 
-        $paquetesPendientesDePagoFinal = Paquete::where('estado', 'El paquete llegó al local')->get();
+        $paquetesPendientesDePagoFinal = Paquete::where('estado', 'El paquete llegó al local')->orderBy('id', 'desc')->get();
 
         return view('sections.ajax.tablas-paquetes', compact('paquetesParaImportar', 'paquetesImportandose', 'paquetesPendientesDePagoFinal'));
     }

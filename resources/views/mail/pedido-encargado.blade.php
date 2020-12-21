@@ -64,6 +64,25 @@ html { -webkit-text-size-adjust: none; -ms-text-size-adjust: none;}
                               <span style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #585858; font-size: 20px; line-height: 25px;">Alguien pagó su seña correspondiente a un pedido de importación de cartas. Podrás ver mas detalles haciendo click en el botón debajo.</span>
                            </font>
                            <div style="height: 20px; line-height: 20px; font-size: 18px;">&nbsp;</div>
+                           <font face="'Source Sans Pro', sans-serif" color="#585858" style="font-size: 24px; line-height: 32px;">
+                              <span style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #585858; font-size: 20px; line-height: 25px;">El método de pago elegido fue: {{$ordenCompra->forma_de_pago}}, $ {{$ordenCompra->monto_total}}.</span>
+                           </font>
+                           @if ($ordenCompra->envio)
+                              <div style="height: 20px; line-height: 20px; font-size: 18px;">&nbsp;</div>
+                              <font face="'Source Sans Pro', sans-serif" color="#585858" style="font-size: 24px; line-height: 32px;">
+                                 <span style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #585858; font-size: 20px; line-height: 25px;">El método de envío elegido fue: {{$ordenCompra->metodo_envio}}.</span>
+                              </font>
+                              <div style="height: 20px; line-height: 20px; font-size: 18px;">&nbsp;</div>
+                              <font face="'Source Sans Pro', sans-serif" color="#585858" style="font-size: 24px; line-height: 32px;">
+                                 <span style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #585858; font-size: 20px; line-height: 25px;">Precio del Envío: $ {{$ordenCompra->precio_envio}}.</span>
+                              </font>
+                           @else
+                              <div style="height: 20px; line-height: 20px; font-size: 18px;">&nbsp;</div>
+                              <font face="'Source Sans Pro', sans-serif" color="#585858" style="font-size: 24px; line-height: 32px;">
+                                 <span style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #585858; font-size: 20px; line-height: 25px;">El usuario eligió retirar su pedido de importación personalmente cuando llegue.</span>
+                              </font>
+                           @endif
+                           <div style="height: 20px; line-height: 20px; font-size: 18px;">&nbsp;</div>
 
 
                            

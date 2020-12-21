@@ -61,8 +61,30 @@ html { -webkit-text-size-adjust: none; -ms-text-size-adjust: none;}
                            </font>
                            <div style="height: 20px; line-height: 20px; font-size: 18px;">&nbsp;</div>
                            <font face="'Source Sans Pro', sans-serif" color="#585858" style="font-size: 24px; line-height: 32px;">
-                              <span style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #585858; font-size: 20px; line-height: 25px;">Un usuario pagó el precio final por uno de sus paquetes para importar del exterior. Podrás ver los detalles haciendo click en el botón debajo.</span>
+                              <span style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #585858; font-size: 20px; line-height: 25px;">Un usuario realizó el pago final por uno de sus paquetes para importar del exterior. Podrás ver los detalles haciendo click en el botón debajo.</span>
                            </font>
+                           <div style="height: 20px; line-height: 20px; font-size: 18px;">&nbsp;</div>
+                           <font face="'Source Sans Pro', sans-serif" color="#585858" style="font-size: 24px; line-height: 32px;">
+                              <span style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #585858; font-size: 20px; line-height: 25px;">El método de pago elegido fue: {{$ordenCompra->forma_de_pago}}, $ {{$ordenCompra->monto_total}}.
+                                 <br>
+                                 <small>(El precio total del paquete sería $ {{$ordenCompra->monto_total * 2}} aproximadamente, sin incluir el precio del envío)</small>.
+                              </span>
+                           </font>
+                           @if ($ordenCompra->envio)
+                              <div style="height: 20px; line-height: 20px; font-size: 18px;">&nbsp;</div>
+                              <font face="'Source Sans Pro', sans-serif" color="#585858" style="font-size: 24px; line-height: 32px;">
+                                 <span style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #585858; font-size: 20px; line-height: 25px;">El método de envío que eligió el usuario al pagar la seña inicial fue: {{$ordenCompra->metodo_envio}}.</span>
+                              </font>
+                              <div style="height: 20px; line-height: 20px; font-size: 18px;">&nbsp;</div>
+                              <font face="'Source Sans Pro', sans-serif" color="#585858" style="font-size: 24px; line-height: 32px;">
+                                 <span style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #585858; font-size: 20px; line-height: 25px;">Precio del Envío: $ {{$ordenCompra->precio_envio}}.</span>
+                              </font>
+                           @else
+                              <div style="height: 20px; line-height: 20px; font-size: 18px;">&nbsp;</div>
+                              <font face="'Source Sans Pro', sans-serif" color="#585858" style="font-size: 24px; line-height: 32px;">
+                                 <span style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #585858; font-size: 20px; line-height: 25px;">El usuario eligió retirar su pedido de importación personalmente.</span>
+                              </font>
+                           @endif
                            <div style="height: 20px; line-height: 20px; font-size: 18px;">&nbsp;</div>
 
 

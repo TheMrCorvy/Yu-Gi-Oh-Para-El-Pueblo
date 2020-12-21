@@ -58,6 +58,7 @@ class AdminController extends Controller
                                         ->where('paquetes.estado', 'Finalizado')
                                         ->where('ordenes_compras.es_pedido', true)
                                         ->where('ordenes_compras.finalizada', true)
+                                        ->orderBy('paquetes.id', 'desc')
                                         ->paginate('10');
         
         return view('auth.admin', compact('dolar', 'typeProducts', 'typeCartas', 'categories', 'paquetesFinalizados'));

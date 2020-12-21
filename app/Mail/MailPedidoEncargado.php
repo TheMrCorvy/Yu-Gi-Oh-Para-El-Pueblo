@@ -17,9 +17,11 @@ class MailPedidoEncargado extends Mailable
      * @return void
      */
 
-    public function __construct()
+    public $ordenCompra;
+
+    public function __construct($orden)
     {
-        //
+        $this->ordenCompra = $orden;
     }
 
     /**

@@ -67,14 +67,14 @@ class ComprasController extends Controller
             {
                 $paquete->estado = 'Finalizado';
 
-                Mail::to('mr.corvy@gmail.com')->send(new MailPagoFinalRealizado);
+                Mail::to('mr.corvy@gmail.com')->send(new MailPagoFinalRealizado($ordenFinalizada));
 
                 session()->forget('pago_final');
             } else 
             {
                 $paquete->estado = 'Cerrado y Tramitando Importación';
 
-                Mail::to('mr.corvy@gmail.com')->send(new MailPedidoEncargado);
+                Mail::to('mr.corvy@gmail.com')->send(new MailPedidoEncargado($ordenFinalizada));
             }
             
             $paquete->orden_compra = $ordenFinalizada->id;
@@ -98,14 +98,14 @@ class ComprasController extends Controller
             
             if ($this->GenerarProductosComprados($ordenCompra, $productosComprados)) 
             {
-                $this->finalizarOrdenCompra($ordenCompra, 'Pago en Efectivo');
+                $ordenFinalizada = $this->finalizarOrdenCompra($ordenCompra, 'Pago en Efectivo');
 
                 if ($this->ReducirStock($productosComprados)) {
                     Cart::session(auth()->id())->clear();
 
                     Cart::session(auth()->id())->clearCartConditions(); //hay que quitar el descuento en efectivo
                     
-                    Mail::to('mr.corvy@gmail.com')->send(new MailVendedor);
+                    Mail::to('mr.corvy@gmail.com')->send(new MailVendedor($ordenFinalizada));
         
                     return redirect()->route('home', Auth::user()->username);
                 }
@@ -182,14 +182,14 @@ class ComprasController extends Controller
                 {
                     $paquete->estado = 'Finalizado';
 
-                    Mail::to('mr.corvy@gmail.com')->send(new MailPagoFinalRealizado);
+                    Mail::to('mr.corvy@gmail.com')->send(new MailPagoFinalRealizado($ordenFinalizada));
 
                     session()->forget('pago_final');
                 } else 
                 {
                     $paquete->estado = 'Cerrado y Tramitando Importación';
 
-                    Mail::to('mr.corvy@gmail.com')->send(new MailPedidoEncargado);
+                    Mail::to('mr.corvy@gmail.com')->send(new MailPedidoEncargado($ordenFinalizada));
                 }
 
                 $paquete->orden_compra = $ordenFinalizada->id;
@@ -211,14 +211,14 @@ class ComprasController extends Controller
     
                 if ($this->GenerarProductosComprados($datosTarjeta['ordenCompra'], $productosComprados)) 
                 {
-                    $this->finalizarOrdenCompra($datosTarjeta['ordenCompra'], 'Pago Online con MercadoPago');
+                    $ordenFinalizada = $this->finalizarOrdenCompra($datosTarjeta['ordenCompra'], 'Pago Online con MercadoPago');
     
                     if ($this->ReducirStock($productosComprados)) 
                     {
                         Cart::session(auth()->id())->clear();
                         Cart::session(auth()->id())->clearCartConditions(); //hay que quitar el cupon de descuento
     
-                        Mail::to('mr.corvy@gmail.com')->send(new MailVendedor);
+                        Mail::to('mr.corvy@gmail.com')->send(new MailVendedor($ordenFinalizada));
     
                         return redirect()->route('home', Auth::user()->username);
                     }else {

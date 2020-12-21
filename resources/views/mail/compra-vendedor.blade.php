@@ -64,6 +64,25 @@ html { -webkit-text-size-adjust: none; -ms-text-size-adjust: none;}
                               <span style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #585858; font-size: 20px; line-height: 25px;">Hubo una venta exitosa en la página web, podrás ver el detalle clickeando el botón debajo.</span>
                            </font>
                            <div style="height: 20px; line-height: 20px; font-size: 18px;">&nbsp;</div>
+                           <font face="'Source Sans Pro', sans-serif" color="#585858" style="font-size: 24px; line-height: 32px;">
+                              <span style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #585858; font-size: 20px; line-height: 25px;">El método de pago elegido fue: {{$ordenCompra->forma_de_pago}}, $ {{$ordenCompra->monto_total}}.</span>
+                           </font>
+                           @if ($ordenCompra->envio)
+                              <div style="height: 20px; line-height: 20px; font-size: 18px;">&nbsp;</div>
+                              <font face="'Source Sans Pro', sans-serif" color="#585858" style="font-size: 24px; line-height: 32px;">
+                                 <span style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #585858; font-size: 20px; line-height: 25px;">El método de envío que eligió el usuario es: {{$ordenCompra->metodo_envio}}.</span>
+                              </font>
+                              <div style="height: 20px; line-height: 20px; font-size: 18px;">&nbsp;</div>
+                              <font face="'Source Sans Pro', sans-serif" color="#585858" style="font-size: 24px; line-height: 32px;">
+                                 <span style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #585858; font-size: 20px; line-height: 25px;">Precio del Envío: $ {{$ordenCompra->precio_envio}}.</span>
+                              </font>
+                           @else
+                              <div style="height: 20px; line-height: 20px; font-size: 18px;">&nbsp;</div>
+                              <font face="'Source Sans Pro', sans-serif" color="#585858" style="font-size: 24px; line-height: 32px;">
+                                 <span style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #585858; font-size: 20px; line-height: 25px;">El usuario eligió retirar su compra personalmente.</span>
+                              </font>
+                           @endif
+                           <div style="height: 20px; line-height: 20px; font-size: 18px;">&nbsp;</div>
 
 
                            
@@ -71,7 +90,7 @@ html { -webkit-text-size-adjust: none; -ms-text-size-adjust: none;}
                            <table class="mob_btn" cellpadding="0" cellspacing="0" border="0" style="background: #27cbcc; border-radius: 4px;">
                               <tr>
                                  <td align="center" valign="top"> 
-                                    <a href="https://yugiohparaelpueblo.com/admin/ordenes-de-compra" target="_blank" style="display: block; border: 1px solid #27cbcc; border-radius: 4px; padding: 12px 23px; font-family: 'Source Sans Pro', Arial, Verdana, Tahoma, Geneva, sans-serif; color: #ffffff; font-size: 20px; line-height: 30px; text-decoration: none; white-space: nowrap; font-weight: 600;">
+                                    <a href="{{route('admin.compras-detalle', [$ordenCompra->username, $ordenCompra->id])}}" target="_blank" style="display: block; border: 1px solid #27cbcc; border-radius: 4px; padding: 12px 23px; font-family: 'Source Sans Pro', Arial, Verdana, Tahoma, Geneva, sans-serif; color: #ffffff; font-size: 20px; line-height: 30px; text-decoration: none; white-space: nowrap; font-weight: 600;">
                                        <font face="'Source Sans Pro', sans-serif" color="#ffffff" style="font-size: 20px; line-height: 30px; text-decoration: none; white-space: nowrap; font-weight: 600;">
                                           <span style="font-family: 'Source Sans Pro', Arial, Verdana, Tahoma, Geneva, sans-serif; color: #ffffff; font-size: 20px; line-height: 30px; text-decoration: none; white-space: nowrap; font-weight: 600;">Ver Detalle De Venta</span>
                                        </font>
