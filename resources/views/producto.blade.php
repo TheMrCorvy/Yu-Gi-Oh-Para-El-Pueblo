@@ -20,6 +20,17 @@
           <div class="section section-item" style="z-index: 12 !important;">
             <div class="container">
               <div class="row">
+
+                @if (Session::has('message'))
+                  <div class="col-lg-12 mb-5">
+                    <div class="alert alert-primary bg-gradient-primary py-4" role="alert">
+                      <strong>Este producto ya está agregado a tu carrito de compras.</strong> 
+                      <br>
+                      <br>
+                      Podrás modificar la cantidad del mismo que desees comprar desde el carrito de compras.
+                    </div>
+                  </div>
+                @endif
                 
                 <div class="col-lg-12 text-left mb-3">
                   <a href="#" class="btn btn-sm btn-danger add" id="back">volver</a>

@@ -1,4 +1,4 @@
-<h1 class="h1 title text-center col-lg-12 text-capitalize"><a href="{{ route('admin.compras') }}"><u>ver ventas del último mes</u></a></h1>
+<h1 class="h1 title text-center col-lg-12 text-capitalize"><a href="{{ route('admin.compras') }}"><u>ver historial de ventas</u></a></h1>
 
 <div class="col-lg-12 mt-3">
     <div class="card">

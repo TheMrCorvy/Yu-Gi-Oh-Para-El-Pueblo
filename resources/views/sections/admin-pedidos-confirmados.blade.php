@@ -62,16 +62,12 @@
 
 <div class="col-lg-12">
     <div class="card">
-        <div class="card-body pb-0">
+        <div class="card-body table-responsive pb-0">
             <h3 class="text-right pb-3">Paquetes en camino</h3>
             <p class="">
                 Desde acá se puede notificar a los usuarios cuando haya algún cambio en el seguimiento del envío.
             </p>
-                @if ($paquetesImportandose->count() < 1)
-                    <table class="table table-striped px-0">
-                @else
-                    <table class="table table-responsive table-striped px-0">
-                @endif
+            <table class="table table-striped px-0">
                 <thead>
                     <tr>
                         <th >Fecha (DD/MM/AAAA)</th>

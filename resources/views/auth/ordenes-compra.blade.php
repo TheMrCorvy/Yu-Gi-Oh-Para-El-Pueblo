@@ -19,13 +19,13 @@
       </div>
 
       <div class="section section-item" style="z-index: 12 !important;">
-        <div class="container">
+        <div class="container-fluid">
           <div class="row" style="min-height: 100vh !important">
             <div class="col-lg-12 mt-5 text-center">
               <a href="{{ route('admin.excel-ventas') }}" class="btn btn-outline-success">Exportar todo el historial de ventas en un archivo excel</a>
             </div>
 
-            <div class="col-lg-12 col-md-12 mb-8 row d-flex justify-content-center">
+            <div class="col-lg-12 table-responsive col-md-12 mb-8 row d-flex justify-content-center">
                 <table class="table mx-7 table-striped">
                     <thead>
                         <tr>

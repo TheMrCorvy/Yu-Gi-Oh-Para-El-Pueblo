@@ -5,7 +5,7 @@
               <i class="ni ni-delivery-fast"></i>
             </div>
             <h6 class="info-title text-uppercase text-primary">Envíos a Todo el País</h6>
-            <p class="description opacity-8 text-center">Al comprar con nosotros, podrás recibir tus compras en tu domicilio. En caso de elegir esa opción, se coordinará y cobrará luego de terminar tu compra.</p>
+            <p class="description opacity-8 text-center">Al comprar con nosotros, podrás elegir entre recibir tus compras en tu domicilio o en una sucursal de correo mediante Correo Argentino, o también podrás elegir la opción de retirar tus productos presonalmente.</p>
             {{-- el monto de tu compra y el del envío se harán por separado, ya que el envío se coordina con el vendedor luego de haber finalizado la compra, debido a la diferencia de costos dependiendo del tamaño del paquete y la dirección a enviarlo. --}}
             <a href="/info" class="text-primary">Más Información
               <i class="ni ni-bold-right text-primary"></i>

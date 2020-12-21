@@ -115,7 +115,7 @@ class HomeController extends Controller
         $multiplicador = Multiplicador::orderBy('id', 'DESC')->select('multiplicador')->first();
 
         if (Cart::session(auth()->id())->get($producto->id)) {
-            return redirect()->back();
+            return back()->withMessage('algo');
         }//hay que verificar si el producto a añadir está de hecho en el carrito, esto para evitar que se compre más de lo q se tiene stock
 
         if ($producto->oferta > 0 && $producto->fecha_oferta >= date('Y-m-d')) 
